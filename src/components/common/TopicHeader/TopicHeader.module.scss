@@ -1,0 +1,38 @@
+.category {
+  position: sticky;
+  top: 5px;
+  background-color: blueviolet;
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.sticky_block {
+  padding: 15px 20px;
+}
+
+.top__content {
+  margin-bottom: 10px;
+  padding: 7.5px 0;
+}
+
+.top_heading {
+  margin-top: 20px;
+  padding: 7.5px 0;
+}
+
+.top_heading_text {
+  margin-top: 5px;
+}
+
+.top_heading_btn_wrapp {
+  margin-bottom: 15px;
+}
+
+.top_heading_btn {
+  background-color: #00A39E;
+  padding: 5px 7.5px;
+}
+
+.header {
+  margin: 10px 0;
+}

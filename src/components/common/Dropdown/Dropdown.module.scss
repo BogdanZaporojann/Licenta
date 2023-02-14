@@ -1,0 +1,33 @@
+.dropdown {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  list-style-type: none;
+  margin: 5px 0;
+  padding-left: 15px;
+  border: none;
+  width: 260px;
+}
+
+.manu-item {
+  padding: 10px;
+}
+
+.text {
+  
+}
+
+
+.btnAftBfr {
+  &::after{
+    display: inline-block;
+    content: "";
+    background-image: url(../../../assets/svg/down-arrow-svgrepo-com.svg);
+    background-size: contain;
+    width: 1em;
+    height: 1em;
+    margin-left: 15px;
+  }
+}

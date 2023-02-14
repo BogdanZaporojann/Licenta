@@ -1,0 +1,62 @@
+
+.header {
+  margin-bottom: 5px;
+  font-size: 25px;
+}
+
+.answer__author__header {
+  display: flex;
+}
+
+.answer__author__header__image{
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 50%;
+}
+
+.answer__author__header__content {
+  padding-left: 5px;
+}
+
+.answer__author__header__name__date {
+  display: flex;
+}
+
+
+.answer__author__header__button {
+  background-color: #00A39E;
+  color: white;
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 3px;
+}
+.content {
+
+}
+
+.date__padding {
+  margin-left: 10px;
+  color: #777777;
+}
+
+
+.ff {
+  display: flex;
+}
+
+.answer__header__main {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.answer__author__footer {
+  display: flex;
+  align-items: center;
+}
+
+.view {
+  flex-grow: 1;
+}
+
+.recommendation {
+}

@@ -1,0 +1,21 @@
+.container {
+  border: 2px solid black;
+  border-bottom: none;
+  width: 350px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  background-color: aqua;
+}
+
+.photo {
+  border-radius: 50%;
+  width: 48px;
+}
+
+.personal_info {
+  padding: 5px 0 5px 10px;
+  & * {
+    text-decoration: none;
+  }
+}

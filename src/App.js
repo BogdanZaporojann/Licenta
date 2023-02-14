@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import QuestionPageContainer from "./components/QuestionPage/QuestionPageContainer/QuestionPageContainer";
+import {Routes, Route} from "react-router-dom";
+import Registration from "./components/Security/Registration/Registration";
+import Login from "./components/Security/Login/Login";
+import {MainPage} from "./components/MainPage/MainPage";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div>
+            <Routes>
+                <Route path='/post/:question' element={} />
+                <Route path='/' element={<QuestionPageContainer/>}/>
+                <Route path='main' element={<MainPage/>} />
+                <Route path='registration' element={<Registration/>}/>
+                <Route path='login' element={<Login/>} />
+            </Routes>
+        </div>
+
+
+    )
 }
 
 export default App;

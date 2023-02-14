@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.inner_flex {
+  display: flex;
+  justify-content: center;
+}
