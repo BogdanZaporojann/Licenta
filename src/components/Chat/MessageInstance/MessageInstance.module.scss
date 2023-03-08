@@ -1,0 +1,21 @@
+.message__wrapp {
+    display: flex;
+}
+
+.message {
+    display: inline;
+    border-radius: 10px;
+    padding: 25px;
+    background-color: #60A9F6;
+    max-width: 300px;
+}
+
+
+
+.message_left {
+    justify-content: left;
+}
+
+.message_right {
+    justify-content: right;
+}

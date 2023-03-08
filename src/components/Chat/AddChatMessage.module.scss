@@ -1,0 +1,42 @@
+.none_style {
+    border: none;
+}
+
+.form_padding{
+    padding-top: 7px;
+    *{
+        border: none;
+
+    }
+}
+
+
+
+.input::placeholder{
+    color: green;
+    padding-left: 15px;
+    top: 10px;
+}
+
+.input_chat {
+    height: 200px;
+}
+
+.form_chat {
+    background-color: white;
+    position: relative;
+    display:flex;
+    flex-direction:row;    
+    border:1px solid rgba($color: #A5A5A5, $alpha: 50%);
+    padding:1px;
+}
+
+.form_button {
+    top: 40%;
+    right: 100px;
+    border-radius: 100%;
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background:blue;
+}

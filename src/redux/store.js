@@ -1,12 +1,17 @@
-import {applyMiddleware, combineReducers, compose, legacy_createStore} from "redux";
-import {questionReducer, aut} from "./reducers/questionReducer";
+import { applyMiddleware, combineReducers, compose, legacy_createStore } from "redux";
+import { questionReducer } from "./reducers/questionReducer";
 import thunkMiddleware from 'redux-thunk';
-import {authReducer} from "./reducers/authReducer";
-
+import { authReducer } from "./reducers/authReducer";
+import { ChatReducer } from "./reducers/chatReducer";
+import { followerReducer } from "./reducers/followerReducer";
+import { notificationReducer } from "./reducers/notificationReducer";
 
 let reducers = combineReducers({
     questions: questionReducer,
-    auth: authReducer
+    auth: authReducer,
+    chat: ChatReducer,
+    follower: followerReducer,
+    notifications: notificationReducer
 })
 
 // @ts-ignore

@@ -1,0 +1,14 @@
+$padding: 15px;
+$photo_width: 40px;
+.container {
+    width: 100%;
+    display: grid;
+    padding: $padding;
+    grid-template-columns: calc(25% - 5px) calc(25% - 5px) calc(25% - 5px) calc(25% - 5px);
+}
+
+.photo {
+    width: $photo_width;
+    border-radius: 100%;
+    margin-bottom: 10px;
+}

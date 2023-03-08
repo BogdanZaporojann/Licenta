@@ -1,6 +1,7 @@
-import {useFormik} from "formik";
-import {connect} from "react-redux";
-import {registration} from "../../../redux/reducers/authReducer";
+import { useFormik } from "formik";
+import { connect } from "react-redux";
+import { registration } from "../../../redux/reducers/authReducer";
+import style from "./Registration.module.scss"
 const Registration = (props) => {
 
     const formik = useFormik({
@@ -19,44 +20,60 @@ const Registration = (props) => {
 
         <div>
 
-            <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="name">name</label>
-                <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.name}/>
+            <div className={style.headerForm}>BrainWave</div>
+            <div className={style.formContainer}>
+                <form className={style.form} onSubmit={formik.handleSubmit}>
+                    <div className={style.flex_center}>
+                        <span>Name</span>
+                        <input
+                            className={style.border}
+                            id="name"
+                            name="name"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.name} />
+                    </div>
 
-                <label htmlFor="education">Education</label>
-                <input
-                    id="education"
-                    name="education"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.education}/>
+                    <div className={style.flex_center}>
+                        <span>Education</span>
+                        <input
+                            className={style.border}
+                            id="education"
+                            name="education"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.education} />
+                    </div>
 
-                <label htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    name="email"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.email}/>
+                    <div className={style.flex_center}>
+                        <label for="email">Email</label>
+                        <input
+                            className={style.border}
+                            id="email"
+                            name="email"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.email} />
+                    </div>
 
-                <label htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    name="password"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}/>
+                    <div>
+                        <span>Password</span>
+                        <input
+                            className={style.border}
+                            id="password"
+                            name="password"
+                            type="password"
+                            onChange={formik.handleChange}
+                            value={formik.values.password} />
+                    </div>
 
-                <button type="submit">Submit</button>
-            </form>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+
         </div>
     )
 }
 
 
-export default connect(null,{registration})(Registration)
+export default connect(null, { registration })(Registration)

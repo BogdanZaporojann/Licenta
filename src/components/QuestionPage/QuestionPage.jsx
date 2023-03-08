@@ -17,8 +17,6 @@ export const  QuestionPage = (props) => {
 
     return(
             <div>
-                a
-                {/*<TopicHeader />*/}
                 <div className={container}>
                     <div className="containerGeneral">
                         <Paginator currentPage={currentPage} getCurrentPage={getCurrentPage} itemsCount={itemsCount} totalItemsCount={totalItemsCount} />
@@ -27,7 +25,19 @@ export const  QuestionPage = (props) => {
                         })}
                         <AddQuestion user={user} addQuestion={addQuestion}/>
                     </div>
-                    <div>
+                    <div className={style.mar}>
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
+                        <MicroProfile />
                         <MicroProfile />
                         <MicroProfile />
                         <MicroProfile />

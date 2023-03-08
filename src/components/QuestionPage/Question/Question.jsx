@@ -3,11 +3,16 @@ import indus from "../../../assets/img/indus/indian_picture.jpg"
 import {Answer} from "../Answer/Answer";
 import {Link, NavLink} from "react-router-dom";
 export const Question = (props) => {
-    const {category, date, description, question} = props.items.questionInfo
+    const {category, date, description, question, user, _id} = props.items.questionInfo
     const {name, photoURL} = props.items.userInfo
 
+    const chechOwn = () => {
+        return localStorage.getItem('user') === user ? <button >my beach</button> : ""
+    }
     return (
+        
         <div className={style.stack__item}>
+            {chechOwn()}
                 <div className={style.stack__item__header}>
                     <div className={style.header__container}>
                         <div className={style.header__container_image}>
@@ -22,7 +27,7 @@ export const Question = (props) => {
                     </div>
                     <div className={style.main__container}>
                         <div className={style.main_header}>
-                            <Link to={`post/${question.replaceAll(" ","_")}`} >
+                            <Link to={`post/Engineer/getQuestionByTitle?title=${question.replaceAll(' ','_')}`} >
                                 {question}
                             </Link>
                         </div>

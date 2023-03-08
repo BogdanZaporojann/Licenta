@@ -1,9 +1,80 @@
 .header {
   display: flex;
+  color: #0080FF;
   justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  background-color: lawngreen;
+  height: 70px;
+
 
   &__right {
+    a {
+      text-decoration: none;
+      color: #0080FF
+    }
+
     display:flex;
     gap:20px;
   }
+}
+
+
+.foto_scientits {
+  width: 550px
+}
+
+.flex_space_between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  background-color: #0080FF;
+  width: 400px;
+}
+
+.flex_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.width_450 {
+  max-width: 450px;
+  font-size: 25px;
+  line-height: 38px;
+}
+
+.input_box {
+  width: 450px;
+  padding: 10px;
+}
+
+
+.withoutBorder {
+  border: none;
+}
+
+.searchIcon {
+  width: 20px;
+  height: 20px;
+  padding: 1px 6px;
+}
+
+.someInput {
+  margin: 0 0 0 5px;
+  padding: 10px 0;
+  font-size: 18px;
+  width: 350px;
+}
+
+.paddin20 {
+  border: 1px solid black;
+}
+
+.scrince_icon_1{
+  width: 500px;
 }

@@ -1,0 +1,80 @@
+.container {
+    width: 1140px;
+    margin: 0 auto;
+    background-color: yellow;
+    display: flex;
+    justify-content: space-between;
+    padding: 25px;
+}
+
+.discussion {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 2px;
+    background-color: #C5E8E5;
+    color: #007478;
+    margin-right: 15px;
+}
+
+
+.flex_center {
+    display: flex;
+    align-items: center;
+}
+
+.photo_icon {
+    width: 50px;
+    border-radius: 100%;
+    margin-right: 20px;
+}
+
+.grid {
+    display: grid;
+}
+
+.name {
+    color: #111111;
+    font-weight: 700;
+}
+
+.education {
+    color: #777777;
+}
+
+.section_bottom_margin {
+    div {
+        margin-bottom: 20px;
+    }
+}
+
+.line {
+    border-bottom: 1px solid black;
+}
+
+.questionSection {
+    border: 1px solid black;
+    max-width: 800px;
+}
+
+.secondSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    flex-grow: 1;
+    margin-left: 30px;
+}
+
+.secondSectionHeader {
+    padding: 20px;
+    text-align: center;
+}
+
+.questionAndAnswerGrid {
+    display: grid;
+    gap: 50px;
+}
+
+.aa {
+    border-bottom: 1px solid black;
+}

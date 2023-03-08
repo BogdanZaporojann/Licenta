@@ -28,6 +28,7 @@ export const login = (userData) => {
     return async (dispatch) => {
         const user = await authAPI.login(userData)
         localStorage.setItem('user',user.user.id)
+        localStorage.setItem('accessToken',user.accessToken)
         dispatch(setUserData(user.user.id))
     }
 }

@@ -1,0 +1,196 @@
+$wrapperGap: 20px;
+
+
+.header {
+    width: 100vw;
+    grid-area: header;
+    background-color: orange;
+    display: grid;
+    grid-template-columns: calc(15% + $wrapperGap) calc(18% + $wrapperGap) calc(40% + $wrapperGap) calc(18% + $wrapperGap);
+    grid-template-areas:
+        ". logo a header_right";
+}
+
+.sidebar {
+    grid-area: sidebar;
+    background-color: yellow;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.a {
+    grid-area: a;
+}
+
+.left {
+    grid-area: left;
+    background-color: aqua;
+}
+
+.right {
+    grid-area: right;
+    background-color: aqua;
+}
+
+.wrapper {
+    gap: $wrapperGap;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 50px 15% 18% 40% 18%;
+    grid-template-rows: 70px calc(100vh - 90px);
+    grid-template-areas:
+        "sidebar  header  header header  header "
+        "sidebar .        left   content right";
+
+}
+
+
+.icon {
+    width: 20px;
+    padding-top: 3px;
+    margin-bottom: 12px;
+}
+
+.header_right_icon {
+    width: 25px;
+}
+
+.logo {
+    margin-right: 20px;
+    width: 50px;
+}
+
+.header_right {
+    grid-area: header_right;
+}
+
+.b {
+    grid-area: b;
+}
+
+
+
+.flex_center {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
+}
+
+.grid {
+    display: grid;
+}
+
+
+.latest_update,
+.followers_block {
+    display: grid;
+    gap: 10px;
+
+    >span {
+        padding-top: 15px;
+        padding-left: 15px;
+    }
+}
+
+.text_padding {
+    padding: 15px;
+}
+
+.margin_bottom_20px {
+    margin-bottom: 0px;
+}
+
+.lattest_update_section_text_margin_bottom {
+    margin-bottom: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.content {
+    grid-area: content;
+    background-color: orangered;
+    display: grid;
+    grid-template-rows: 30px 20% 500px;
+    grid-template-areas:
+        "text"
+        "input"
+        "posts";
+}
+
+
+
+
+.activity_feed {
+    background-color: rgba(255, 140, 0, 1);
+    grid-area: text;
+}
+
+.photo {
+    width: 40px;
+    border-radius: 100%;
+}
+
+
+.input_post {
+    display: grid;
+    grid-template-rows: 65% 35%;
+    grid-template-areas:
+        "input_ph"
+        "input_ic";
+    background-color: rgba(255, 140, 0, 0.2);
+    grid-area: input;
+
+    div{
+        padding: 15px;
+    }
+}
+
+input{
+    border: none;
+    background-color: inherit;
+    color: white;
+}
+
+.input_post_photo_section {
+    background-color: maroon;
+    grid-area: input_ph;
+    display: flex;
+    align-items: center;
+    * {
+        margin-right: 15px;
+    }
+}
+
+.input_post_icons_section {
+    background-color: blue;
+    grid-area: input_ic;
+    display: flex;
+    align-items: center;
+    * {
+        margin-right: 15px;
+    }
+}
+
+
+
+
+
+
+
+.posts_area {
+    background-color: rgba(0, 250, 10, 1);
+    grid-area: posts;
+    padding: 15px;
+}

@@ -1,18 +1,18 @@
-import {QuestionAPI} from "../../api/axios/questionsAPI";
-import {Question} from "../../components/QuestionPage/Question/Question";
+import { QuestionAPI } from "../../api/axios/questionsAPI";
 
 const SET_QUESTION = 'SET_QUESTION'
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
-
+const SET_QUESTION_INFO = 'SET_QUESTION_INFO'
 
 const initialState = {
-    questionData:1,
-    currentPage: 1
-
+    questionData: 1,
+    currentPage: 1,
+    selectedQuestionInfo: 1,
+    answersInfo:1
 }
 
-export const questionReducer = (state=initialState, action) => {
-    switch (action.type){
+export const questionReducer = (state = initialState, action) => {
+    switch (action.type) {
         case SET_QUESTION:
             return {
                 ...state,
@@ -22,6 +22,12 @@ export const questionReducer = (state=initialState, action) => {
             return {
                 ...state,
                 currentPage: action.currentPage
+            }
+        case SET_QUESTION_INFO:
+            return {
+                ...state,
+                selectedQuestionInfo: action.questionAndAnswers.questionInfo,
+                answersInfo: action.questionAndAnswers.responeInfo
             }
         default:
             return state
@@ -40,14 +46,35 @@ export const getCurrentPage = (currentPage) => {
     }
 }
 
+
+
+
+
 const setQuestions = (questions) => ({
     type: SET_QUESTION,
     questions
 })
+
 export const getQuestions = (itemsCount, page) => {
     return async (dispatch) => {
         let questions = await QuestionAPI.getQuestions(itemsCount, page)
         dispatch(setQuestions(questions))
+    }
+}
+
+
+
+
+
+const setQuestionInfoByTitle = (questionAndAnswers) => ({
+    type: SET_QUESTION_INFO,
+    questionAndAnswers
+})
+
+export const getQuestionAndAnswersByTitle = (title) => {
+    return async (dispatch) => {
+        let questionAndAnswers = await QuestionAPI.getQuestionWithAnswersByTitle(title)
+        dispatch(setQuestionInfoByTitle(questionAndAnswers))
     }
 }
 

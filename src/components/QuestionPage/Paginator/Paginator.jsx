@@ -1,5 +1,5 @@
 import style from "./Paginator.module.scss"
-import "../../../index.css"
+import "../../../index.scss"
 import {useSearchParams} from "react-router-dom";
 export const Paginator = ({itemsCount, totalItemsCount, getCurrentPage, currentPage}) => {
 

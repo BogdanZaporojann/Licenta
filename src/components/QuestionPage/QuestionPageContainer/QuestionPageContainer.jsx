@@ -8,12 +8,12 @@ export class QuestionPageContainer extends Component {
 
 
     componentDidMount() {
-        this.props.getQuestions(2,1)
+        this.props.getQuestions(1,1)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if(prevProps.currentPage !== this.props.currentPage){
-            this.props.getQuestions(2,this.props.currentPage)
+            this.props.getQuestions(1,this.props.currentPage)
         }
     }
 

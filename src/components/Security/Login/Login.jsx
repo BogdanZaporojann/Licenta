@@ -1,6 +1,7 @@
-import {useFormik} from "formik";
-import {connect} from "react-redux";
-import {login} from "../../../redux/reducers/authReducer";
+import { useFormik } from "formik";
+import { connect } from "react-redux";
+import { login } from "../../../redux/reducers/authReducer";
+import style from "./Login.module.scss"
 
 const Login = (props) => {
 
@@ -18,36 +19,57 @@ const Login = (props) => {
 
         <div>
 
-            <form onSubmit={formik.handleSubmit}>
+            <div className={style.headerForm}>BrainWave</div>
+            <div className={style.formContainer}>
+                <form className={style.form} onSubmit={formik.handleSubmit}>
 
-                <label htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    name="email"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.email}/>
 
-                <label htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    name="password"
-                    type="text"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}/>
+                    <div>
 
-                <button type="submit">Submit</button>
-            </form>
+                        <span>Email</span>
+                        <input
+                            className={style.border}
+                            id="email"
+                            name="email"
+                            type="text"
+                            onChange={formik.handleChange}
+                            value={formik.values.email} />
+                    </div>
+
+                    <div>
+                        <div className={style.spaceBetween}>
+                            <span>Password</span>
+                            <span>Forgot password ?</span>
+                        </div>
+                        <input
+                            className={style.border}
+                            id="password"
+                            name="password"
+                            type="password"
+                            onChange={formik.handleChange}
+                            value={formik.values.password} />
+                    </div>
+
+                    <div>
+                        <input type="checkbox" checked />
+                        <span>Keep me logged in</span>
+                    </div>
+
+                    <button type="submit">Log in</button>
+
+                    <div className={style.textCenter}>
+                        <span>or</span>
+                    </div>
+                    <div className={style.textCenter}>
+                        <span className={style.googleText}>Continue with Google</span>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }
 
-export A = props => {
-    return(
-        <div>
-        </div>
-    )
-}
 
 
-export default connect(null, {login})(Login)
+
+export default connect(null, { login })(Login)
