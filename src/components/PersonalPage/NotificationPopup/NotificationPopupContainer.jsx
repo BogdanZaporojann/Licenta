@@ -3,7 +3,7 @@ import svg from "../../../assets/svg/search.svg"
 import classNames from "classnames"
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { getNotification } from "../../../redux/reducers/notificationReducer";
+import { getNotification, removeNotification } from "../../../redux/reducers/notificationReducer";
 import { Notification } from "./Notification/Notification";
 import { useState, useEffect } from "react";
 
@@ -23,9 +23,6 @@ const NotificationPopupContainer = props => {
 
     useEffect(() => {
         if (fetching) {
-            console.log('notifications length : ', props.notifications.length)
-            console.log('itemsCount : ', props.itemsCount)
-            console.log('condition 2 : ',(props.notifications.length <= props.itemsCount))
             setPage(prevState => prevState + 1)
             props.getNotification(10, page)
             setFetching(false)
@@ -40,7 +37,6 @@ const NotificationPopupContainer = props => {
     const scrollHandler = (e) => {
         if ((e.target.scrollHeight - (e.target.clientHeight + e.target.scrollTop) < 5)
             && (props.notifications.length <= props.itemsCount)) {
-                console.log('pizdetu')
             setFetching(true)
         }
     }
@@ -58,20 +54,26 @@ const NotificationPopupContainer = props => {
         }
     }, [notification_popup_content])
 
-    // useEffect(() => {
-    //     if (fetching) {
-    //         props.getNotification(page)
-    //     }
-    // }, [fetching])
-
-
-
-
-
-
     const notificationArray = props.notifications
 
 
+
+
+
+
+    let arr = []
+
+
+    const [userId, setUserId] = useState("")
+    useEffect(() => {
+        console.log('userId : ',userId)
+        arr.push(userId)
+        props.removeNotification(arr)
+    }, [userId])
+
+
+    useEffect(()=>{
+    },[notificationArray])
 
     return (
         <div className={style.notification_popup}>
@@ -99,7 +101,7 @@ const NotificationPopupContainer = props => {
             </div>
             <div id='notification_popup_content' className={style.notification_content}>
                 {notificationArray.map(item => {
-                    return <Notification notificationDate={item.date} message={item.message} user={item.user} />
+                    return <Notification setUserId={setUserId} id={item._id} notificationDate={item.date} message={item.message} user={item.user} />
                 })}
             </div>
         </div>
@@ -113,5 +115,5 @@ const mapStateToProps = (state) => ({
 })
 
 export default compose(
-    connect(mapStateToProps, { getNotification })
+    connect(mapStateToProps, { getNotification, removeNotification })
 )(NotificationPopupContainer)

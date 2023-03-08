@@ -1,6 +1,6 @@
 import { calcHours } from "./utils";
 import { useEffect, useState } from "react";
-export const Notification = ({ notificationDate, message, user }) => {
+export const Notification = ({ notificationDate, id, message, user, setUserId }) => {
 
 
     const hourse = calcHours(notificationDate)
@@ -20,6 +20,7 @@ export const Notification = ({ notificationDate, message, user }) => {
                     {hourse} h ago
                 </span>
             </div>
+            <span onClick={(e)=>setUserId(id)}>ll</span>
         </div>
     )
 }

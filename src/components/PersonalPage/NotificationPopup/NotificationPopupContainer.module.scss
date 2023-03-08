@@ -64,22 +64,29 @@
 
 .notification_content {
     height: 500px;
+    width: 550px;
     overflow: scroll;
     display: grid;
     > div {
         display: flex;
         align-items: center;
+        justify-content: left;
         padding-left: 15px;
-        padding-right: 15px;
         background-color: gold;
         > img {
             width: 45px;
+            height: 45px;
             border-radius: 25%;
             margin-right: 20px;
         }
 
         > div {
             display: grid;
+            width: 400px;
+        }
+        span {
+            margin-left: 10px;
+            margin-right: 10px;
         }
     }
 }

@@ -2,6 +2,7 @@ import { notificationAPI } from "../../api/axios/notificationAPI"
 
 const SET_NOTIFICATIONS = "SET_NOTIFICATIONS"
 
+
 const initialState = {
     notifications: [],
     itemsCount: 0
@@ -38,6 +39,13 @@ export const getNotification = (itemsCount, page) => {
     return async (dispatch) => {
         const notifications = await notificationAPI.getNotification(itemsCount, page)
         dispatch(setNotifications(notifications))
+    }
+}
+
+
+export const removeNotification = (notificationsID) => {
+    return async (dispatch) => {
+        await notificationAPI.removeNotification(notificationsID)
     }
 }
 

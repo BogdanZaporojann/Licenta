@@ -9,11 +9,21 @@ const instance = axios.create({
 })
 
 export const notificationAPI = {
-    getNotification(itemsCount, page) {
-        return instance.get(`?itemsCount=${itemsCount}&page=${page}`)
+    async getNotification(itemsCount, page) {
+        return await instance.get(`?itemsCount=${itemsCount}&page=${page}`)
             .then(result => {
                 return result.data
             })
 
+    },
+    async removeNotification(notificationsID) {
+        console.log('notificationsID axios : ', notificationsID)
+        return await instance.delete("/remove", {notificationsID:["6404a3927cde2470f6adf952"]} ).then(result => {
+            console.log('result : ', result)
+            return result.data
+        })
+            .catch((err) => {
+                console.log('err : ', err)
+            })
     }
 }
