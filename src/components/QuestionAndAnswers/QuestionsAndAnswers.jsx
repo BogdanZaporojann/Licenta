@@ -17,7 +17,6 @@ const QuestionsAndAnswers = (props) => {
 
     useEffect(() => { props.getQuestionAndAnswersByTitle(title) }, [title])
 
-    console.log(props.answers)
     return (
         // <div>
         //     {props.selectedQuestion}

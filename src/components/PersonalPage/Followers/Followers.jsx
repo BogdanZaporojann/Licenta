@@ -13,6 +13,8 @@ export const Followers = props => {
             <img className={style.photo} src={indus} alt="photo" />
             <img className={style.photo} src={indus} alt="photo" />
             <img className={style.photo} src={indus} alt="photo" />
+            <img className={style.photo} src={indus} alt="photo" />
+            <img className={style.photo} src={indus} alt="photo" />
         </div>
     )
 }

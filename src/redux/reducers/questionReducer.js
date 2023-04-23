@@ -66,6 +66,12 @@ export const getQuestions = (itemsCount, page) => {
 
 
 
+
+
+
+
+
+
 const setQuestionInfoByTitle = (questionAndAnswers) => ({
     type: SET_QUESTION_INFO,
     questionAndAnswers

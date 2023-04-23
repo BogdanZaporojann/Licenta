@@ -17,7 +17,7 @@ export class QuestionPageContainer extends Component {
         }
     }
 
-    render() {
+render() {
        return(
             <div>
                 <QuestionPage user={this.props.user} addQuestion={this.props.addQuestion} currentPage={this.props.currentPage} getCurrentPage={this.props.getCurrentPage} itemsCount={this.props.itemsCount} questions={this.props.questions}  />

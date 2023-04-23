@@ -1,0 +1,28 @@
+.container {
+    display: grid;
+    padding: 20px;
+    background-color: lightgreen;
+}
+
+.header:first-child{
+    margin-bottom: 30px;
+}
+
+.header {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.shortcutsContainer {
+    display: grid;
+
+}
+
+.shortcutItem {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.svg {
+    width: 20px;
+}

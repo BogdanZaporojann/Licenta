@@ -8,7 +8,6 @@ const UpdateQuestionForm = (props) => {
             description: ''
         },
         onSubmit: values => {
-            console.log(values)
         }
     })
 

@@ -2,9 +2,11 @@ import { useFormik } from "formik";
 import { connect } from "react-redux";
 import { login } from "../../../redux/reducers/authReducer";
 import style from "./Login.module.scss"
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
+import { compose } from "redux"
 
 const Login = (props) => {
-
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -15,10 +17,18 @@ const Login = (props) => {
         }
     })
 
+    const navigate = useNavigate();
+
+
+
+
+
+    useEffect(() => {
+        console.log("authUsername : ", props.authUsername)
+    }, [props.authUsername])
+
     return (
-
         <div>
-
             <div className={style.headerForm}>BrainWave</div>
             <div className={style.formContainer}>
                 <form className={style.form} onSubmit={formik.handleSubmit}>
@@ -70,6 +80,11 @@ const Login = (props) => {
 }
 
 
+const mapStateToProps = (state) => ({
+    authUsername: state.auth.authUsername
+})
 
 
-export default connect(null, { login })(Login)
+export default compose(
+    connect(mapStateToProps, { login }),
+)(Login);

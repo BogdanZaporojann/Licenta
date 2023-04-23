@@ -2,7 +2,6 @@ import style from "./SelectAnswer.module.scss"
 import indus from "../../../assets/img/indus/indian_picture.jpg"
 
 export const SelectAnswer = props => {
-    console.log('aaaaf :  ',props.answer)
     return(
         <div>
             <div className={style.flex_header}>

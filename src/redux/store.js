@@ -5,13 +5,20 @@ import { authReducer } from "./reducers/authReducer";
 import { ChatReducer } from "./reducers/chatReducer";
 import { followerReducer } from "./reducers/followerReducer";
 import { notificationReducer } from "./reducers/notificationReducer";
-
+import { friendReducer } from "./reducers/friendReducer";
+import { appReducer } from "./reducers/appReducer";
+import { postsReducer } from "./reducers/postsReducer";
+import { usersReducer } from "./reducers/usersReducer";
 let reducers = combineReducers({
     questions: questionReducer,
     auth: authReducer,
     chat: ChatReducer,
     follower: followerReducer,
-    notifications: notificationReducer
+    notifications: notificationReducer,
+    friends: friendReducer,
+    app: appReducer,
+    posts: postsReducer,
+    users: usersReducer
 })
 
 // @ts-ignore

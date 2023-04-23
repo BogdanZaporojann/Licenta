@@ -17,13 +17,20 @@ export const notificationAPI = {
 
     },
     async removeNotification(notificationsID) {
-        console.log('notificationsID axios : ', notificationsID)
-        return await instance.delete("/remove", {notificationsID:["6404a3927cde2470f6adf952"]} ).then(result => {
-            console.log('result : ', result)
-            return result.data
-        })
+
+        return await instance.delete("/remove", 
+        {
+            data:{
+                notificationsID
+            }
+        }).then(result => result.data)
+    },
+    async notificationWasReaded(notificationsID) {
+        return await instance.delete("/remove", { notificationsID: ["6404a3927cde2470f6adf952"] }).then(result => result.data)
             .catch((err) => {
-                console.log('err : ', err)
+                console.log('err notificationWasReaded : ', err)
             })
+
     }
 }
+

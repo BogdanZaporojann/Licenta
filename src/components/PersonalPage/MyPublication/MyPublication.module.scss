@@ -1,0 +1,77 @@
+.vlack {
+  padding-top: 30px;
+  padding-bottom: 80px;
+  // width: 100%;
+  display: flex;
+  justify-content: center;
+  // background-color: black;
+
+  div {
+    width: 80%;
+  }
+}
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  >div {
+    width: 900px;
+  }
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 280px);
+  grid-gap: 10px;
+  border: 10px black solid;
+}
+
+.gallery img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.settingIcon {
+  width: 24px;
+}
+
+.profileInfoHeader {
+  span {
+    font-weight: 400;
+    font-size: 20px;
+  }
+}
+
+
+
+
+
+.menu {
+  display: grid;
+  gap: 10px;
+
+  span {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+.edit {
+  background-color: gray;
+  border-radius: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.mePhoto {
+  width: 100px;
+  margin-right: 50px;
+}
+
+.header {
+  display: flex;
+}

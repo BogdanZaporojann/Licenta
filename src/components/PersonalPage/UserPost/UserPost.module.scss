@@ -1,0 +1,105 @@
+.contentWidth {
+    width: 450px;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modalCommentWrapper {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.contentPhotoPopup {
+    width: 50%;
+    border-right: 10px solid mediumaquamarine;
+
+    img {
+        width: 100%;
+
+    }
+}
+
+
+.contentWidthContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.svg_icon {
+    width: 24px;
+}
+
+
+
+
+.contentTextPopup {
+    display: grid;
+    grid-template-rows: 70px 3fr 1fr;
+    grid-template-columns: 500px;
+    grid-template-areas:
+        "header"
+        "content"
+        "interaction";
+}
+
+.avaWidth {
+    width: 20px;
+}
+
+.a {
+    background-color: blue;
+    grid-area: "header";
+    width: 100%x;
+}
+
+.b {
+    background-color: aqua;
+    grid-area: "content";
+}
+
+.c {
+    background-color: blue;
+    grid-area: "interaction";
+    display: grid;
+    grid-template-columns: 500px;
+    grid-template-rows: 1fr 1.25fr 0.75fr;
+    grid-template-areas:
+        "ca"
+        "cb"
+        "cc";
+}
+
+.ca {
+    grid-area: "ca";
+    background-color: aqua;
+}
+.cb {
+    grid-area: "cb";
+    background-color: beige;
+
+}
+.cc {
+    background-color: aqua;
+    grid-area: "cc";
+    display: flex;
+    align-items: center;
+}
+.formStyle {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    button {
+        border: none;
+    }
+}
+.commentInput{
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+

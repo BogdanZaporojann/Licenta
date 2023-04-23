@@ -38,9 +38,8 @@ class Chat extends React.Component {
 
     render() {
         return (
-            
             <div className={style.container}>
-                <form action="">
+                <form className={style.form}>
                     <input type="text" /><input type="submit" />
                 </form>
                 <div className={style.sidebar_left}>
@@ -73,7 +72,7 @@ class Chat extends React.Component {
                         <div>Inbox</div>
                     </div>
                     <div className={style.flex_sub_header}>
-                        <div>Search</div>
+                        <div className="a">Search</div>
                     </div>
                     <div>
                         <div>End</div>

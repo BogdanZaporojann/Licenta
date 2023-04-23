@@ -21,7 +21,6 @@ export const QuestionAPI = {
         return instance.post(`${baseUrl}Engineer/addAnswer`,{answerInfo},{withCredentials:true})
     },
 
-    //??
     getQuestionWithAnswersByTitle(title){
         return instance.get(`${baseUrl}Engineer/getQuestionByTitle?title=${title}`,{
             withCredentials: true,

@@ -4,7 +4,7 @@ $photo_width: 40px;
     width: 100%;
     display: grid;
     padding: $padding;
-    grid-template-columns: calc(25% - 5px) calc(25% - 5px) calc(25% - 5px) calc(25% - 5px);
+    grid-template-columns: calc(20% - 5px) calc(20% - 5px) calc(20% - 5px) calc(20% - 5px) calc(20% - 5px);
 }
 
 .photo {

@@ -8,36 +8,68 @@ import Chat from "./components/Chat/Chat";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { io } from "socket.io-client"
-import { PersonalPage } from "./components/PersonalPage/PersonalPage";
+import PersonalPage from "./components/PersonalPage/PersonalPage";
+import { Friends } from "./components/Friends";
+import { initializeApp } from "./redux/reducers/appReducer";
+import { Preloader } from "./components/Preloader";
+import MyPublication from "./components/PersonalPage/MyPublication/MyPublication";
+import React from "react";
+import Crop from "./components/Crop/Crop";
+import ModalEx from "./components/Pan/PanComponent";
 
-function App() {
+import { useState } from "react";
 
-    const socket = io("https://brainwaveapi.onrender.com", {
+
+
+class App extends React.Component {
+
+
+
+    socket = io("https://brainwaveapi.onrender.com", {
         withCredentials: true,
         query: {
             id: localStorage.getItem("user")
         }
     })
 
+    componentDidMount() {
+        this.props.initializeApp();
+    }
 
-    return (
-        <div>
-            <Routes>
-                <Route path="/chat" element={<Chat />} />
-                <Route path='/post/Engineer/getQuestionByTitle' element={<QuestionsAndAnswers />} />
-                <Route path='/' element={<QuestionPageContainer />} />
-                <Route path='main' element={<MainPage />} />
-                <Route path='registration' element={<Registration />} />
-                <Route path='login' element={<Login />} />
-                <Route path='personalPage' element={<PersonalPage />}/>
-            </Routes>
-        </div>
-    )
+    render() {
+
+
+        if (!this.props.initialized) {
+            return <Preloader />
+        }
+
+
+
+        return (
+            <div>
+                <Routes>
+                    <Route path="/posts/:username" element={<MyPublication />} />
+                    <Route path="/mypost" element={<MyPublication />} />
+                    <Route path="/friends" element={<Friends />} />
+                    <Route path="/chat" element={<Chat />} />
+                    <Route path='/post/Engineer/getQuestionByTitle' element={<QuestionsAndAnswers />} />
+                    <Route path='/' element={<QuestionPageContainer />} />
+                    <Route path='main' element={<MainPage />} />
+                    <Route path='registration' element={<Registration />} />
+                    <Route path='login' element={<Login />} />
+                    <Route path='personalPage' element={<PersonalPage />} />
+                    <Route path="crop" element={<Crop />} />
+                    <Route path="modal" element={<ModalEx />} />
+                </Routes>
+            </div>
+        )
+    }
 }
 
-const mapStateToProps = state => ({
+let mapStateToProps = (state) => ({
+    initialized: state.app.initialized
 })
 
 export default compose(
-    connect(mapStateToProps,null)
+    connect(mapStateToProps, { initializeApp })
 )(App)

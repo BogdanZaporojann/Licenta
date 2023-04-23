@@ -6,7 +6,7 @@ $wrapperGap: 20px;
     grid-area: header;
     background-color: orange;
     display: grid;
-    grid-template-columns: calc(15% + $wrapperGap) calc(18% + $wrapperGap) calc(40% + $wrapperGap) calc(18% + $wrapperGap);
+    grid-template-columns: calc(10% + $wrapperGap ) calc(17% + $wrapperGap) calc(40% + $wrapperGap) calc(18% + $wrapperGap);
     grid-template-areas:
         ". logo a header_right";
 }
@@ -25,8 +25,10 @@ $wrapperGap: 20px;
 }
 
 .left {
+    position: sticky;
+    top: 0;
     grid-area: left;
-    background-color: aqua;
+    background-color: violet;
 }
 
 .right {
@@ -38,11 +40,11 @@ $wrapperGap: 20px;
     gap: $wrapperGap;
     width: 100vw;
     display: grid;
-    grid-template-columns: 50px 15% 18% 40% 18%;
-    grid-template-rows: 70px calc(100vh - 90px);
+    grid-template-columns: 10% 17% 40% 17%;
+    grid-template-rows: 70px;
     grid-template-areas:
-        "sidebar  header  header header  header "
-        "sidebar .        left   content right";
+        "header  header  header  header "
+        ".       left    content right ";
 
 }
 
@@ -64,6 +66,9 @@ $wrapperGap: 20px;
 
 .header_right {
     grid-area: header_right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .b {
@@ -87,7 +92,8 @@ $wrapperGap: 20px;
 .followers_block {
     display: grid;
     gap: 10px;
-
+    position: sticky;
+    top: 0;
     >span {
         padding-top: 15px;
         padding-left: 15px;
@@ -111,8 +117,21 @@ $wrapperGap: 20px;
 
 
 
+.textPost{
+    height: 20px;
+    border: none;
+    width: 400px;
+}
 
+.none{
+    display: none;
+}
 
+.sigmaCameraPost {
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+}
 
 
 
@@ -122,7 +141,7 @@ $wrapperGap: 20px;
     grid-area: content;
     background-color: orangered;
     display: grid;
-    grid-template-rows: 30px 20% 500px;
+    grid-template-rows: 30px 150px ;
     grid-template-areas:
         "text"
         "input"
@@ -144,6 +163,7 @@ $wrapperGap: 20px;
 
 
 .input_post {
+    position: relative;
     display: grid;
     grid-template-rows: 65% 35%;
     grid-template-areas:
@@ -157,11 +177,7 @@ $wrapperGap: 20px;
     }
 }
 
-input{
-    border: none;
-    background-color: inherit;
-    color: white;
-}
+
 
 .input_post_photo_section {
     background-color: maroon;

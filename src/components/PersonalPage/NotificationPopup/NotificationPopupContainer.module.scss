@@ -1,11 +1,21 @@
 .notification_popup {
+    color: white;
+    // display: none;
+    z-index: 999;
     display: grid;
     width: 450px;
     height: 200px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 1);
     position: absolute;
     right: 50px;
     top: 70px;
+}
+
+.deleteNotificationButton{
+    font-size: 11px;    
+}
+.none{ 
+    display: none;
 }
 
 .notification_header {
@@ -61,11 +71,22 @@
     color: antiquewhite;
 }
 
+::-webkit-scrollbar {
+  width: 8px; /* ширина скроллбара */
+}
 
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* цвет трека */
+  }
+::-webkit-scrollbar-thumb {
+    background: #888; /* цвет бегунка */
+    border-radius: 4px; /* радиус скругления углов бегунка */
+  }
 .notification_content {
+    
     height: 500px;
-    width: 550px;
-    overflow: scroll;
+    min-width: 450px;
+    overflow-y: scroll;
     display: grid;
     > div {
         display: flex;
@@ -80,10 +101,6 @@
             margin-right: 20px;
         }
 
-        > div {
-            display: grid;
-            width: 400px;
-        }
         span {
             margin-left: 10px;
             margin-right: 10px;

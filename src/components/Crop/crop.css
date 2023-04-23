@@ -1,0 +1,60 @@
+.reactEasyCrop_CropArea {
+  color: rgba(0, 0, 0, 1) !important
+}
+
+.aspect-ratios span {
+  color: white;
+}
+
+
+
+
+
+.aspect-ratios {
+  position: relative;
+  width: 140px;
+  height: 32px;
+  background-color: #fafafa;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  text-align: center;
+  line-height: 32px;
+  user-select: none;
+}
+
+.aspect-ratios::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  background-color: #262626;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.aspect-ratios:hover {
+  background-color: #f0f0f0;
+}
+
+.aspect-ratios:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.aspect-ratios>option {
+  background-color: #fafafa;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  text-align: center;
+}
+
+
