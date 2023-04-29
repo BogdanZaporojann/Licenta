@@ -7,8 +7,11 @@ import { getUserPosts } from "../../../redux/reducers/postsReducer";
 import { useFormik } from "formik";
 import { addFunnyPost } from "../../../redux/reducers/postsReducer";
 import { useParams } from 'react-router-dom';
-import FollowersPost from "../FollowersPost/FollowersPost";
-import  UserPost  from "../UserPost/UserPost";
+import UserPost from "../UserPost/UserPost";
+import { useNavigate } from 'react-router-dom';
+import { getUserInfoByUsername } from "../../../redux/reducers/authReducer";
+import { addFriend, getFriend } from "../../../redux/reducers/friendReducer";
+
 
 
 const MyPublicationPage = (props) => {
@@ -17,6 +20,15 @@ const MyPublicationPage = (props) => {
 
 
 
+    useEffect(()=>{
+        props.getFriend()
+        if(username !== props.authUsername){
+            props.getUserInfoByUsername(username)
+        }
+    },[])
+
+
+    const navigate = useNavigate()
     const { username } = useParams()
 
     useEffect(() => {
@@ -39,10 +51,23 @@ const MyPublicationPage = (props) => {
         }
     })
 
+
+
+
+
+    const handlerSendMessageClick = () => {
+        navigate(`/messages/${username}`)
+    }
+
+
+    const handlerFriendRequestClick = () => {
+        props.addFriend(props.currentUserName)
+    }
+
+
     let differentBlockHeader;
 
 
-    console.log("authusername : ", props.authUsername)
     if (username === props.authUsername) {
         differentBlockHeader =
             <>
@@ -54,7 +79,8 @@ const MyPublicationPage = (props) => {
         differentBlockHeader =
             <>
                 <span className={style.edit}>Subscribers</span>
-                <span className={style.edit}>Send Message</span>
+                <span className={style.edit} onClick={handlerSendMessageClick}>Send Message</span>
+                <span className={style.edit} onClick={handlerFriendRequestClick}>Friend</span>
 
             </>
     }
@@ -70,7 +96,7 @@ const MyPublicationPage = (props) => {
                         <img className={style.mePhoto} src={setting} alt="me" />
                         <div className={style.menu}>
                             <div className={style.profileInfoHeader}>
-                                <span>bogdanstrase</span>
+                                {/* <span>bogdanstrase</span> */}
                                 {/* <span className={style.edit}>Edit Profile</span>
                                 <img className={style.settingIcon} src={setting} alt="setting" /> */}
 
@@ -118,7 +144,8 @@ const MyPublicationPage = (props) => {
 
 const mapStateToProps = (state) => ({
     userPosts: state.posts.userPosts,
-    authUsername: state.auth.authUsername
+    authUsername: state.auth.authUsername,
+    currentUserName: state.auth.currentUserUserName
 })
 
-export default connect(mapStateToProps, { getUserPosts, addFunnyPost })(MyPublicationPage)
+export default connect(mapStateToProps, { getUserPosts, addFunnyPost, getUserInfoByUsername, addFriend, getFriend })(MyPublicationPage)

@@ -3,6 +3,7 @@ import { compose } from "redux"
 import { FriendsLatestUpdate } from "../FriendsLatestUpdate/FriendsLatestUpdate";
 import { getUsersByRegex } from "../../../redux/reducers/usersReducer";
 export const FriendsLatestUpdateContainer = ({ users }) => {
+    
     return (
         // <FriendsLatestUpdate />
 

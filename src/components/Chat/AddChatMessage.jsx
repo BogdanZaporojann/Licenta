@@ -1,16 +1,27 @@
 import classNames from "classnames"
 import { useFormik } from "formik"
 import style from "./AddChatMessage.module.scss"
-export const AddChatMessage = ({ sendMessage, userId }) => {
+import { useParams } from "react-router-dom";
 
+export const AddChatMessage = ({ getConversation, sendMessage, userName }) => {
 
+    const { username } = useParams();
+
+    const getConversationHandleClick = () => {
+        getConversation(username)
+    }
 
     const formik = useFormik({
         initialValues: {
+            toUser: userName,
             message: ""
         },
-        onSubmit: values => {
-            sendMessage({ message: values.message, toUser: userId })
+        onSubmit: async values => {
+            
+            sendMessage({ message: values.message, toUser: userName })
+            
+            
+            
         }
     })
 
@@ -18,7 +29,7 @@ export const AddChatMessage = ({ sendMessage, userId }) => {
         <div>
             <form className={classNames(style.none_style, style.form_padding, style.form_chat)} onSubmit={formik.handleSubmit}>
                 <input placeholder="aaa" className={style.input_chat} id="message" name="message" onChange={formik.handleChange} value={formik.values.message} type="text" />
-                <button className={style.form_button} type="submit"></button>
+                <button className={style.form_button} onClick={getConversationHandleClick} type="submit"></button>
             </form>
         </div>
     )

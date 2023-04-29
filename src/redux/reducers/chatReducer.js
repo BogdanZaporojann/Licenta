@@ -7,18 +7,24 @@ const initialState = {
 
 const SET_CHATS = 'SET_CHATS'
 const SET_MESSAGES = 'SET_MESSAGES'
-
+const SET_MESSAGE_FROM_SOCKET = 'SET_MESSAGE_FROM_SOCKET'
 export const ChatReducer = (state = initialState, action) => {
     switch (action.type) {
+        
         case SET_CHATS:
             return {
                 ...state,
                 chats: action.chats
             }
         case SET_MESSAGES:
-            return{
+            return {
                 ...state,
                 messagesArray: action.messagesArray
+            }
+        case SET_MESSAGE_FROM_SOCKET:
+            return {
+                ...state,
+                messagesArray: [...state.messagesArray, action.realtimeSocketMessage]
             }
         default:
             return state
@@ -35,6 +41,11 @@ const setConversation = (messagesArray) => ({
     messagesArray
 })
 
+const setSocketRealtimeMessage = (realtimeSocketMessage) => ({
+    type: SET_MESSAGE_FROM_SOCKET,
+    realtimeSocketMessage
+})
+
 export const getChats = () => {
     return async (dispatch) => {
         const chats = await chatAPI.getChats()
@@ -42,17 +53,26 @@ export const getChats = () => {
     }
 }
 
-//TO DO: NEED TO CA SI SIBI ASTEPTARI DACI NET NUI
+export const getConversation = (idToUser) => {
+
+    return async (dispatch) => {
+
+        const messagesArray = await chatAPI.getMessages(idToUser)
+        
+        dispatch(setConversation(messagesArray))
+    }
+}
 
 export const sendMessage = async (payload) => {
-    
     await chatAPI.sendMessage(payload)
 }
 
-export const getConversation = (idToUser) => {
-    return async (dispatch) => {
-        
-        const messagesArray = await chatAPI.getMessages(idToUser)
-        dispatch(messagesArray)
+
+export const getRealtimeSocketMessage = (realtimeSocketMessage) => {
+    debugger
+    return (dispatch) => {
+        debugger
+        dispatch(setSocketRealtimeMessage(realtimeSocketMessage))
     }
 }
+

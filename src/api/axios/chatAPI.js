@@ -9,17 +9,22 @@ const instance = axios.create({
 })
 
 export const chatAPI = {
+
     async getChats() {
-        const data = await instance.get(`chats`).then(result => result.data)
-        return data;
+        return await instance.get(`chats`).then(result => {
+            console.log('chats items : ', result.data)
+            return result.data
+        }).catch(err => {
+        })
     },
     async sendMessage({ message, toUser }) {
-        const data = await instance.post(`addMessage`, { message, toUser }).then(result => {
+        return await instance.post(`addMessage`, { message, toUser }).then(result => {
+            
             return result.data
         })
     },
     async getMessages(idToUser) {
-        const data = await instance.get(`getMessages/${idToUser}`).then(result => {
+        return await instance.get(`getMessages/${idToUser}`).then(result => {
             return result.data
         })
     }

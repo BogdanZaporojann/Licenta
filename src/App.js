@@ -16,60 +16,98 @@ import MyPublication from "./components/PersonalPage/MyPublication/MyPublication
 import React from "react";
 import Crop from "./components/Crop/Crop";
 import ModalEx from "./components/Pan/PanComponent";
-
-import { useState } from "react";
-
-
-
-class App extends React.Component {
+import { getRealtimeSocketMessage } from "./redux/reducers/chatReducer";
+import { useEffect } from "react"
 
 
 
-    socket = io("https://brainwaveapi.onrender.com", {
+
+const App = ({ initialized, username, initializeApp, getRealtimeSocketMessage }) => {
+
+    const handlerMessage = (data) => {
+        debugger
+        if (data.message) {
+            getRealtimeSocketMessage(data)
+        }
+    }
+
+    const handlerConnect = (data) => {
+        console.log('connect : ', data)
+    }
+
+    const handlerDisconnect = (data) => {
+        console.log('disconnect : ', data)
+    }
+
+    const socket = io("https://brainwaveapi.onrender.com", {
         withCredentials: true,
         query: {
-            id: localStorage.getItem("user")
+            username
         }
     })
 
-    componentDidMount() {
-        this.props.initializeApp();
+    useEffect(() => {
+
+
+
+        initializeApp();
+
+        socket.on('user connected', (data) => handlerConnect(data))
+        socket.on('private message', (data) => handlerMessage(data))
+        socket.on('user disconnected', (data) => handlerDisconnect(data))
+
+        return () => {
+            socket.off('user connected', handlerConnect);
+            socket.off('private message', handlerMessage);
+            socket.off('user disconnected', handlerDisconnect);
+        };
+
+    }, [])
+
+
+
+
+
+
+
+
+
+
+
+
+
+    if (!initialized) {
+        return <Preloader />
     }
 
-    render() {
 
 
-        if (!this.props.initialized) {
-            return <Preloader />
-        }
-
-
-
-        return (
-            <div>
-                <Routes>
-                    <Route path="/posts/:username" element={<MyPublication />} />
-                    <Route path="/mypost" element={<MyPublication />} />
-                    <Route path="/friends" element={<Friends />} />
-                    <Route path="/chat" element={<Chat />} />
-                    <Route path='/post/Engineer/getQuestionByTitle' element={<QuestionsAndAnswers />} />
-                    <Route path='/' element={<QuestionPageContainer />} />
-                    <Route path='main' element={<MainPage />} />
-                    <Route path='registration' element={<Registration />} />
-                    <Route path='login' element={<Login />} />
-                    <Route path='personalPage' element={<PersonalPage />} />
-                    <Route path="crop" element={<Crop />} />
-                    <Route path="modal" element={<ModalEx />} />
-                </Routes>
-            </div>
-        )
-    }
+    return (
+        <div>
+            <Routes>
+                <Route path="/posts/:username" element={<MyPublication />} />
+                <Route path="/mypost" element={<MyPublication />} />
+                <Route path="/friends" element={<Friends />} />
+                <Route path="/messages/:username" element={<Chat />} />
+                <Route path='/post/Engineer/getQuestionByTitle' element={<QuestionsAndAnswers />} />
+                <Route path='/' element={<QuestionPageContainer />} />
+                <Route path='main' element={<MainPage />} />
+                <Route path='registration' element={<Registration />} />
+                <Route path='login' element={<Login />} />
+                <Route path='personalPage' element={<PersonalPage />} />
+                <Route path="crop" element={<Crop />} />
+                <Route path="modal" element={<ModalEx />} />
+            </Routes>
+        </div>
+    )
 }
 
+
 let mapStateToProps = (state) => ({
-    initialized: state.app.initialized
+    initialized: state.app.initialized,
+    username: state.auth.authUsername
 })
 
 export default compose(
-    connect(mapStateToProps, { initializeApp })
+    connect(mapStateToProps, { initializeApp, getRealtimeSocketMessage })
 )(App)

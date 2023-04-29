@@ -23,9 +23,7 @@ const setFriends = (friends) => ({
 })
 
 export const addFriend = async (newFriend) => {
-    return async (dispatch) => {
-        await friendAPI.addFriend(newFriend)
-    }
+    await friendAPI.addFriend(newFriend)
 }
 
 export const getFriend = () => {
