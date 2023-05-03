@@ -1,34 +1,30 @@
-.none_style {
-    border: none;
+.input_chat {
+    height: 40px;
+    border-radius: 100px;
+    flex-grow: 1;
+    border:none;
 }
 
-.form_padding{
-    padding-top: 7px;
-    *{
-        border: none;
 
+
+.bottomContainer{
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    flex-direction:row;    
+    padding:1px;
+    border-radius: 100px;
+    background-color: white;
+    >div>img{
+        width: 28px;
     }
 }
 
-
-
-.input::placeholder{
-    color: green;
-    padding-left: 15px;
-    top: 10px;
-}
-
-.input_chat {
-    height: 200px;
-}
-
 .form_chat {
-    background-color: white;
+    flex-grow: 1;
     position: relative;
     display:flex;
-    flex-direction:row;    
-    border:1px solid rgba($color: #A5A5A5, $alpha: 50%);
-    padding:1px;
+
 }
 
 .form_button {
@@ -38,5 +34,19 @@
     position: absolute;
     height: 40px;
     width: 40px;
+    display: none;
     background:blue;
 }
+
+.likeAndGallery{
+    padding-right: 20px;
+    img{
+        padding-left: 15px;
+    }
+}
+
+.smile{
+    padding-left: 15px;    
+    padding-right: 15px;    
+}
+

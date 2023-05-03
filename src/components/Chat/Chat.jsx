@@ -1,134 +1,125 @@
 import style from "./Chat.module.scss"
 import home from "../../assets/svg/home.svg"
-import React, { createRef } from "react"
+import React, { useContext } from "react"
 import { connect } from "react-redux"
 import { compose } from "redux";
-import { getChats, sendMessage, getConversation } from "../../redux/reducers/chatReducer";
+import { getChats, sendMessage, getConversation, getRealtimeSocketMessage } from "../../redux/reducers/chatReducer";
 import { AddChatMessage } from "./AddChatMessage"
 import { MessageInstance } from "./MessageInstance/MessageInstance"
 import classNames from "classnames"
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react"
-import { io } from "socket.io-client"
+import { getUserInfoByUsername } from "../../redux/reducers/authReducer"
+import DialogInstance from "../DialogInstance/DialogInstance"
+import { LeftSidebarShortcuts } from "../PersonalPage/LeftSidebarShortcuts/LeftSidebarShortcuts";
+import { SocketContext } from "../Socket/createSocketContext";
+import info from "../../assets/svg/info.svg"
+import cameraVideo from "../../assets/svg/cameraVideo.svg"
+import phoneCall from "../../assets/svg/phoneCall.svg"
 
 
-const Chat = ({ messagesArray, getConversation, getChats, sendMessage }) => {
+const Chat = ({
+    getUserInfoByUsername,
+    getRealtimeSocketMessage,
+    messagesArray,
+    getConversation,
+    getChats,
+    sendMessage,
+    authName,
+    photoUrl,
+    authPhotoUrl,
+    chats,
+    chatUserName }) => {
 
     const { username } = useParams();
     const [userName, setUserName] = useState('')
 
 
+    const socket = useContext(SocketContext)
 
 
     useEffect(() => {
+        getUserInfoByUsername(username)
         setUserName(username)
-        
+        socket.on("private message", (data) => {
+            getRealtimeSocketMessage(data)
+
+        })
     }, [])
 
     useEffect(() => {
-        
-        
         getConversation(userName)
-        // getChats() 
-    }, [userName,sendMessage])
+
+        getChats()
+    }, [userName, sendMessage])
 
 
+
+
+    const handleChangeChat = () => {
+
+    }
 
 
 
     return (
-        <div className={style.container} >
-            <form className={style.form}>
-                <input type="text" /><input type="submit" />
-            </form>
-            <div className={style.sidebar_left}>
-                <div className={style.flex_sub_sidebar}>
-                    <div>Logo</div>
-                    <div><img className={style.icon} src={home} alt="home" /></div>
-                    <div><img className={style.icon} src={home} alt="home" /></div>
-                    <div><img className={style.icon} src={home} alt="home" /></div>
-                    <div><img className={style.icon} src={home} alt="home" /></div>
-                </div>
-                <div className={style.flex_sub_sidebar}>
-                    <div><img className={style.icon} src={home} alt="home" /></div>
-                    <div><img className={style.icon} src={home} alt="home" /></div>
-                    <div><img className={style.icon} src={home} alt="home" /></div>
-                </div>
-            </div>
-
-            {/* <div className={style.chat_list}>
-                    {this.props.chats.map((chat) => {
-
-                        return <DialogInstance handleClick={this.handleClick} chat={chat} />
-                    })}
-
-                </div> */}
+        <div className={style.mainContainer}>
 
 
-            <div className={style.header}>
-                <div className={style.flex_sub_header}>
-                    <img className={style.icon} src={home} alt="inbox" />
-                    <div>Inbox</div>
+            <div className={style.container} >
+                <div className={style.em}></div>
+                <div className={style.sidebar_left}>
+                    <LeftSidebarShortcuts authPhotoUrl={authPhotoUrl} />
                 </div>
-                <div className={style.flex_sub_header}>
-                    <div className="a">Search</div>
+
+                <div className={style.chat_list_true}>
+                    <div className={style.chat_list_myname}>
+                        Bodea
+                    </div>
+                    <div className={style.chat_list}>
+                        {chats?.map((chat) => {
+
+                            return <DialogInstance name={chat.name} photoURL={chat.photoURL} id={chat._id} handleChangeChat={handleChangeChat} chat={chat} />
+                        })}
+                    </div>
+
                 </div>
-                <div>
-                    <div>End</div>
+
+
+                <div className={style.header}>
+
                 </div>
-            </div>
-            <div className={style.chat}>
-                <div className={style.chat_first_section}>
-                    <div className={style.chat_header}>
-                        <div>
-                            <div className={style.chat_header_main_text}>Gus Skarlis</div>
-                            <div><span className={style.iconBefore} href="email.email@email.com">email.email@email.com</span></div>
-                        </div>
-                        <div className={style.actions_section}>
+                <div className={style.chat}>
+                    {/* <div className={style.ana}>
+                        aa
+                    </div> */}
+                    <div className={style.chat_first_section}>
+                        <div className={style.chat_header}>
                             <div>
-                                <span>Participants:</span>
-                                <span className={style.participants_status}>None</span>
-                                <span className={style.actions_button}>Actions...</span>
+                                <div className={style.chat_header_main_text}>{chatUserName}</div>
+                            </div>
+                            <div className={style.actions_section}>
+                                <img src={phoneCall} alt="phoneCall" />
+                                <img src={cameraVideo} alt="cameraVideo" />
+                                <img src={info} alt="info" />
                             </div>
                         </div>
+
                     </div>
-                    <div className={classNames(style.black_line, style.margin_hr)}></div>
-                    <div className={classNames(style.text_wrapp, style.black_line)}>
-                        <span className={style.text}>
-                            CURRENT DATE
-                        </span>
-                    </div>
-                </div>
-                <div className={style.chat_main_part}>
                     <div className={style.chat_input}>
                         {messagesArray.map(item => {
                             return (
-                                <MessageInstance key={item._id} message={item.message} />
+                                <MessageInstance authName={authName} messageAuthorName={item.from} key={item._id} message={item.message} />
                             )
                         })}
                     </div>
-                </div>
 
-                <div className={style.chat_footer}>
-                    <div className={style.f}>
-                        <div className={style.padding_chat_footer_first}>
-                            <div className={style.flex_chat_footrer_icon}>
-                                <div><img className={style.icon_20} src={home} alt="home" /></div>
-                                <div><img className={style.icon_20} src={home} alt="home" /></div>
-                                <div><img className={style.icon_20} src={home} alt="home" /></div>
-                            </div>
-                            <div>
-                                <span className={style.iconAfter}>Enter</span>
-                            </div>
-                        </div>
-                        <div>
-                            <AddChatMessage getConversation={getConversation} userName={userName} sendMessage={sendMessage} />
-                        </div>
+                    <div className={style.chat_footer}>
+                        <AddChatMessage getConversation={getConversation} userName={userName} sendMessage={sendMessage} />
                     </div>
-
                 </div>
-            </div>
 
+            </div>
         </div>
     )
 }
@@ -138,9 +129,13 @@ const Chat = ({ messagesArray, getConversation, getChats, sendMessage }) => {
 
 const mapStateToProps = (state) => ({
     chats: state.chat.chats,
-    messagesArray: state.chat.messagesArray
+    messagesArray: state.chat.messagesArray,
+    authName: state.auth.authUsername,
+    photoUrl: state.auth.currentUserPhotoURL,
+    authPhotoUrl: state.auth.authPhotoURL,
+    chatUserName: state.auth.curentUserName
 })
 
 export default compose(
-    connect(mapStateToProps, { getChats, sendMessage, getConversation })
+    connect(mapStateToProps, { getUserInfoByUsername, getChats, sendMessage, getConversation, getRealtimeSocketMessage })
 )(Chat)

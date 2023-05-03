@@ -9,6 +9,7 @@ import { friendReducer } from "./reducers/friendReducer";
 import { appReducer } from "./reducers/appReducer";
 import { postsReducer } from "./reducers/postsReducer";
 import { usersReducer } from "./reducers/usersReducer";
+import { commentReducer } from "./reducers/commentReducer";
 let reducers = combineReducers({
     questions: questionReducer,
     auth: authReducer,
@@ -18,7 +19,8 @@ let reducers = combineReducers({
     friends: friendReducer,
     app: appReducer,
     posts: postsReducer,
-    users: usersReducer
+    users: usersReducer,
+    comments:commentReducer
 })
 
 // @ts-ignore

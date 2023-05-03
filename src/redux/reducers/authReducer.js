@@ -18,7 +18,8 @@ const initialState = {
     curentUserEmail: '',
     curentUserFollowers: '',
     curentUserFollowedByMe: '',
-    currentUserEducation: ''
+    currentUserEducation: '',
+    currentUserLastVisit: ''
 }
 
 
@@ -83,21 +84,24 @@ export const getAuthUserData = () => {
 }
 
 export const getUserInfoByUsername = (userName) => {
+
     return async (dispatch) => {
         const data = await authAPI.getUserInfoByUsername(userName)
         const { userData } = data
-        const { username, photoURL, name, email, followers, followedByMe, education } = userData
-        dispatch(setCurrentUserInfo(username, photoURL, name, email, followers, followedByMe, education))
+        const { username, photoURL, name, email, followers, followedByMe, education, lastVisit } = userData
+        dispatch(setCurrentUserInfo(username, photoURL, name, email, followers, followedByMe, education, lastVisit))
     }
 }
 
-const setCurrentUserInfo = (currentUserUserName,
+const setCurrentUserInfo = (
+    currentUserUserName,
     curentUserPhotoURL,
     curentUserName,
     curentUserEmail,
     curentUserFollowers,
     curentUserFollowedByMe,
-    currentUserEducation) => ({
+    currentUserEducation,
+    currentUserLastVisit) => ({
         type: SET_CURRENT_USER_INFO,
         payload: {
             currentUserUserName,
@@ -106,6 +110,7 @@ const setCurrentUserInfo = (currentUserUserName,
             curentUserEmail,
             curentUserFollowers,
             curentUserFollowedByMe,
-            currentUserEducation
+            currentUserEducation,
+            currentUserLastVisit
         }
     })

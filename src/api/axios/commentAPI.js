@@ -9,9 +9,18 @@ const instance = axios.create({
 })
 
 export const CommentAPI = {
-    async addCommentToPost({commentInfo}) {
-        
-        console.log("comment info from axios : ", commentInfo)
-        const data = await instance.post("addComment", { commentInfo }).then(data => console.log("data status comment post : ", data))
+
+    async addCommentToPost(commentInfo) {
+        await instance.post("addComment", { commentInfo }).then(data => console.log("data status comment post : ", data))
+    },
+    async addAnswerToComment(answerInfo) {
+        await instance.post("addAnswer", { answerInfo }).then(data => console.log("data status answer to comment post : ", data))
+    },
+    async getCommentsByPostID(postId) {
+        return await instance.get(`getByID?publicationID=${postId}`).then(result => {
+            console.log('comments by post ID : ', result.data)
+            return result.data
+        })
     }
+
 }

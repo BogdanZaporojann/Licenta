@@ -3,19 +3,28 @@
 }
 
 .message {
-    display: inline;
-    border-radius: 10px;
-    padding: 25px;
-    background-color: #60A9F6;
-    max-width: 300px;
+    border-radius: 25px;
+    padding: 15px;
+    background-color: white;
+    max-width: 200px;
+    word-wrap: break-word;
+
 }
 
 
 
 .message_left {
+    display: flex;
     justify-content: left;
+    div{
+        background-color: white;
+    }
 }
 
 .message_right {
+    display: flex;
     justify-content: right;
+    div{
+        background-color: rgba(0, 0, 0, 0.07);
+    }
 }

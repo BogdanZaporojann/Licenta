@@ -1,28 +1,62 @@
+.svg {
+    width: 36px;
+    height: 36px
+}
+
+.shortCuteContainer {
+    grid-area: shortcuts;
+    
+
+    >div {
+        display: flex;
+        align-items: center;
+        padding-left: 25px;
+        margin-bottom: 21px;
+    }
+
+    >div>span {
+        font-family: 'Indie Flower', cursive;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    >div>img {
+        width: 28px;
+        padding-right: 20px;
+    }
+}
+
+.setting {
+    grid-area: setting;
+
+    >img {
+        width: 18px;
+        padding-right: 20px;
+    }
+
+    >span {
+        font-family: 'Indie Flower', cursive;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    display: flex;
+    align-items: center;
+    padding-left:25px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+    grid-area: logo;
+    font-family: 'Indie Flower', cursive;
+    font-family: 'Poppins', sans-serif;
+}
+
 .container {
     display: grid;
-    padding: 20px;
-    background-color: lightgreen;
-}
-
-.header:first-child{
-    margin-bottom: 30px;
-}
-
-.header {
-    font-weight: 700;
-    font-size: 20px;
-}
-
-.shortcutsContainer {
-    display: grid;
-
-}
-
-.shortcutItem {
-    display: flex;
-    margin-bottom: 15px;
-}
-
-.svg {
-    width: 20px;
+    grid-template-rows: 110px 540px 70px;
+    grid-template-areas:
+        "logo"
+        "shortcuts"
+        "setting";
 }

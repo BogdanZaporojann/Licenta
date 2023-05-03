@@ -151,7 +151,6 @@ const PersonalPage = (props) => {
                                     description={item.description}
                                     postId={item._id}
                                     authorUserName={item.author}
-                                    comments={item.comments}
                                     files={item?.files}
                                     likes={item.likes}
                                     time={item.time} />

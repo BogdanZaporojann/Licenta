@@ -1,7 +1,7 @@
 import { chatAPI } from "../../api/axios/chatAPI"
 
 const initialState = {
-    chats: [],
+    chats: [{}],
     messagesArray: []
 }
 
@@ -56,9 +56,9 @@ export const getChats = () => {
 export const getConversation = (idToUser) => {
 
     return async (dispatch) => {
-
-        const messagesArray = await chatAPI.getMessages(idToUser)
         
+        const messagesArray = await chatAPI.getMessages(idToUser)
+
         dispatch(setConversation(messagesArray))
     }
 }
@@ -69,9 +69,8 @@ export const sendMessage = async (payload) => {
 
 
 export const getRealtimeSocketMessage = (realtimeSocketMessage) => {
-    debugger
+    
     return (dispatch) => {
-        debugger
         dispatch(setSocketRealtimeMessage(realtimeSocketMessage))
     }
 }

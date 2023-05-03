@@ -37,7 +37,7 @@
 
 .contentTextPopup {
     display: grid;
-    grid-template-rows: 70px 3fr 1fr;
+    grid-template-rows: 50px 3fr 140px;
     grid-template-columns: 665px;
     grid-template-areas:
         "header"
@@ -47,11 +47,11 @@
 }
 
 .avaWidth {
-    width: 20px;
+    width: 24px;
 }
 
 .a {
-    background-color: blue;
+    background-color: white;
     grid-area: "header";
     width: 100%x;
 }
@@ -62,11 +62,11 @@
 }
 
 .c {
-    background-color: blue;
+    background-color: white;
     grid-area: "interaction";
     display: grid;
     grid-template-columns: 665px;
-    grid-template-rows: 1fr 1.25fr 0.75fr;
+    grid-template-rows: 0.75fr 0.75fr 0.75fr;
     grid-template-areas:
         "ca"
         "cb"
@@ -74,20 +74,38 @@
 }
 
 .ca {
+
     grid-area: "ca";
-    background-color: aqua;
+    background-color: violet;
+    display: flex;
+    align-items: center;
+
+    span {
+        padding-left: 20px;
+    }
 }
+
 .cb {
     grid-area: "cb";
-    background-color: beige;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    >div {
+        padding-left: 20px;
+    }
 
 }
+
 .cc {
-    background-color: aqua;
     grid-area: "cc";
     display: flex;
     align-items: center;
 }
+
+
+
 .formStyle {
     width: 100%;
     height: 100%;
@@ -97,13 +115,25 @@
         border: none;
     }
 }
-.commentInput{
+
+.commentInput {
     border: none;
     width: 100%;
     height: 100%;
 }
 
-.mp{
+.mp {
     background-color: aqua;
     width: 50%;
+}
+
+.publicationButton {
+    background-color: white;
+    color: rgb(179, 219, 255)
+}
+
+.smile{
+    width: 24px;
+    margin-left: 20px;
+    background-color: white;
 }

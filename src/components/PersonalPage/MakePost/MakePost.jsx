@@ -23,7 +23,6 @@ const MakePost = ({ }) => {
         },
         onSubmit: values => {
 
-            console.log('vio : ',values)
             //   addCommentToPost({
             //     text: values.text,
             //     commentedTo: postId

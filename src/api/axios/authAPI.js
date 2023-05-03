@@ -30,7 +30,6 @@ export const authAPI = {
     },
     async getUserInfoByUsername(username){
         const data = await instance.get(`${baseUrl}getUserInfo?user=${username}`)
-        console.log('current user : ',data.data)
         return data.data
     }
 }

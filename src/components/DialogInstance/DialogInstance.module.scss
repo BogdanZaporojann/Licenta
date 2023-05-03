@@ -1,10 +1,12 @@
 .container {
-    display: grid;
-    grid-template-areas: "photo content last";
-    align-items: top;
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    grid-template-areas: "photo content";
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 20px;
     background-color: white;
-    border-radius: 10px;
 
 }
 
@@ -16,16 +18,22 @@
     grid-area: content;
 }
 
-.last_date{
-    grid-area: last
-}
 
 .icon {
-    width: 30px;
+    width: 48px;
+    border-radius: 50%;
+    padding-right: 10px;
 }
 
 .info {
     display: flex;
-    gap: 4px;
     flex-direction: column;
+}
+
+.name{
+    font-size: 12px;
+}
+
+.lastTime{
+    font-size: 12px;
 }

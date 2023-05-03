@@ -14,12 +14,10 @@ export const chatAPI = {
         return await instance.get(`chats`).then(result => {
             console.log('chats items : ', result.data)
             return result.data
-        }).catch(err => {
         })
     },
     async sendMessage({ message, toUser }) {
         return await instance.post(`addMessage`, { message, toUser }).then(result => {
-            
             return result.data
         })
     },

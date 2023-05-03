@@ -1,11 +1,10 @@
 import classNames from "classnames"
 import style from "./MessageInstance.module.scss"
 
-export const MessageInstance = ({ message }) => {
-    const myId = localStorage.getItem("user")
+export const MessageInstance = ({ messageAuthorName, message, authName }) => {
     return (
         <div>
-            <div className={classNames(style.message__wrapp, style.message_right)}>
+            <div className={messageAuthorName === authName ? style.message_right : style.message_left}>
                 <div className={classNames(style.message)}>
                     {message}
                 </div>

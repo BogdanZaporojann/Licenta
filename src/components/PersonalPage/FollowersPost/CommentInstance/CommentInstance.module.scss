@@ -1,0 +1,76 @@
+.container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px
+}
+
+.heartCentring{
+    display: flex;
+    justify-content: start;
+    
+}
+
+.commentText{
+   word-wrap:break-word;     
+}
+
+.likeIcon {
+    width: 16px;
+    height: 16px;
+    padding-left: 24px;
+}
+
+.imageAva {
+    // background-color: violet;
+    width: 48px;
+}
+
+
+.allInfoContailer {
+    flex-grow: 1;
+    background-color: gold;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+}
+
+.allInfoContailerForAnswer{
+    width: 550px;
+}
+
+.none{
+    display: none;
+}
+
+.nameAndContent{
+    padding-bottom: 8px;
+}
+
+.namePadding{
+    padding-right: 20px;
+}
+
+.timeLikeAnswerBlock{
+    padding-bottom: 16px;
+    >*{
+
+        padding-right: 10px;
+    }
+}
+
+.line {
+    margin: 0;
+    display: inline-block;
+    border-color: black;
+    box-shadow: none;
+    border-width: 1px;
+    width: 25px;
+    margin-right: 10px;
+}
+
+.lineBlock {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+
+}
