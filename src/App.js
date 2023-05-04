@@ -21,6 +21,8 @@ import { useEffect } from "react"
 import { SocketContext } from "./components/Socket/createSocketContext";
 import Meet from "./components/Meeting/Meet";
 
+import Room from "./MeetSam/pages/Room/Room";
+import Main from "./MeetSam/pages/Main/Main"
 
 
 
@@ -49,6 +51,10 @@ const App = ({ initialized, username, initializeApp, getRealtimeSocketMessage })
 
     return (
         <div>
+            {/* <Routes>
+                <Route path="/room/:id" element={<Room />} />
+                <Route path="/" element={<Main />} />
+            </Routes> */}
             <SocketContext.Provider value={socket}>
                 <Routes>
                     <Route path="/posts/:username" element={<MyPublication />} />

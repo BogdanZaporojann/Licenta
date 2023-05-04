@@ -1,18 +1,22 @@
+import React, { useRef } from "react"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Join from "./Join";
 import Meeting from "./Meeting";
 import MeetingEnded from "./MeetingEnded";
+import { connect } from "react-redux";
 
-
-import { addConference, getConference, deleteConference } from "../../redux/reducers/meetingReducer";
+import {
+  addConference, getConference, deleteConference, createConference, getMetteredDomain, verifyMeeting
+} from "../../redux/reducers/meetingReducer";
 
 // Initializing the SDK
 const meteredMeeting = new window.Metered.Meeting();
 
 const API_LOCATION = "https://brainwaveapi.onrender.com";
 
-function Meet() {
+const Meet = ({ deleteConference, createConference, addConference, getConference, getMetteredDomain, verifyMeeting,
+  lastCreatedRoomName, metteredDomain, authUserName, roomFound }) => {
   // Will set it to true when the user joins the meeting
   // and update the UI.
   const [meetingJoined, setMeetingJoined] = useState(false);
@@ -34,6 +38,9 @@ function Meet() {
   const [meetingInfo, setMeetingInfo] = useState({});
 
 
+  useEffect(() => {
+    setUsername(authUserName)
+  }, [])
 
   useEffect(() => {
     meteredMeeting.on("remoteTrackStarted", (trackItem) => {
@@ -77,31 +84,100 @@ function Meet() {
 
 
 
-  async function handleCreateMeeting() {
 
-    debugger
 
-    const link = "https://www.google.md"
 
+
+  const localMetteredDomainRef = useRef(null);
+  const localLastCreatedRoomNameRef = useRef(null);
+
+  useEffect(() => {
+    if (lastCreatedRoomName) {
+      localLastCreatedRoomNameRef.current = lastCreatedRoomName;
+    }
+  }, [metteredDomain])
+
+  useEffect(() => {
+    if (metteredDomain) {
+      localMetteredDomainRef.current = metteredDomain;
+    }
+  }, [metteredDomain])
+
+  //напиши имя текушего пользователя
+  async function handleCreateMeeting(username) {
+
+
+
+    await createConference()
+    await getMetteredDomain()
+
+
+    let roomURL = null;
+    while (!localMetteredDomainRef.current || !localLastCreatedRoomNameRef.current) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
 
     const joinResponse = await meteredMeeting.join({
-      name: "maimuta",
-      roomURL: link,
+      name: `${username}`,
+      roomURL: `${localMetteredDomainRef.current + "/" + localLastCreatedRoomNameRef.current}`
     });
 
-    console.log('jR : ',joinResponse)
+
+    console.log("roomname : ", localLastCreatedRoomNameRef.current)
+    setUsername(username)
+    setRoomName(localLastCreatedRoomNameRef.current);
+    setMeetingInfo(joinResponse)
+    setMeetingJoined(true);
+
   }
 
 
 
+
+
+
+
+
+
+
+
+
+
+  const localRoomFound = useRef("")
+
+  useEffect(() => {
+    if (roomFound !== "") {
+      localRoomFound.current = roomFound
+    }
+    console.log("roomFound in useefect : ", roomFound)
+  }, [roomFound])
+
+
   async function handleJoinMeeting(roomName, username) {
+    verifyMeeting("hrdnylo3yv")
+    while (localRoomFound.current === "") {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
 
-    const { conferenceInfo } = await getConference()
 
-    const { link } = conferenceInfo[0]
-    console.log('link : ', link)
 
-    //mycode
+    if (localRoomFound.current === true) {
+      await getMetteredDomain()
+      while (!localMetteredDomainRef.current) {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+      const joinResponse = await meteredMeeting.join({
+        name: username,
+        roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
+      });
+      console.log("joinResponse : ",joinResponse)
+      setMeetingJoined(true)
+    } else {
+      alert('Invalid roomName')
+    }
+
+
+
 
     //
     // const joinResponse = await meteredMeeting.join({
@@ -157,7 +233,7 @@ function Meet() {
   return (
     <div className="App">
       {meetingJoined ? (
-        
+
         meetingEnded ? (
           <MeetingEnded />
         ) : (
@@ -184,4 +260,18 @@ function Meet() {
   );
 }
 
-export default Meet;
+const mapStateToProps = (state) => ({
+  lastCreatedRoomName: state.meet.lastCreatedRoomName,
+  metteredDomain: state.meet.metteredDomain,
+  roomFound: state.meet.roomFound,
+  authUserName: state.auth.authName
+})
+
+export default connect(mapStateToProps, {
+  deleteConference,
+  createConference,
+  addConference,
+  getConference,
+  getMetteredDomain,
+  verifyMeeting
+})(Meet);

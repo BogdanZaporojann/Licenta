@@ -1,9 +1,19 @@
-import { useState } from "react";
-import { getConference , deleteConference} from "../../redux/reducers/meetingReducer";
+import { useEffect, useState } from "react";
+import { getConference, deleteConference } from "../../redux/reducers/meetingReducer";
+import { connect } from "react-redux";
 
-function Join({ handleCreateMeeting, handleJoinMeeting }) {
+function Join({
+    handleCreateMeeting,
+    handleJoinMeeting,
+
+    getConference,
+    authUserName }) {
+
     const [username, setUsername] = useState("");
     const [roomName, setRoomName] = useState("");
+
+
+
 
     return (
         <div id="joinView" className="w-full items-center justify-center flex">
@@ -46,7 +56,7 @@ function Join({ handleCreateMeeting, handleJoinMeeting }) {
                         >
                             <span
                                 onClick={() => {
-                                    handleJoinMeeting(roomName, username);
+                                    handleJoinMeeting("tm8fdhttl6", authUserName);
                                 }}
                                 className="hidden sm:block"
                             >
@@ -60,14 +70,7 @@ function Join({ handleCreateMeeting, handleJoinMeeting }) {
                 <div className="flex justify-center">
                     <button
                         onClick={() => {
-                            console.log('username : ', username)
-                            handleCreateMeeting({
-                                "name": "Meeting 2",
-                                "category": "Frontend Development",
-                                "time": "12/11/1981",
-                                "description": "Veniti la conferinta noastra stiintifica despre Frontend",
-                                "link": "https://www.google.md"
-                            });
+                            handleCreateMeeting(authUserName);
                         }}
                         id="createANewMeeting"
                         className="btn btn-primary"
@@ -80,15 +83,15 @@ function Join({ handleCreateMeeting, handleJoinMeeting }) {
                         onClick={() => {
                             getConference()
                         }}>
-                            GET
+                        GET
                     </button>
                 </div>
                 <div>
                     <button
                         onClick={() => {
-                            deleteConference()
+                            deleteConference('645212257a7328aaab6456a6')
                         }}>
-                            DELETE
+                        DELETE
                     </button>
                 </div>
             </div>
@@ -96,4 +99,8 @@ function Join({ handleCreateMeeting, handleJoinMeeting }) {
     );
 }
 
-export default Join;
+const mapStateToProps = (state) => ({
+    authUserName: state.auth.authName
+})
+
+export default connect(mapStateToProps, { getConference })(Join);

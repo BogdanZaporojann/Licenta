@@ -10,6 +10,7 @@ import { appReducer } from "./reducers/appReducer";
 import { postsReducer } from "./reducers/postsReducer";
 import { usersReducer } from "./reducers/usersReducer";
 import { commentReducer } from "./reducers/commentReducer";
+import { MeetReducer } from "./reducers/meetingReducer";
 let reducers = combineReducers({
     questions: questionReducer,
     auth: authReducer,
@@ -20,7 +21,8 @@ let reducers = combineReducers({
     app: appReducer,
     posts: postsReducer,
     users: usersReducer,
-    comments:commentReducer
+    comments: commentReducer,
+    meet: MeetReducer
 })
 
 // @ts-ignore
