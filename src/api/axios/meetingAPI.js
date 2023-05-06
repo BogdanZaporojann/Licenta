@@ -44,7 +44,7 @@ export const meetingAPI = {
 
 
     async createConference() {
-        return instanceOnline.post("/createRoom").then(result => result.data)
+        return instanceOnline.post("/createRoom").then(result => result.data).catch(err=>console.log('err create meeting : ',err))
     },
     async getMetteredDomain() {
         return instanceOnline.get("/meteredDomain").then(result => result.data.meteredDomain)

@@ -1,0 +1,46 @@
+.wrapp {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.imageSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 88px;
+        height: 88px;
+    }
+}
+
+.videoStream {
+    border: 5px solid violet;
+    z-index: 9999;
+    width: 200px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    height: 200px;
+}
+
+
+.iconsSection {
+    position: fixed;
+    bottom: 10px;
+    width: 100vw;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        padding: 10px;
+    }
+}

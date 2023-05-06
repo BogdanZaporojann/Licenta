@@ -1,0 +1,56 @@
+.wrapp {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    height: 400px;
+}
+
+.photo {
+    width: 80px;
+    height: 80px;
+}
+
+.iconBlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    span {
+        margin-left: 30px;
+        margin-right: 30px;
+        padding: 10px;
+        // background-color: black;
+        border-radius: 100%;
+        border: 1px solid black;
+        
+        img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+}
+
+.info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    span{
+        display: block;
+    }
+}
+
+.name{
+    font-size: 36px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.phone{
+    background-color: green;
+}
+
+.x{
+    background-color: red;
+}

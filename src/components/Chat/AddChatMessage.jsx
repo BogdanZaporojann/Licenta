@@ -19,11 +19,7 @@ export const AddChatMessage = ({ getConversation, sendMessage, userName }) => {
             message: ""
         },
         onSubmit: async values => {
-            
             sendMessage({ message: values.message, toUser: userName })
-            
-            
-            
         }
     })
 

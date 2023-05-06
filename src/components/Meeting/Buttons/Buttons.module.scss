@@ -1,0 +1,30 @@
+.icons{
+    grid-area: icons;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #21201f;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.callScreen{
+    background-color: black;
+}
+
+.icons {
+    button {
+        border-radius: 100%;
+        border: 1px solid black;
+        margin-left: 10px;
+        margin-right: 10px;
+
+        img {
+            border: none;
+            padding: 8px;
+            width: 18px;
+            height: 18px;
+        }
+
+    }
+}

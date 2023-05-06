@@ -16,7 +16,7 @@ const meteredMeeting = new window.Metered.Meeting();
 const API_LOCATION = "https://brainwaveapi.onrender.com";
 
 const Meet = ({ deleteConference, createConference, addConference, getConference, getMetteredDomain, verifyMeeting,
-  lastCreatedRoomName, metteredDomain, authUserName, roomFound }) => {
+  lastCreatedRoomName, metteredDomain, authUserName, roomFound, }) => {
   // Will set it to true when the user joins the meeting
   // and update the UI.
   const [meetingJoined, setMeetingJoined] = useState(false);
@@ -27,6 +27,7 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   const [remoteTracks, setRemoteTracks] = useState([]);
 
   const [username, setUsername] = useState("");
+
 
   const [localVideoStream, setLocalVideoStream] = useState(null);
 
@@ -103,8 +104,11 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     }
   }, [metteredDomain])
 
+
+
   //напиши имя текушего пользователя
   async function handleCreateMeeting(username) {
+
 
 
 
@@ -112,27 +116,34 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     await getMetteredDomain()
 
 
+
     let roomURL = null;
     while (!localMetteredDomainRef.current || !localLastCreatedRoomNameRef.current) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
+
     const joinResponse = await meteredMeeting.join({
       name: `${username}`,
       roomURL: `${localMetteredDomainRef.current + "/" + localLastCreatedRoomNameRef.current}`
     });
+    console.log(joinResponse)
+    
 
 
-    console.log("roomname : ", localLastCreatedRoomNameRef.current)
+    //рендер проблем
     setUsername(username)
     setRoomName(localLastCreatedRoomNameRef.current);
     setMeetingInfo(joinResponse)
     setMeetingJoined(true);
 
   }
+  const [createMeet, setCreateMeet] = useState(false)
 
-
-
+  if (createMeet === false) {
+    handleCreateMeeting("maimuta")
+    setCreateMeet(true)    
+  }
 
 
 
@@ -149,12 +160,11 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     if (roomFound !== "") {
       localRoomFound.current = roomFound
     }
-    console.log("roomFound in useefect : ", roomFound)
   }, [roomFound])
 
 
-  async function handleJoinMeeting(roomName, username) {
-    verifyMeeting("hrdnylo3yv")
+  const handleJoinMeeting = async (roomName, username) => {
+    verifyMeeting(roomName)
     while (localRoomFound.current === "") {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
@@ -170,16 +180,10 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
         name: username,
         roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
       });
-      console.log("joinResponse : ",joinResponse)
       setMeetingJoined(true)
     } else {
       alert('Invalid roomName')
     }
-
-
-
-
-    //
     // const joinResponse = await meteredMeeting.join({
     //   name: username,
     //   roomURL: METERED_DOMAIN + "/" + roomName,
@@ -188,7 +192,6 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     // setRoomName(roomName);
     // setMeetingInfo(joinResponse);
     // setMeetingJoined(true);
-
   }
 
   async function handleMicBtn() {
@@ -202,11 +205,13 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   }
 
   async function handleCameraBtn() {
+
     if (cameraShared) {
       await meteredMeeting.stopVideo();
       setLocalVideoStream(null);
       setCameraShared(false);
     } else {
+
       await meteredMeeting.startVideo();
       var stream = await meteredMeeting.getLocalVideoStream();
       setLocalVideoStream(stream);
@@ -232,30 +237,30 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
   return (
     <div className="App">
-      {meetingJoined ? (
+      {/* {meetingJoined ? (
 
-        meetingEnded ? (
+        meetingEnded ? ( 
           <MeetingEnded />
-        ) : (
-          <Meeting
-            handleMicBtn={handleMicBtn}
-            handleCameraBtn={handleCameraBtn}
-            handelScreenBtn={handelScreenBtn}
-            handleLeaveBtn={handleLeaveBtn}
-            localVideoStream={localVideoStream}
-            onlineUsers={onlineUsers}
-            remoteTracks={remoteTracks}
-            username={username}
-            roomName={roomName}
-            meetingInfo={meetingInfo}
-          />
-        )
+        ) : ( */}
+      <Meeting
+        handleMicBtn={handleMicBtn}
+        handleCameraBtn={handleCameraBtn}
+        handelScreenBtn={handelScreenBtn}
+        handleLeaveBtn={handleLeaveBtn}
+        localVideoStream={localVideoStream}
+        onlineUsers={onlineUsers}
+        remoteTracks={remoteTracks}
+        username={username}
+        roomName={roomName}
+        meetingInfo={meetingInfo}
+      />
+      {/* )
       ) : (
         <Join
           handleCreateMeeting={handleCreateMeeting}
           handleJoinMeeting={handleJoinMeeting}
         />
-      )}
+      )} */}
     </div>
   );
 }

@@ -21,8 +21,9 @@ export const chatAPI = {
             return result.data
         })
     },
-    async getMessages(idToUser) {
-        return await instance.get(`getMessages/${idToUser}`).then(result => {
+    async getMessages(idToUser, pageNumber) {
+
+        return await instance.get(`getMessages/${idToUser}?page=${pageNumber}&itemsCount=10`).then(result => {
             return result.data
         })
     }

@@ -56,8 +56,9 @@
 
 .chat_list_myname {
     background-color: white;
+    
     border-right: none;
-    height: 155px;
+    height: 64px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -71,6 +72,7 @@
     overflow: auto;
     display: flex;
     flex-direction: column;
+    height: 100%;
 
     background-color: white;
     border-right: 1px solid rgba($color: #A5A5A5, $alpha: 50%);

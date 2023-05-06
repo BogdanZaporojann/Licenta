@@ -1,5 +1,25 @@
 import VideoTag from "./VideoTag";
 
+import audio from "../../assets/svg/audio.svg"
+import x from "../../assets/svg/x.svg"
+import share from "../../assets/svg/share.svg"
+import cameraVideo from "../../assets/svg/cameraVideo.svg"
+import cameraOffLine from "../../assets/svg/cameraOffLine.svg"
+import { SocketContext } from "../Socket/createSocketContext";
+import { useContext } from "react";
+import styles from "./Meeting.module.scss"
+
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import classNames from "classnames";
+
+import VideoStream from "./VideoStream";
+import CallRoom from "./CallRoom/CallRoom";
+import Buttons from "./Buttons/Buttons";
+
+import { connect } from "react-redux";
+
+
 function Meeting({
   handleMicBtn,
   handleCameraBtn,
@@ -11,7 +31,52 @@ function Meeting({
   username,
   roomName,
   meetingInfo,
+
+  currentUserUserName
 }) {
+
+
+  const socket = useContext(SocketContext)
+
+
+  const [isCamera, setIsCamera] = useState(false)
+
+  //В зависимости от того видео или аудио звонок соверщён устанавливаем камеру или нет
+
+
+  const handleIsCamera = () => {
+    setIsCamera(!isCamera)
+  }
+
+  const { search } = useLocation()
+  const valuesFromParams = (Object.fromEntries(new URLSearchParams(search)))
+  const interlocutorPhoto = valuesFromParams['interlocutorPhotoURL']
+  const interlocutorName = valuesFromParams['interlocutorName']
+  const isCameraStartedByDefauld = valuesFromParams['camera']
+  const toUserName = valuesFromParams['toUserName']
+
+
+
+
+
+  //это обработка в зависимотси если выбрал звонок с камерой или без
+  useEffect(() => {
+    if (isCameraStartedByDefauld === "false") {
+      setIsCamera(false)
+    } else {
+      setIsCamera(true)
+    }
+  }, [])
+
+
+
+  const navigate = useNavigate()
+
+  const onClickButton = () => {
+    navigate("/call")
+  }
+
+
   let userStreamMap = {};
   for (let trackItem of remoteTracks) {
     if (!userStreamMap[trackItem.participantSessionId]) {
@@ -57,136 +122,75 @@ function Meeting({
     );
   }
 
+
+  //переключение режима с комнаты звонка на звонок
+  const [isCall, setIsCall] = useState(false)
+
+
+  //ОБРАБОТЧИК ЗВОНКА
+
+  //TO DO:
+  //SOCKET ЗАПРОС ЧЕЛОВЕКУ С КОТОРОМУ ТЫ ЗВОНИШЬ
+  //ПЕРЕНАПРАВЛЕНИЕ НА СТРАНИЦУ ОЖИДАНИЯ ЗВОНКА
+  const handleOnClickSuna = () => {
+
+    console.log("toUserName : ", toUserName)
+    console.log("roomName : ", roomName)
+    socket.emit("callInviter", { data: { toUserName, roomName } })
+    // setIsCall(true)
+  }
+
+
+
   return (
-    <div id="meetingView" className="flex flex-col">
-      <div className="h-8 text-center bg-black">MeetingID: {roomName}</div>
-      <div
-        className="flex-1 grid grid-cols-2 grid-rows-2"
-        id="remoteParticipantContainer"
-        style={{ display: "flex" }}
-      >
-        {remoteParticipantTags}
-      </div>
+    <div>
+      {!isCall
+        ? (<div id="meetingView" className="flex flex-col">
+          <div className={styles.wrapp}>
+            <div className={styles.mainBlock}>
+              <div className={styles.empty}>
+                {isCamera ?
+                  (<VideoStream localVideoStream={localVideoStream} />)
+                  : (<div>
+                    <img src={cameraOffLine} alt="cameraOffLine" />
+                  </div>)
+                }
+              </div>
+              <Buttons
+                handleMicBtn={handleMicBtn}
+                handleCameraBtn={handleCameraBtn}
+                handelScreenBtn={handelScreenBtn}
+                handleLeaveBtn={handleLeaveBtn}
+                handleIsCamera={handleIsCamera} />
 
-      <div className="flex flex-col bg-base-300" style={{ width: "150px" }}>
-        {localVideoStream ? (
-          <VideoTag
-            id="meetingAreaLocalVideo"
-            muted={true}
-            srcObject={localVideoStream}
-            style={{
-              padding: 0,
-              margin: 0,
-              width: "150px",
-              height: "100px",
-            }}
-          />
-        ) : (
-          ""
+            </div>
+
+            <div className={styles.secondBlock}>
+              <img src={interlocutorPhoto} alt="userPhotoURL" />
+              <span>{interlocutorName}</span>
+              <span>SUNI ACUM ?</span>
+              <span onClick={handleOnClickSuna} className={styles.callButton} >SUNA</span>
+            </div>
+          </div>
+        </div>)
+        : (
+          <CallRoom
+            localVideoStream={localVideoStream}
+            interlocutorPhoto={interlocutorPhoto}
+            childComponent={<Buttons
+              backgroundColor="callScreen"
+              handleMicBtn={handleMicBtn}
+              handleCameraBtn={handleCameraBtn}
+              handelScreenBtn={handelScreenBtn}
+              handleLeaveBtn={handleLeaveBtn}
+              handleIsCamera={handleIsCamera} />} />
         )}
-
-        <div
-          id="meetingAreaUsername"
-          className="bg-base-300 bg-black"
-          style={{
-            textAlign: "center",
-          }}
-        >
-          BODEA
-          {username}
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "20px",
-        }}
-        className="space-x-4"
-      >
-        <button
-          id="meetingViewMicrophone"
-          className="btn"
-          onClick={handleMicBtn}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-            />
-          </svg>
-        </button>
-
-        <button
-          id="meetingViewCamera"
-          className="btn"
-          onClick={handleCameraBtn}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-            />
-          </svg>
-        </button>
-
-        <button
-          id="meetingViewScreen"
-          className="btn"
-          onClick={handelScreenBtn}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-            />
-          </svg>
-        </button>
-
-        <button id="meetingViewLeave" className="btn" onClick={handleLeaveBtn}>
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-            />
-          </svg>
-        </button>
-      </div>
     </div>
   );
 }
 
-export default Meeting;
+const mapStateToProps = (state) => ({
+  currentUserUserName: state.auth.currentUserUserName
+})
+
+export default connect(mapStateToProps, {})(Meeting);
