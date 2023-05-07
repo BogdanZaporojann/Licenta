@@ -45,7 +45,6 @@ const Chat = ({
         getUserInfoByUsername(username)
         setUserName(username)
         socket.on("private message", (data) => {
-            debugger
             getRealtimeSocketMessage(data)
         })
     }, [username])

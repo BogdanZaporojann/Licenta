@@ -51,8 +51,9 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
 
   // useEffect(() => {
-  //   // console.log("onlineUsers : ", onlineUsers)
-  // }, [onlineUsers])
+  //   console.log("meteredMeeting : ", meteredMeeting)
+  //   debugger
+  // }, [meteredMeeting])
 
   useEffect(() => {
     setUsername(authUserName)
@@ -78,8 +79,7 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     meteredMeeting.on("participantLeft", (localTrackItem) => { });
 
     meteredMeeting.on("onlineParticipants", (onlineParticipants) => {
-      // debugger
-      console.log('online ', onlineParticipants)
+      // console.log('online ', onlineParticipants)
       setOnlineUsers([...onlineParticipants]);
     });
 
@@ -141,8 +141,8 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
       roomURL: `${localMetteredDomainRef.current + "/" + localLastCreatedRoomNameRef.current}`
     });
 
-    console.log('primar joinResponse : ', joinResponse)
-    console.log("meteredMeeting : ", meteredMeeting)
+    // console.log('primar joinResponse : ', joinResponse)
+    // console.log("meteredMeeting : ", meteredMeeting)
 
 
     //рендер проблем
@@ -158,8 +158,10 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
   const roomNameInvite = valuesFromParams['roomNameInvite']
 
-  console.log("search : ", search)
-  console.log("roomNameInvite start : ", roomNameInvite)
+  // console.log("search : ", search)
+  // console.log("roomNameInvite start : ", roomNameInvite)
+
+
 
 
 
@@ -173,9 +175,8 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
       name: username,
       roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
     });
-    debugger
-    console.log('second jooinResponse : ', joinResponse)
-    console.log('second meteredMeeting : ', meteredMeeting)
+    // console.log('second jooinResponse : ', joinResponse)
+    // console.log('second meteredMeeting : ', meteredMeeting)
 
     // setMeetingJoined(true)
     // const joinResponse = await meteredMeeting.join({
@@ -192,10 +193,9 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
   const [isJoinedInvite, setIsJoinedInvite] = useState(false)
   if (roomNameInvite) {
-    console.log('roomNi : ', roomNameInvite)
+    // console.log('roomNi : ', roomNameInvite)
     if (!isJoinedInvite) {
-
-      handleJoinMeeting(roomNameInvite, authUserName)
+      handleJoinMeeting(roomNameInvite, authUserUserName)
       setIsJoinedInvite(true)
     }
   }
@@ -206,8 +206,10 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
   const [createMeet, setCreateMeet] = useState(false)
 
-  if (createMeet === false) {
-    handleCreateMeeting("maimuta")
+  //мы создаём конференцию если в URL нету roomNameInvite так как в другом случае мы приглашены в конференцию 
+  if (createMeet === false && !roomNameInvite) {
+
+    handleCreateMeeting(authUserUserName)
     setCreateMeet(true)
   }
 
@@ -229,36 +231,7 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   }, [roomFound])
 
 
-  // const handleJoinMeeting = async (roomName, username) => {
-  //   verifyMeeting(roomName)
-  //   while (localRoomFound.current === "") {
-  //     await new Promise((resolve) => setTimeout(resolve, 100));
-  //   }
 
-
-
-  //   if (localRoomFound.current === true) {
-  //     await getMetteredDomain()
-  //     while (!localMetteredDomainRef.current) {
-  //       await new Promise((resolve) => setTimeout(resolve, 100));
-  //     }
-  //     const joinResponse = await meteredMeeting.join({
-  //       name: username,
-  //       roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
-  //     });
-  //     setMeetingJoined(true)
-  //   } else {
-  //     alert('Invalid roomName')
-  //   }
-  // const joinResponse = await meteredMeeting.join({
-  //   name: username,
-  //   roomURL: METERED_DOMAIN + "/" + roomName,
-  // });
-  // setUsername(username);
-  // setRoomName(roomName);
-  // setMeetingInfo(joinResponse);
-  // setMeetingJoined(true);
-  // }
 
   async function handleMicBtn() {
     if (micShared) {
@@ -271,7 +244,7 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   }
 
   async function handleCameraBtn() {
-
+    console.log("meteredMeeting : ", meteredMeeting)
     if (cameraShared) {
       await meteredMeeting.stopVideo();
       setLocalVideoStream(null);
@@ -300,6 +273,7 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     await meteredMeeting.leaveMeeting();
     setMeetingEnded(true);
   }
+
 
   return (
     <div className="App">

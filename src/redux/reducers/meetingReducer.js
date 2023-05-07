@@ -65,7 +65,6 @@ const setInviteRoomName = (inviteRoomName) => ({
 
 export const getInviteRoomName = (inviteRoomName) => {
     return async (dispatch) => {
-        debugger
         dispatch(setInviteRoomName(inviteRoomName))
     }
 }

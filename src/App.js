@@ -19,66 +19,23 @@ import Crop from "./components/Crop/Crop";
 import ModalEx from "./components/Pan/PanComponent";
 import { useEffect } from "react"
 import { SocketContext } from "./components/Socket/createSocketContext";
-import { MeetingContex } from "./components/Context/MeetingContext";
 import Meet from "./components/Meeting/Meet";
 import Modal from "react-modal"
 
-import { getInviteRoomName } from "./redux/reducers/meetingReducer";
 import InvitationCall from "./components/InvitationCall/InvitationCall";
 
 
 
-const App = ({ initialized, username, authPhotoURL, initializeApp, getInviteRoomName,
-    metteredDomain }) => {
+const App = ({ initialized, username, authPhotoURL, initializeApp}) => {
 
 
     //от isCalled зависит попап звонка
     const [isCalled, setIsCalled] = useState(false)
 
 
-
-    // const localMetteredDomainRef = useRef(null);
-
-    // useEffect(() => {
-    //     if (metteredDomain) {
-    //         localMetteredDomainRef.current = metteredDomain;
-    //     }
-    // }, [metteredDomain])
-
-    // const handleJoinMeeting = async (roomName, username) => {
-    //     await getMetteredDomain()
-    //     while (!localMetteredDomainRef.current) {
-    //         await new Promise((resolve) => setTimeout(resolve, 100));
-    //     }
-    //     console.log('met : ',meteredMeeting)
-    //     const joinResponse = await meteredMeeting.join({
-    //         name: username,
-    //         roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
-    //     });
-    //     console.log('second jooinResponse : ', joinResponse)
-
-    //     // setMeetingJoined(true)
-    //     // const joinResponse = await meteredMeeting.join({
-    //     //   name: username,
-    //     //   roomURL: METERED_DOMAIN + "/" + roomName,
-    //     // });
-    //     // setUsername(username);
-    //     // setRoomName(roomName);
-
-    //     // setMeetingInfo(joinResponse);
-    //     // setMeetingJoined(true);
-    // }
-
-
     useEffect(() => {
         initializeApp();
     }, [])
-
-
-
-
-
-
 
     const socket = io("https://brainwaveapi.onrender.com", {
         withCredentials: true,
@@ -89,21 +46,12 @@ const App = ({ initialized, username, authPhotoURL, initializeApp, getInviteRoom
 
     const navigate = useNavigate()
 
-    let roomName;
     socket.on("callTacker", ({ roomName }) => {
-
+        debugger
         //мы установили у чувака который получил приглашения на встречу roomName встречи в поле inviteRoomName
-        // getInviteRoomName(roomName)
         navigate(`/meet?roomNameInvite=${roomName}`)
 
     })
-
-
-
-
-
-
-    const meteredMeeting = new window.Metered.Meeting();
 
 
 
@@ -167,5 +115,5 @@ let mapStateToProps = (state) => ({
 })
 
 export default compose(
-    connect(mapStateToProps, { initializeApp, getInviteRoomName })
+    connect(mapStateToProps, { initializeApp })
 )(App)

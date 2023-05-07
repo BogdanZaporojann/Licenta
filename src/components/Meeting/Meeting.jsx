@@ -1,17 +1,11 @@
 import VideoTag from "./VideoTag";
-
-import audio from "../../assets/svg/audio.svg"
-import x from "../../assets/svg/x.svg"
-import share from "../../assets/svg/share.svg"
-import cameraVideo from "../../assets/svg/cameraVideo.svg"
 import cameraOffLine from "../../assets/svg/cameraOffLine.svg"
 import { SocketContext } from "../Socket/createSocketContext";
 import { useContext } from "react";
 import styles from "./Meeting.module.scss"
 
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import classNames from "classnames";
+import { useLocation } from "react-router-dom";
 
 import VideoStream from "./VideoStream";
 import CallRoom from "./CallRoom/CallRoom";
@@ -28,26 +22,14 @@ function Meeting({
   localVideoStream,
   onlineUsers,
   remoteTracks,
-  username,
   roomName,
-  meetingInfo,
-
-  
-  meteredMeeting,
-  currentUserUserName
+  meetingInfo
 }) {
-
-  // useEffect(()=>{
-  //   console.log('ONLINE USERS : ',onlineUsers)
-  // },[onlineUsers])
 
   const socket = useContext(SocketContext)
 
 
   const [isCamera, setIsCamera] = useState(false)
-
-  //В зависимости от того видео или аудио звонок соверщён устанавливаем камеру или нет
-
 
   const handleIsCamera = () => {
     setIsCamera(!isCamera)
@@ -62,11 +44,19 @@ function Meeting({
   const roomNameInvite = valuesFromParams['roomNameInvite']
 
 
-  const [isJoinedInvite, setIsJoinedInvite] = useState(false)
-  if(roomNameInvite){
-    console.log('roomNi : ',roomNameInvite)
-    if(!isJoinedInvite){
 
+  //если пришло приглашени то идём сразу в комнату звонка
+  useEffect(() => {
+    if (roomNameInvite) {
+      setIsCall(true)
+    }
+  }, [])
+
+
+  
+  const [isJoinedInvite, setIsJoinedInvite] = useState(false)
+  if (roomNameInvite) {
+    if (!isJoinedInvite) {
       setIsJoinedInvite(true)
     }
   }
@@ -85,11 +75,7 @@ function Meeting({
 
 
 
-  const navigate = useNavigate()
 
-  const onClickButton = () => {
-    navigate("/call")
-  }
 
 
   let userStreamMap = {};
@@ -102,13 +88,11 @@ function Meeting({
 
   let remoteParticipantTags = [];
   for (let user of onlineUsers) {
-    // Skip if self
     if (user._id === meetingInfo.participantSessionId) {
       continue;
     }
     let videoTags = [];
     if (userStreamMap[user._id] && userStreamMap[user._id].length > 0) {
-      // User has remote tracks
       for (let trackItem of userStreamMap[user._id]) {
         let stream = new MediaStream();
         stream.addTrack(trackItem.track);
@@ -142,16 +126,10 @@ function Meeting({
   const [isCall, setIsCall] = useState(false)
 
 
-  //ОБРАБОТЧИК ЗВОНКА
 
-  //TO DO:
   //SOCKET ЗАПРОС ЧЕЛОВЕКУ С КОТОРОМУ ТЫ ЗВОНИШЬ
   //ПЕРЕНАПРАВЛЕНИЕ НА СТРАНИЦУ ОЖИДАНИЯ ЗВОНКА
   const handleOnClickSuna = () => {
-    // console.log("toUserName : ", toUserName)
-    // console.log("roomName : ", roomName)
-    // console.log("metered nahui meeting : ",meteredMeeting)
-    // console.log("roomName :",roomName)
     socket.emit("callInviter", { data: { toUserName, roomName } })
     setIsCall(true)
   }
@@ -193,6 +171,7 @@ function Meeting({
           <CallRoom
             localVideoStream={localVideoStream}
             interlocutorPhoto={interlocutorPhoto}
+            remoteParticipantTags={remoteParticipantTags}
             childComponent={<Buttons
               backgroundColor="callScreen"
               handleMicBtn={handleMicBtn}
