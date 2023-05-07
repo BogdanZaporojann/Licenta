@@ -4,22 +4,22 @@ import { useParams } from "react-router-dom";
 import gallery from "../../assets/svg/gallery.svg"
 import smile from "../../assets/svg/smile.svg"
 import heart from "../../assets/svg/heart.svg"
+import { connect } from "react-redux";
+import { sendMessage, getRealtimeSocketMessage } from "../../redux/reducers/chatReducer";
 
-export const AddChatMessage = ({ getConversation, sendMessage, userName }) => {
+const AddChatMessage = ({ authorName, sendMessage, getRealtimeSocketMessage }) => {
 
     const { username } = useParams();
 
-    const getConversationHandleClick = () => {
-        getConversation(username)
-    }
 
     const formik = useFormik({
         initialValues: {
-            toUser: userName,
+            toUser: username,
             message: ""
         },
         onSubmit: async values => {
-            sendMessage({ message: values.message, toUser: userName })
+            await getRealtimeSocketMessage({ message: values.message, from: authorName, to: username, date: new Date() });
+            await sendMessage({ message: values.message, toUser: username });
         }
     })
 
@@ -30,7 +30,7 @@ export const AddChatMessage = ({ getConversation, sendMessage, userName }) => {
             </div>
             <form className={style.form_chat} onSubmit={formik.handleSubmit}>
                 <input placeholder="aaa" className={style.input_chat} id="message" name="message" onChange={formik.handleChange} value={formik.values.message} type="text" />
-                <button className={style.form_button} onClick={getConversationHandleClick} type="submit"></button>
+                <button className={style.form_button} type="submit"></button>
             </form>
             <div className={style.likeAndGallery}>
                 <img src={gallery} alt="gallery" />
@@ -39,3 +39,9 @@ export const AddChatMessage = ({ getConversation, sendMessage, userName }) => {
         </div>
     )
 }
+
+const mapStateToProps = (state) => ({
+    authorName: state.auth.authUsername
+})
+
+export default connect(mapStateToProps, { sendMessage, getRealtimeSocketMessage })(AddChatMessage)

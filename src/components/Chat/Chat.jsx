@@ -4,7 +4,7 @@ import React, { useContext, useRef, useLayoutEffect } from "react"
 import { connect } from "react-redux"
 import { compose } from "redux";
 import { getChats, sendMessage, getConversation, getRealtimeSocketMessage } from "../../redux/reducers/chatReducer";
-import { AddChatMessage } from "./AddChatMessage"
+import  AddChatMessage  from "./AddChatMessage"
 import { MessageInstance } from "./MessageInstance/MessageInstance"
 import classNames from "classnames"
 import { useParams } from "react-router-dom";
@@ -41,10 +41,10 @@ const Chat = ({
 
     const socket = useContext(SocketContext)
 
+
     useEffect(() => {
         getUserInfoByUsername(username)
         setUserName(username)
-
         socket.on("private message", (data) => {
             getRealtimeSocketMessage(data)
         })

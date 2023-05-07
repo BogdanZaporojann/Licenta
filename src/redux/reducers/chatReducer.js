@@ -88,7 +88,6 @@ export const sendMessage = async (payload) => {
 
 
 export const getRealtimeSocketMessage = (realtimeSocketMessage) => {
-    
     return (dispatch) => {
         dispatch(setSocketRealtimeMessage(realtimeSocketMessage))
     }

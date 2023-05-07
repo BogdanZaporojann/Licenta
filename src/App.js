@@ -56,13 +56,11 @@ const App = ({ initialized, username, authPhotoURL, initializeApp, getRealtimeSo
         while (!localMetteredDomainRef.current) {
             await new Promise((resolve) => setTimeout(resolve, 100));
         }
-        debugger
         console.log('met : ',meteredMeeting)
         const joinResponse = await meteredMeeting.join({
             name: username,
             roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
         });
-        debugger
         console.log('second jooinResponse : ', joinResponse)
 
         // setMeetingJoined(true)
@@ -101,10 +99,7 @@ const App = ({ initialized, username, authPhotoURL, initializeApp, getRealtimeSo
         handleJoinMeeting(roomName, username)
     })
 
-    socket.onAny((event,...args)=>{
-        console.log("event : ",event)
-        console.log("...args : ",...args)
-    })
+
 
 
 

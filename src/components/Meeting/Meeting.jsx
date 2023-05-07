@@ -138,11 +138,11 @@ function Meeting({
   //SOCKET ЗАПРОС ЧЕЛОВЕКУ С КОТОРОМУ ТЫ ЗВОНИШЬ
   //ПЕРЕНАПРАВЛЕНИЕ НА СТРАНИЦУ ОЖИДАНИЯ ЗВОНКА
   const handleOnClickSuna = () => {
-
     // console.log("toUserName : ", toUserName)
     // console.log("roomName : ", roomName)
-    console.log("metered nahui meeting : ",meteredMeeting)
-    socket.emit("callInviter", { data: { toUserName, roomName, meteredMeeting } })
+    // console.log("metered nahui meeting : ",meteredMeeting)
+    console.log("roomName : ",roomName)
+    socket.emit("callInviter", { data: { toUserName, roomName } })
     setIsCall(true)
   }
 
