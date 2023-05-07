@@ -29,33 +29,18 @@ import InvitationCall from "./components/InvitationCall/InvitationCall";
 import Room from "./MeetSam/pages/Room/Room";
 import Main from "./MeetSam/pages/Main/Main"
 
-const meteredMeeting = new window.Metered.Meeting();
 
 
 const App = ({ initialized, username, authPhotoURL, initializeApp, getRealtimeSocketMessage,
     getMetteredDomain, metteredDomain }) => {
 
 
-    let roomName;
-
-
-    const socket = io("https://brainwaveapi.onrender.com", {
-        withCredentials: true,
-        query: {
-            username
-        }
-    })
-
 
     const [isCalled, setIsCalled] = useState(false)
     const [meetingInfo, setMeetingInfo] = useState(false)
     const [meetingJoined, setMeetingJoined] = useState(false)
 
-    socket.on("callTacker", (roomName) => {
-        console.log('magnus roomName : ',roomName)
-        // setIsCalled(true)
 
-    })
 
     const localMetteredDomainRef = useRef(null);
 
@@ -66,18 +51,19 @@ const App = ({ initialized, username, authPhotoURL, initializeApp, getRealtimeSo
         }
     }, [metteredDomain])
 
-    const handleJoinMeeting = async (roomName) => {
-
-
-
+    const handleJoinMeeting = async (roomName, username) => {
         await getMetteredDomain()
         while (!localMetteredDomainRef.current) {
             await new Promise((resolve) => setTimeout(resolve, 100));
         }
+        debugger
+        console.log('met : ',meteredMeeting)
         const joinResponse = await meteredMeeting.join({
             name: username,
             roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
         });
+        debugger
+        console.log('second jooinResponse : ', joinResponse)
 
         // setMeetingJoined(true)
         // const joinResponse = await meteredMeeting.join({
@@ -86,8 +72,9 @@ const App = ({ initialized, username, authPhotoURL, initializeApp, getRealtimeSo
         // });
         // setUsername(username);
         // setRoomName(roomName);
-        setMeetingInfo(joinResponse);
-        setMeetingJoined(true);
+
+        // setMeetingInfo(joinResponse);
+        // setMeetingJoined(true);
     }
 
 
@@ -97,15 +84,38 @@ const App = ({ initialized, username, authPhotoURL, initializeApp, getRealtimeSo
 
 
 
+
+
+
+    let roomName;
+
+    const socket = io("https://brainwaveapi.onrender.com", {
+        withCredentials: true,
+        query: {
+            username
+        }
+    })
+
+    socket.on("callTacker", (roomName) => {
+        console.log('magnus roomName : ', roomName)
+        handleJoinMeeting(roomName, username)
+    })
+
+    socket.onAny((event,...args)=>{
+        console.log("event : ",event)
+        console.log("...args : ",...args)
+    })
+
+
+
+
+    const meteredMeeting = new window.Metered.Meeting();
+
+
+
     if (!initialized) {
         return <Preloader />
     }
-
-
-
-
-
-
     return (
         <div>
             <Modal
@@ -148,7 +158,7 @@ const App = ({ initialized, username, authPhotoURL, initializeApp, getRealtimeSo
                     <Route path="meet" element={<Meet />} />
                 </Routes>
             </SocketContext.Provider>
-            
+
         </div>
     )
 }

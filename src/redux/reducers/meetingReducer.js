@@ -28,6 +28,7 @@ export const MeetReducer = (state = initialState, action) => {
                 ...state,
                 roomFound: action.roomFound
             }
+        
         default:
             return state
     }

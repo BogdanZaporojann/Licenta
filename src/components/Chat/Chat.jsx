@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import info from "../../assets/svg/info.svg"
 import cameraVideo from "../../assets/svg/cameraVideo.svg"
 import phoneCall from "../../assets/svg/phoneCall.svg"
-
+import { useInView } from 'react-intersection-observer';
 
 const Chat = ({
     getUserInfoByUsername,
@@ -32,63 +32,14 @@ const Chat = ({
     chats,
     chatUserName }) => {
 
-    //прокручивание скрола по дефолду на низ в сообщениях
-    const bottomRef = useRef(null);
 
-
-    useLayoutEffect(() => {
-        const timeout = setTimeout(() => {
-            if (bottomRef.current) {
-                bottomRef.current.scrollIntoView({ behavior: 'auto', block: 'end' });
-            }
-        }, 1000);
-
-        return () => clearTimeout(timeout);
-    }, []);
-
-
-    //делаем динамическую загрузку контента в зависимости от срола вверх
-    //когда условие со скролом выполниться мы будем запрашивать следующую страницу с сообжениями с сервера
     const [pageNumberMessages, setPageNumberMessages] = useState(1)
-    const arrayMessageRef = useRef(null)
-
-    const scrollHandler = (e) => {
-        if ((e.target.scrollTop < 20)) {
-            setPageNumberMessages(prevNumber => prevNumber + 1)
-            const middlePosition = arrayMessageRef.current.scrollHeight / 2
-        }
-    }
-
-
-
-    useEffect(() => {
-        if (arrayMessageRef) {
-            arrayMessageRef.current.addEventListener('scroll', scrollHandler)
-
-            return function () {
-                arrayMessageRef.current.removeEventListener('scroll', scrollHandler)
-            }
-        }
-    }, [scrollHandler])
-
-    //синхронно ждём обновления pageNumberMessages и только после этого делаем запрос на сервер с правильными данными
-    useEffect(() => {
-        getConversation(userName, pageNumberMessages)
-    }, [pageNumberMessages])
-
-
-
-
-
-
-
 
     const { username } = useParams();
     const [userName, setUserName] = useState('')
 
 
     const socket = useContext(SocketContext)
-
 
     useEffect(() => {
         getUserInfoByUsername(username)
@@ -99,15 +50,36 @@ const Chat = ({
         })
     }, [username])
 
+
+
+
+
+    const { ref, inView } = useInView({
+        threshold: 0,
+    });
+
+
+
+
+
+
+
+    useEffect(() => {
+        if (inView) {
+            setPageNumberMessages(pageNumberMessages + 1)
+
+        }
+    }, [inView])
+
     useEffect(() => {
         getConversation(userName, pageNumberMessages)
+    }, [pageNumberMessages])
 
+
+    useEffect(() => {
+        getConversation(userName, pageNumberMessages, true)
         getChats()
     }, [userName])
-
-
-
-
 
 
     const navigate = useNavigate()
@@ -122,9 +94,6 @@ const Chat = ({
     }
 
 
-
-
-
     //колбэк для переключения между диалогами 
     const handleClickChooseDialog = (username) => {
         navigate(`/messages/${username}`)
@@ -132,7 +101,47 @@ const Chat = ({
 
 
 
+    const scrollContainerRef = useRef(null);
 
+    useEffect(() => {
+        const scrollContainer = scrollContainerRef.current;
+
+        const handleScroll = () => {
+            if (scrollContainer.scrollTop === 0) {
+                scrollContainer.scrollTop = 200;
+            }
+        };
+
+        scrollContainer.addEventListener('scroll', handleScroll);
+
+        return () => {
+            scrollContainer.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+
+
+    const dialogInstanceButton = useRef(null)
+
+
+
+
+
+
+
+
+
+
+
+    const buttomRef = useRef(null)
+    const [wasGoScrollBottom, setWasGoScrollBottom] = useState(false)
+
+    if (!wasGoScrollBottom) {
+        setTimeout(() => {
+            buttomRef.current.scrollIntoView({ behavior: 'auto', block: 'end' });
+            setWasGoScrollBottom(true)
+        }, 1000);
+    }
 
 
     return (
@@ -155,6 +164,7 @@ const Chat = ({
                                 <DialogInstance username={username} name={name} photoURL={photoURL} id={id} />
                             </div>
                         })}
+                        <div ref={dialogInstanceButton} style={{ backgroundColor: "black", width: "100%", height: "40px" }}></div>
                     </div>
 
                 </div>
@@ -177,13 +187,16 @@ const Chat = ({
                         </div>
 
                     </div>
-                    <div ref={arrayMessageRef} className={style.chat_input}>
-                        {messagesArray.map(item => {
-                            return (
-                                <MessageInstance authName={authName} messageAuthorName={item.from} key={item._id} message={item.message} />
-                            )
-                        })}
-                        <div ref={bottomRef}></div>
+                    <div ref={scrollContainerRef} className={style.chat_input}>
+                        <div ref={ref} style={{ backgroundColor: "black", width: "100%", height: "40px" }}></div>
+                        <div >
+                            {messagesArray.map(item => {
+                                return (
+                                    <MessageInstance authName={authName} messageAuthorName={item.from} key={item._id} message={item.message} />
+                                )
+                            })}
+                        </div>
+                        <div ref={buttomRef}></div>
                     </div>
 
                     <div className={style.chat_footer}>

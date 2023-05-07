@@ -5,18 +5,26 @@ import Join from "./Join";
 import Meeting from "./Meeting";
 import MeetingEnded from "./MeetingEnded";
 import { connect } from "react-redux";
+import { SocketContext } from "../Socket/createSocketContext";
+
 
 import {
   addConference, getConference, deleteConference, createConference, getMetteredDomain, verifyMeeting
 } from "../../redux/reducers/meetingReducer";
 
 // Initializing the SDK
+
 const meteredMeeting = new window.Metered.Meeting();
+
+
+
 
 const API_LOCATION = "https://brainwaveapi.onrender.com";
 
 const Meet = ({ deleteConference, createConference, addConference, getConference, getMetteredDomain, verifyMeeting,
   lastCreatedRoomName, metteredDomain, authUserName, roomFound, }) => {
+
+
   // Will set it to true when the user joins the meeting
   // and update the UI.
   const [meetingJoined, setMeetingJoined] = useState(false);
@@ -38,6 +46,10 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   const [roomName, setRoomName] = useState(null);
   const [meetingInfo, setMeetingInfo] = useState({});
 
+
+  useEffect(() => {
+    console.log("onlineUsers : ", onlineUsers)
+  }, [onlineUsers])
 
   useEffect(() => {
     setUsername(authUserName)
@@ -63,6 +75,7 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     meteredMeeting.on("participantLeft", (localTrackItem) => { });
 
     meteredMeeting.on("onlineParticipants", (onlineParticipants) => {
+      console.log('online ', onlineParticipants)
       setOnlineUsers([...onlineParticipants]);
     });
 
@@ -70,6 +83,9 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
       const stream = new MediaStream(item.track);
       setLocalVideoStream(stream);
     });
+
+
+
 
     return () => {
       meteredMeeting.removeListener("remoteTrackStarted");
@@ -117,18 +133,21 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
 
 
+
     let roomURL = null;
     while (!localMetteredDomainRef.current || !localLastCreatedRoomNameRef.current) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
 
+    
     const joinResponse = await meteredMeeting.join({
       name: `${username}`,
       roomURL: `${localMetteredDomainRef.current + "/" + localLastCreatedRoomNameRef.current}`
     });
-    console.log(joinResponse)
-    
+
+    console.log('primar joinResponse : ', joinResponse)
+    console.log("meteredMeeting : ",meteredMeeting)
 
 
     //рендер проблем
@@ -142,7 +161,7 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
   if (createMeet === false) {
     handleCreateMeeting("maimuta")
-    setCreateMeet(true)    
+    setCreateMeet(true)
   }
 
 
@@ -163,36 +182,36 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   }, [roomFound])
 
 
-  const handleJoinMeeting = async (roomName, username) => {
-    verifyMeeting(roomName)
-    while (localRoomFound.current === "") {
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
+  // const handleJoinMeeting = async (roomName, username) => {
+  //   verifyMeeting(roomName)
+  //   while (localRoomFound.current === "") {
+  //     await new Promise((resolve) => setTimeout(resolve, 100));
+  //   }
 
 
 
-    if (localRoomFound.current === true) {
-      await getMetteredDomain()
-      while (!localMetteredDomainRef.current) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      }
-      const joinResponse = await meteredMeeting.join({
-        name: username,
-        roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
-      });
-      setMeetingJoined(true)
-    } else {
-      alert('Invalid roomName')
-    }
-    // const joinResponse = await meteredMeeting.join({
-    //   name: username,
-    //   roomURL: METERED_DOMAIN + "/" + roomName,
-    // });
-    // setUsername(username);
-    // setRoomName(roomName);
-    // setMeetingInfo(joinResponse);
-    // setMeetingJoined(true);
-  }
+  //   if (localRoomFound.current === true) {
+  //     await getMetteredDomain()
+  //     while (!localMetteredDomainRef.current) {
+  //       await new Promise((resolve) => setTimeout(resolve, 100));
+  //     }
+  //     const joinResponse = await meteredMeeting.join({
+  //       name: username,
+  //       roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
+  //     });
+  //     setMeetingJoined(true)
+  //   } else {
+  //     alert('Invalid roomName')
+  //   }
+  // const joinResponse = await meteredMeeting.join({
+  //   name: username,
+  //   roomURL: METERED_DOMAIN + "/" + roomName,
+  // });
+  // setUsername(username);
+  // setRoomName(roomName);
+  // setMeetingInfo(joinResponse);
+  // setMeetingJoined(true);
+  // }
 
   async function handleMicBtn() {
     if (micShared) {
@@ -253,6 +272,7 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
         username={username}
         roomName={roomName}
         meetingInfo={meetingInfo}
+        meteredMeeting={meteredMeeting}
       />
       {/* )
       ) : (

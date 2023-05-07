@@ -72,10 +72,9 @@ export const getConversation = (idToUser, pageNumber, changeDialog = false) => {
         const messagesArray = await chatAPI.getMessages(idToUser, pageNumber)
 
         if (changeDialog) {
-            debugger
             dispatch(setConversationChangeDialog(messagesArray.reverse()))
         } else {
-            debugger
+            
             dispatch(setConversation(messagesArray.reverse()))
         }
     }
@@ -89,7 +88,7 @@ export const sendMessage = async (payload) => {
 
 
 export const getRealtimeSocketMessage = (realtimeSocketMessage) => {
-
+    
     return (dispatch) => {
         dispatch(setSocketRealtimeMessage(realtimeSocketMessage))
     }
