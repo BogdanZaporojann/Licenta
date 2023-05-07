@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, useContext } from "react"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Join from "./Join";
@@ -6,11 +6,14 @@ import Meeting from "./Meeting";
 import MeetingEnded from "./MeetingEnded";
 import { connect } from "react-redux";
 import { SocketContext } from "../Socket/createSocketContext";
-
+import { useLocation } from "react-router-dom";
 
 import {
   addConference, getConference, deleteConference, createConference, getMetteredDomain, verifyMeeting
 } from "../../redux/reducers/meetingReducer";
+
+
+
 
 // Initializing the SDK
 
@@ -22,7 +25,7 @@ const meteredMeeting = new window.Metered.Meeting();
 const API_LOCATION = "https://brainwaveapi.onrender.com";
 
 const Meet = ({ deleteConference, createConference, addConference, getConference, getMetteredDomain, verifyMeeting,
-  lastCreatedRoomName, metteredDomain, authUserName, roomFound, }) => {
+  lastCreatedRoomName, metteredDomain, authUserName, authUserUserName, roomFound, inviteRoomName }) => {
 
 
   // Will set it to true when the user joins the meeting
@@ -47,9 +50,9 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   const [meetingInfo, setMeetingInfo] = useState({});
 
 
-  useEffect(() => {
-    console.log("onlineUsers : ", onlineUsers)
-  }, [onlineUsers])
+  // useEffect(() => {
+  //   // console.log("onlineUsers : ", onlineUsers)
+  // }, [onlineUsers])
 
   useEffect(() => {
     setUsername(authUserName)
@@ -75,6 +78,7 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     meteredMeeting.on("participantLeft", (localTrackItem) => { });
 
     meteredMeeting.on("onlineParticipants", (onlineParticipants) => {
+      // debugger
       console.log('online ', onlineParticipants)
       setOnlineUsers([...onlineParticipants]);
     });
@@ -124,30 +128,21 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
   //напиши имя текушего пользователя
   async function handleCreateMeeting(username) {
-
-
-
-
     await createConference()
     await getMetteredDomain()
-
-
-
 
     let roomURL = null;
     while (!localMetteredDomainRef.current || !localLastCreatedRoomNameRef.current) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
-
-    
     const joinResponse = await meteredMeeting.join({
       name: `${username}`,
       roomURL: `${localMetteredDomainRef.current + "/" + localLastCreatedRoomNameRef.current}`
     });
 
     console.log('primar joinResponse : ', joinResponse)
-    console.log("meteredMeeting : ",meteredMeeting)
+    console.log("meteredMeeting : ", meteredMeeting)
 
 
     //рендер проблем
@@ -155,8 +150,60 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     setRoomName(localLastCreatedRoomNameRef.current);
     setMeetingInfo(joinResponse)
     setMeetingJoined(true);
-
   }
+
+
+  const { search } = useLocation()
+  const valuesFromParams = (Object.fromEntries(new URLSearchParams(search)))
+
+  const roomNameInvite = valuesFromParams['roomNameInvite']
+
+  console.log("search : ", search)
+  console.log("roomNameInvite start : ", roomNameInvite)
+
+
+
+
+  const handleJoinMeeting = async (roomName, username) => {
+    await getMetteredDomain()
+    while (!localMetteredDomainRef.current) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    const joinResponse = await meteredMeeting.join({
+      name: username,
+      roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
+    });
+    debugger
+    console.log('second jooinResponse : ', joinResponse)
+    console.log('second meteredMeeting : ', meteredMeeting)
+
+    // setMeetingJoined(true)
+    // const joinResponse = await meteredMeeting.join({
+    //   name: username,
+    //   roomURL: METERED_DOMAIN + "/" + roomName,
+    // });
+    // setUsername(username);
+    // setRoomName(roomName);
+
+    // setMeetingInfo(joinResponse);
+    // setMeetingJoined(true);
+  }
+
+
+  const [isJoinedInvite, setIsJoinedInvite] = useState(false)
+  if (roomNameInvite) {
+    console.log('roomNi : ', roomNameInvite)
+    if (!isJoinedInvite) {
+
+      handleJoinMeeting(roomNameInvite, authUserName)
+      setIsJoinedInvite(true)
+    }
+  }
+
+
+
+
+
   const [createMeet, setCreateMeet] = useState(false)
 
   if (createMeet === false) {
@@ -289,7 +336,9 @@ const mapStateToProps = (state) => ({
   lastCreatedRoomName: state.meet.lastCreatedRoomName,
   metteredDomain: state.meet.metteredDomain,
   roomFound: state.meet.roomFound,
-  authUserName: state.auth.authName
+  authUserName: state.auth.authName,
+  inviteRoomName: state.meet.inviteRoomName,
+  authUserUserName: state.auth.authUsername
 })
 
 export default connect(mapStateToProps, {

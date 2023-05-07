@@ -5,11 +5,13 @@ const initialState = {
     lastCreatedRoomName: "",
     metteredDomain: '',
     roomFound: "",
+    inviteRoomName: ""
 }
 
 const LAST_CREATED_ROOM_NAME = "LAST_CREATED_ROOM_NAME"
 const METTERED_DOMAIN = "METTERED_DOMAIN"
 const IS_ROOM_FOUND_STATUS = "IS_ROOM_FOUND_STATUS"
+const INVITE_ROOM_NAME = "INVITE_ROOM_NAME"
 
 export const MeetReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -17,6 +19,11 @@ export const MeetReducer = (state = initialState, action) => {
             return {
                 ...state,
                 lastCreatedRoomName: action.lastCreatedRoomName.roomName
+            }
+        case INVITE_ROOM_NAME:
+            return {
+                ...state,
+                inviteRoomName: action.inviteRoomName
             }
         case METTERED_DOMAIN:
             return {
@@ -28,7 +35,6 @@ export const MeetReducer = (state = initialState, action) => {
                 ...state,
                 roomFound: action.roomFound
             }
-        
         default:
             return state
     }
@@ -51,6 +57,18 @@ const setStatusRoomFound = (roomFound) => ({
     type: IS_ROOM_FOUND_STATUS,
     roomFound
 })
+
+const setInviteRoomName = (inviteRoomName) => ({
+    type: INVITE_ROOM_NAME,
+    inviteRoomName
+})
+
+export const getInviteRoomName = (inviteRoomName) => {
+    return async (dispatch) => {
+        debugger
+        dispatch(setInviteRoomName(inviteRoomName))
+    }
+}
 
 export const addConference = (conferenceInfo) => {
     // return async (dispatch) => {

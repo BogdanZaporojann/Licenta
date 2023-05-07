@@ -74,7 +74,7 @@ export const getConversation = (idToUser, pageNumber, changeDialog = false) => {
         if (changeDialog) {
             dispatch(setConversationChangeDialog(messagesArray.reverse()))
         } else {
-            
+
             dispatch(setConversation(messagesArray.reverse()))
         }
     }

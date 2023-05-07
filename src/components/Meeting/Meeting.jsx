@@ -37,9 +37,9 @@ function Meeting({
   currentUserUserName
 }) {
 
-  useEffect(()=>{
-    console.log('ONLINE USERS : ',onlineUsers)
-  },[onlineUsers])
+  // useEffect(()=>{
+  //   console.log('ONLINE USERS : ',onlineUsers)
+  // },[onlineUsers])
 
   const socket = useContext(SocketContext)
 
@@ -59,7 +59,17 @@ function Meeting({
   const interlocutorName = valuesFromParams['interlocutorName']
   const isCameraStartedByDefauld = valuesFromParams['camera']
   const toUserName = valuesFromParams['toUserName']
+  const roomNameInvite = valuesFromParams['roomNameInvite']
 
+
+  const [isJoinedInvite, setIsJoinedInvite] = useState(false)
+  if(roomNameInvite){
+    console.log('roomNi : ',roomNameInvite)
+    if(!isJoinedInvite){
+
+      setIsJoinedInvite(true)
+    }
+  }
 
 
 
@@ -141,7 +151,7 @@ function Meeting({
     // console.log("toUserName : ", toUserName)
     // console.log("roomName : ", roomName)
     // console.log("metered nahui meeting : ",meteredMeeting)
-    console.log("roomName : ",roomName)
+    // console.log("roomName :",roomName)
     socket.emit("callInviter", { data: { toUserName, roomName } })
     setIsCall(true)
   }
