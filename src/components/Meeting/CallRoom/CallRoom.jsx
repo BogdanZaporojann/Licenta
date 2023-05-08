@@ -1,61 +1,42 @@
 import React from "react"
 import VideoStream from "../VideoStream"
 import styles from "./CallRoom.module.scss"
-
+import { connect } from "react-redux"
 import Buttons from "../Buttons/Buttons"
 
-const CallRoom = ({ childComponent, remoteParticipantTags, localVideoStream }) => {
+//если ты создал сесию то ты 
 
-    
+
+const CallRoom = ({ authUsername, childComponent, remoteParticipantTags, localVideoStream }) => {
+
+
     return (
-        <div>
-            <div>MeetingID: roomName</div>
-            <div
-                style={{ display: "flex" }}
-            >
+        <div className={styles.wrapp}>
+            <div>auth name : {authUsername}</div>
+            <div className={styles.remoteParticipantVideo}>
                 {remoteParticipantTags}
             </div>
 
-            <div style={{ width: "150px" }}>
+            <div className={styles.videoStream}>
                 {localVideoStream ? (
                     <VideoStream
+                        isLocalVideoStream={true}
                         localVideoStream={localVideoStream}
-                        style={{
-                            padding: 0,
-                            margin: 0,
-                            width: "150px",
-                            height: "100px",
-                        }}
                     />
                 ) : (
                     ""
                 )}
 
-                <div
-                    style={{
-                        textAlign: "center",
-                    }}
-                >
-                    username
-                </div>
             </div>
-            <div>
+            <div className={styles.stickyFooter}>
                 {childComponent}
             </div>
         </div>
-        // <div className={styles.wrapp}>
-        //     <div className={styles.imageSection}>
-        //         <img src={interlocutorPhoto} alt="userPhotoURL" />
-        //     </div>
-        //     <div className={styles.videoStream}>
-        //         <VideoStream localVideoStream={localVideoStream} />
-        //     </div>
-        //     <div className={styles.iconsSection}>
-        //         {childComponent}
-        //     </div>
-
-        // </div>
     )
 }
 
-export default CallRoom
+const mapStateToProps = (state) => ({
+    authUsername: state.auth.authUsername
+})
+
+export default connect(mapStateToProps, {})(CallRoom);

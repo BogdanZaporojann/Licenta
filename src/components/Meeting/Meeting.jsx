@@ -26,6 +26,8 @@ function Meeting({
   meetingInfo
 }) {
 
+
+
   const socket = useContext(SocketContext)
 
 
@@ -53,7 +55,7 @@ function Meeting({
   }, [])
 
 
-  
+
   const [isJoinedInvite, setIsJoinedInvite] = useState(false)
   if (roomNameInvite) {
     if (!isJoinedInvite) {
@@ -98,7 +100,8 @@ function Meeting({
         stream.addTrack(trackItem.track);
 
         if (trackItem.type === "video") {
-          videoTags.push(<VideoTag srcObject={stream} />);
+          videoTags.push(<VideoTag srcObject={stream} 
+          />);
         }
 
         if (trackItem.type === "audio") {
@@ -106,7 +109,6 @@ function Meeting({
             <VideoTag
               key={trackItem.streamId}
               srcObject={stream}
-              style={{ display: "none" }}
             />
           );
         }
@@ -116,7 +118,7 @@ function Meeting({
     remoteParticipantTags.push(
       <div key={user._id}>
         <div id="remoteVideos">{videoTags}</div>
-        <div id="username">{user.name}</div>
+        {/* <div id="username">{user.name}</div> */}
       </div>
     );
   }
@@ -133,6 +135,7 @@ function Meeting({
     socket.emit("callInviter", { data: { toUserName, roomName } })
     setIsCall(true)
   }
+
 
 
 
@@ -173,7 +176,7 @@ function Meeting({
             interlocutorPhoto={interlocutorPhoto}
             remoteParticipantTags={remoteParticipantTags}
             childComponent={<Buttons
-              backgroundColor="callScreen"
+              backgroundColor="inCallProcessScreen"
               handleMicBtn={handleMicBtn}
               handleCameraBtn={handleCameraBtn}
               handelScreenBtn={handelScreenBtn}

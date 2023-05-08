@@ -15,7 +15,7 @@ const Buttons = ({
     handleLeaveBtn,
     handleIsCamera }) => {
     return (
-        <div className={backgroundColor === "callScreen" ? classNames(styles.icons, styles.callScreen) : styles.icons}>
+        <div className={backgroundColor === "inCallProcessScreen" ? classNames(styles.icons, styles.callScreen) : styles.icons}>
             <button
                 id="meetingViewMicrophone"
                 className="btn"

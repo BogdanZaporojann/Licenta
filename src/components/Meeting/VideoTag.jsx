@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
+import styles from "./VideoTag.module.scss"
 
 function VideoTag(props) {
   const video = useRef();
@@ -7,10 +8,9 @@ function VideoTag(props) {
   const src = props.src;
   const style = props.style;
 
-  const className = classNames(
-    "static shadow-lg bg-slate-900 max-w-full max-h-full",
-    props.className
-  );
+  const { isLocalVideoStream } = props
+
+
   function handleCanPlay() {
     video.current.play();
   }
@@ -24,13 +24,12 @@ function VideoTag(props) {
   return (
     <>
       <video
-        style={style}
         ref={video}
         onCanPlay={handleCanPlay}
         playsInline
-        className={className}
         autoPlay={true}
         src={src}
+        className={isLocalVideoStream && styles.myVideo}
       />
     </>
   );

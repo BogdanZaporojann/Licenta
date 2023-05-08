@@ -1,10 +1,11 @@
 .wrapp {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    // width: 100vw;
+    // height: 100vh;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // flex-direction: column;
+    background-color: black;
 
 }
 
@@ -19,14 +20,21 @@
     }
 }
 
+.containerGuestVideo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(100% - 40px);
+    background-size: cover;
+}
+
 .videoStream {
-    border: 5px solid violet;
     z-index: 9999;
-    width: 200px;
+    background-size: contain;
     position: fixed;
-    bottom: 10px;
+    bottom:20px;
     right: 10px;
-    height: 200px;
 }
 
 
@@ -44,3 +52,25 @@
         padding: 10px;
     }
 }
+
+
+.remoteParticipantVideo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: black;
+}
+
+
+.stickyFooter {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+

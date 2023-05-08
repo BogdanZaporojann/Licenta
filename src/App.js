@@ -47,7 +47,6 @@ const App = ({ initialized, username, authPhotoURL, initializeApp}) => {
     const navigate = useNavigate()
 
     socket.on("callTacker", ({ roomName }) => {
-        debugger
         //мы установили у чувака который получил приглашения на встречу roomName встречи в поле inviteRoomName
         navigate(`/meet?roomNameInvite=${roomName}`)
 

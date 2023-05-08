@@ -50,10 +50,6 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   const [meetingInfo, setMeetingInfo] = useState({});
 
 
-  useEffect(() => {
-    console.log("meteredMeeting : ", meteredMeeting)
-    debugger
-  }, [meteredMeeting])
 
   useEffect(() => {
     setUsername(authUserName)
@@ -141,8 +137,9 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
       roomURL: `${localMetteredDomainRef.current + "/" + localLastCreatedRoomNameRef.current}`
     });
 
-    // console.log('primar joinResponse : ', joinResponse)
-    // console.log("meteredMeeting : ", meteredMeeting)
+    console.log('primar joinResponse : ', joinResponse)
+    console.log("meteredMeeting : ", meteredMeeting)
+
 
 
     //рендер проблем
@@ -175,8 +172,8 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
       name: username,
       roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
     });
-    // console.log('second jooinResponse : ', joinResponse)
-    // console.log('second meteredMeeting : ', meteredMeeting)
+    console.log('second jooinResponse : ', joinResponse)
+    console.log('second meteredMeeting : ', meteredMeeting)
 
     // setMeetingJoined(true)
     // const joinResponse = await meteredMeeting.join({
@@ -272,8 +269,12 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     await meteredMeeting.leaveMeeting();
     setMeetingEnded(true);
   }
+  const { participantInfo, _onlineParticipants } = meteredMeeting
+  // console.log("participantInfo name: ", participantInfo?.name)
+  // console.log("_onlineParticipants : ", _onlineParticipants[0]?.name)
 
-
+  const isMeetAuthorName = (participantInfo?.name === _onlineParticipants[0]?.name && _onlineParticipants[0]?.name !== undefined)
+  // console.log("isMeetAuthorName : ", isMeetAuthorName)
   return (
     <div className="App">
       {/* {meetingJoined ? (
@@ -281,19 +282,19 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
         meetingEnded ? ( 
           <MeetingEnded />
         ) : ( */}
-      <Meeting
-        handleMicBtn={handleMicBtn}
-        handleCameraBtn={handleCameraBtn}
-        handelScreenBtn={handelScreenBtn}
-        handleLeaveBtn={handleLeaveBtn}
-        localVideoStream={localVideoStream}
-        onlineUsers={onlineUsers}
-        remoteTracks={remoteTracks}
-        username={username}
-        roomName={roomName}
-        meetingInfo={meetingInfo}
-        meteredMeeting={meteredMeeting}
-      />
+        <Meeting
+          handleMicBtn={handleMicBtn}
+          handleCameraBtn={handleCameraBtn}
+          handelScreenBtn={handelScreenBtn}
+          handleLeaveBtn={handleLeaveBtn}
+          localVideoStream={localVideoStream}
+          onlineUsers={onlineUsers}
+          remoteTracks={remoteTracks}
+          username={username}
+          roomName={roomName}
+          meetingInfo={meetingInfo}
+          meteredMeeting={meteredMeeting}
+        />
       {/* )
       ) : (
         <Join
