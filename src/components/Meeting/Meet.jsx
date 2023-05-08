@@ -50,10 +50,10 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   const [meetingInfo, setMeetingInfo] = useState({});
 
 
-  // useEffect(() => {
-  //   console.log("meteredMeeting : ", meteredMeeting)
-  //   debugger
-  // }, [meteredMeeting])
+  useEffect(() => {
+    console.log("meteredMeeting : ", meteredMeeting)
+    debugger
+  }, [meteredMeeting])
 
   useEffect(() => {
     setUsername(authUserName)
@@ -244,7 +244,6 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   }
 
   async function handleCameraBtn() {
-    console.log("meteredMeeting : ", meteredMeeting)
     if (cameraShared) {
       await meteredMeeting.stopVideo();
       setLocalVideoStream(null);
