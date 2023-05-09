@@ -14,6 +14,9 @@ import { useFormik } from 'formik'
 import { connect } from 'react-redux'
 import { addFunnyPost } from "../../redux/reducers/postsReducer";
 import indus from "../../assets/img/indus/indian_picture.jpg"
+import slusari from "../../assets/img/slusari.jpg"
+import gop from "../../assets/img/gop.jpg"
+
 
 
 const ImageUpload = ({ inputText, handleModalWidth, classes, addFunnyPost }) => {
@@ -39,7 +42,7 @@ const ImageUpload = ({ inputText, handleModalWidth, classes, addFunnyPost }) => 
 
 
 
-    const [image, setImage] = useState(indus);
+    const [image, setImage] = useState(gop);
     const [currentPage, setCurrentPage] = useState("choose-img");
     const [imgAfterCrop, setImgAfterCrop] = useState("");
 
@@ -55,7 +58,7 @@ const ImageUpload = ({ inputText, handleModalWidth, classes, addFunnyPost }) => 
     }, [imgAfterCrop])
     // Generating Cropped Image When Done Button Clicked
     const onCropDone = (imgCroppedArea, isTrue) => {
-        
+
         const canvasEle = document.createElement("canvas");
         canvasEle.width = imgCroppedArea.width;
         canvasEle.height = imgCroppedArea.height;
@@ -110,48 +113,23 @@ const ImageUpload = ({ inputText, handleModalWidth, classes, addFunnyPost }) => 
     };
 
     return (
-        <div className="container">
-            {/* {currentPage === "choose-img" ? (
-                <FileInput setImage={setImage} onImageSelected={onImageSelected} />
-            ) : currentPage === "crop-img" ? ( */}
+        <div>
             <ImageCropper
+            
                 image={image}
                 onCropDone={onCropDone}
                 onCropCancel={onCropCancel}
                 handleModalWidth={handleModalWidth}
             />
-            {/* ) : (
-                <div>
-                    <div>
-                        <img src={imgAfterCrop} className="cropped-img" />
-                    </div>
 
-                    <button
-                        onClick={() => {
-                            setCurrentPage("crop-img");
-                        }}
-                        className="btn"
-                    >
-                        Crop
-                    </button>
 
-                    <button
-                        onClick={() => {
-                            setCurrentPage("choose-img");
-                            setImage("");
-                        }}
-                        className="btn"
-                    >
-                        New Image
-                    </button>
-                </div>
-            )} */}
-            <div>
+
+            {/* <div>
                 <form onSubmit={formik.handleSubmit}>
                     <button style={{ position: "relative", }} type="submit">SEND</button>
 
                 </form>
-            </div>
+            </div> */}
         </div>
     );
 };
