@@ -123,7 +123,7 @@ const PersonalPage = (props) => {
                     </div>
                 </div>
 
-                <div class={style.content}>
+                <div className={style.content}>
                     <div className={style.activity_feed}>Activity feed</div>
                     <div className={style.input_post}>
                         <div className={style.input_post_photo_section}>
@@ -166,7 +166,7 @@ const PersonalPage = (props) => {
 
 
 
-                <div class={style.left}>
+                <div className={style.left}>
 
                     <div className={style.followers_block}>
                         <span>I am following 99</span>
@@ -174,7 +174,7 @@ const PersonalPage = (props) => {
                     </div>
                 </div>
 
-                <div class={style.right}>
+                <div className={style.right}>
                     <div className={style.latest_update}>
                         <span className={style.lattest_update_section_text_margin_bottom}>
                             FRIENDS

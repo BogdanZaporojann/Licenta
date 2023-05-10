@@ -1,6 +1,6 @@
 import style from "./Chat.module.scss"
 import home from "../../assets/svg/home.svg"
-import React, { useContext, useRef, useLayoutEffect } from "react"
+import React, { useContext, useRef, useLayoutEffect, useMemo } from "react"
 import { connect } from "react-redux"
 import { compose } from "redux";
 import { getChats, sendMessage, getConversation, getRealtimeSocketMessage } from "../../redux/reducers/chatReducer";
@@ -29,7 +29,9 @@ const Chat = ({
     photoUrl,
     authPhotoUrl,
     chats,
-    chatUserName }) => {
+    chatUserName
+}) => {
+
 
 
     const [pageNumberMessages, setPageNumberMessages] = useState(1)
@@ -40,28 +42,21 @@ const Chat = ({
 
     const socket = useContext(SocketContext)
 
+    const socketMemo = useMemo(() => {
+        return socket
+    }, [socket])
 
     useEffect(() => {
         getUserInfoByUsername(username)
         setUserName(username)
-        socket.on("private message", (data) => {
+        socket?.on("private message", (data) => {
             getRealtimeSocketMessage(data)
         })
-    }, [username])
-
-
-
-
+    }, [username, socketMemo])
 
     const { ref, inView } = useInView({
         threshold: 0,
     });
-
-
-
-
-
-
 
     useEffect(() => {
         if (inView) {

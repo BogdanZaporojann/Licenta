@@ -30,6 +30,7 @@ function Meeting({
 
   const socket = useContext(SocketContext)
 
+  console.log('video socket : ',socket)
 
   const [isCamera, setIsCamera] = useState(false)
 
@@ -133,6 +134,7 @@ function Meeting({
   //ПЕРЕНАПРАВЛЕНИЕ НА СТРАНИЦУ ОЖИДАНИЯ ЗВОНКА
   const handleOnClickSuna = () => {
     socket.emit("callInviter", { data: { toUserName, roomName } })
+    console.log("socekt 2 : ",socket)
     setIsCall(true)
   }
 

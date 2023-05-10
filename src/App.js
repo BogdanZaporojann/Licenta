@@ -26,37 +26,50 @@ import InvitationCall from "./components/InvitationCall/InvitationCall";
 
 
 
-const App = ({ initialized, username, authPhotoURL, initializeApp}) => {
+const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
 
 
     //от isCalled зависит попап звонка
     const [isCalled, setIsCalled] = useState(false)
+    const navigate = useNavigate()
 
+    const socketRef = useRef()
+    const [socket, setSocket] = useState()
 
     useEffect(() => {
         initializeApp();
     }, [])
 
-    const socket = io("https://brainwaveapi.onrender.com", {
-        withCredentials: true,
-        query: {
-            username
+
+    useEffect(() => {
+        if (initialized) {
+            socketRef.current = io("https://brainwaveapi.onrender.com", {
+                withCredentials: true,
+                query: {
+                    username
+                }
+            })
+
+            console.log('skron : ', socketRef.current)
+            socketRef.current.on("callTacker", ({ roomName }) => {
+                //мы установили у чувака который получил приглашения на встречу roomName встречи в поле inviteRoomName
+                navigate(`/meet?roomNameInvite=${roomName}`)
+
+            })
+
+            setSocket(socketRef.current)
         }
-    })
-
-    const navigate = useNavigate()
-
-    socket.on("callTacker", ({ roomName }) => {
-        //мы установили у чувака который получил приглашения на встречу roomName встречи в поле inviteRoomName
-        navigate(`/meet?roomNameInvite=${roomName}`)
-
-    })
+    }, [initialized])
 
 
 
     if (!initialized) {
         return <Preloader />
     }
+
+
+
+    console.log('initialized : ', initialized)
     return (
         <div>
             <Modal
