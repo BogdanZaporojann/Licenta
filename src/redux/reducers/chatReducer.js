@@ -82,13 +82,14 @@ export const getConversation = (idToUser, pageNumber, changeDialog = false) => {
 
 
 
-export const sendMessage = async (payload) => {
-    await chatAPI.sendMessage(payload)
+export const sendMessage = (payload) => {
+    return async (dispatch) => {
+        await chatAPI.sendMessage(payload)
+    }
 }
 
 
 export const getRealtimeSocketMessage = (realtimeSocketMessage) => {
-    debugger
     return (dispatch) => {
         dispatch(setSocketRealtimeMessage(realtimeSocketMessage))
     }

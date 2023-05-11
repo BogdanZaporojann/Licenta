@@ -1,21 +1,42 @@
-.input_chat {
-    height: 40px;
-    border-radius: 100px;
-    flex-grow: 1;
-    border:none;
+.emoji {
+    width: 40px;
+    cursor: pointer;
+    position: relative;
+}
+
+.emoji img {
+    vertical-align: middle;
+}
+
+.emojies {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 100%;
 }
 
 
 
-.bottomContainer{
+
+.input_chat {
+    height: 40px;
+    border-radius: 100px;
+    flex-grow: 1;
+    border: none;
+}
+
+
+
+.bottomContainer {
     border: 1px solid black;
     display: flex;
     align-items: center;
-    flex-direction:row;    
-    padding:1px;
+    flex-direction: row;
+    padding: 1px;
     border-radius: 100px;
     background-color: white;
-    >div>img{
+
+    >div>img {
         width: 28px;
     }
 }
@@ -23,7 +44,7 @@
 .form_chat {
     flex-grow: 1;
     position: relative;
-    display:flex;
+    display: flex;
 
 }
 
@@ -35,18 +56,18 @@
     height: 40px;
     width: 40px;
     display: none;
-    background:blue;
+    background: blue;
 }
 
-.likeAndGallery{
+.likeAndGallery {
     padding-right: 20px;
-    img{
+
+    img {
         padding-left: 15px;
     }
 }
 
-.smile{
-    padding-left: 15px;    
-    padding-right: 15px;    
-}
-
+.smile {
+    padding-left: 15px;
+    margin-bottom: 5px;
+    }

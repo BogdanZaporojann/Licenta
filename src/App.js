@@ -36,6 +36,16 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
     const socketRef = useRef()
     const [socket, setSocket] = useState()
 
+
+    const modalCallApeare = () => {
+        setIsCalled(true)
+        setTimeout(() => {
+            setIsCalled(false)
+            socket.emit("declinedCall", () => { return true })
+        }, 5000);
+    }
+
+
     useEffect(() => {
         initializeApp();
     }, [])
@@ -50,12 +60,15 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
                 }
             })
 
-            console.log('skron : ', socketRef.current)
             socketRef.current.on("callTacker", ({ roomName }) => {
+                //порешай это и раслабь булки
+                modalCallApeare()
                 //мы установили у чувака который получил приглашения на встречу roomName встречи в поле inviteRoomName
-                navigate(`/meet?roomNameInvite=${roomName}`)
+                // navigate(`/meet?roomNameInvite=${roomName}`)
 
             })
+
+            
 
             setSocket(socketRef.current)
         }
@@ -69,33 +82,36 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
 
 
 
-    console.log('initialized : ', initialized)
     return (
         <div>
-            <Modal
-                isOpen={isCalled}
-                style={
-                    {
-                        content: {
-                            padding: '0',
-                            top: '50%',
-                            left: '50%',
-                            right: 'auto',
-                            bottom: 'auto',
-                            transform: 'translate(-50%, -50%)',
-                            border: 'none',
-                            borderRadius: '0  ',
-                            width: `500px`,
-                            height: "400px",
-                            border: "1px solid black",
-                            borderRadius: "20px"
-                        }
-                    }
-                }>
-                <InvitationCall photoURL={authPhotoURL} username={username} />
-            </Modal>
+
 
             <SocketContext.Provider value={socket}>
+
+                <Modal
+                    isOpen={isCalled}
+                    style={
+                        {
+                            content: {
+                                padding: '0',
+                                top: '50%',
+                                left: '50%',
+                                right: 'auto',
+                                bottom: 'auto',
+                                transform: 'translate(-50%, -50%)',
+                                border: 'none',
+                                borderRadius: '0  ',
+                                width: `500px`,
+                                height: "400px",
+                                border: "1px solid black",
+                                borderRadius: "20px"
+                            }
+                        }
+                    }>
+                    <InvitationCall photoURL={authPhotoURL} username={username} />
+                </Modal>
+
+
                 <Routes>
                     <Route path="/posts/:username" element={<MyPublication />} />
                     <Route path="/mypost" element={<MyPublication />} />

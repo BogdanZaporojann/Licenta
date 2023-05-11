@@ -17,6 +17,7 @@ import info from "../../assets/svg/info.svg"
 import cameraVideo from "../../assets/svg/cameraVideo.svg"
 import phoneCall from "../../assets/svg/phoneCall.svg"
 import { useInView } from 'react-intersection-observer';
+import EmojiPicker from "emoji-picker-react"
 
 const Chat = ({
     getUserInfoByUsername,
