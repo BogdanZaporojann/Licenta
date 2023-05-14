@@ -23,9 +23,7 @@ const Login = (props) => {
 
 
 
-    useEffect(() => {
-        console.log("authUsername : ", props.authUsername)
-    }, [props.authUsername])
+
 
     return (
         <div>

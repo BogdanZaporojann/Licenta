@@ -22,9 +22,7 @@ const AddChatMessage = ({ authorName, sendMessage, getRealtimeSocketMessage }) =
         onSubmit: (values, { resetForm }) => {
             getRealtimeSocketMessage({ message: values.message, from: authorName, to: username, date: new Date() });
             sendMessage({ message: values.message, toUser: username })
-            debugger
             resetForm()
-            debugger
         }
     })
 
@@ -39,7 +37,6 @@ const AddChatMessage = ({ authorName, sendMessage, getRealtimeSocketMessage }) =
     const [isOpen, setIsOpen] = useState(false)
 
     const onEmojiClick = ({ emoji }) => {
-        console.log("emoji : ", emoji)
         formik.setFieldValue('message', `${formik.values.message} ${emoji}`)
     };
 

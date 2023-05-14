@@ -1,12 +1,19 @@
 import React, { useRef, useContext } from "react"
-import axios from "axios";
 import { useEffect, useState } from "react";
-import Join from "./Join";
-import Meeting from "./Meeting";
-import MeetingEnded from "./MeetingEnded";
 import { connect } from "react-redux";
 import { SocketContext } from "../Socket/createSocketContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getUserInfoByUsername } from "../../redux/reducers/authReducer";
+
+import VideoStream from "./VideoStream";
+import CallRoom from "./CallRoom/CallRoom";
+import Buttons from "./Buttons/Buttons";
+
+
+import VideoTag from "./VideoTag";
+import cameraOffLine from "../../assets/svg/cameraOffLine.svg"
+import styles from "./Meeting.module.scss"
+
 
 import {
   addConference, getConference, deleteConference, createConference, getMetteredDomain, verifyMeeting
@@ -16,16 +23,30 @@ import {
 
 
 // Initializing the SDK
-
 const meteredMeeting = new window.Metered.Meeting();
-
 
 
 
 const API_LOCATION = "https://brainwaveapi.onrender.com";
 
 const Meet = ({ deleteConference, createConference, addConference, getConference, getMetteredDomain, verifyMeeting,
-  lastCreatedRoomName, metteredDomain, authUserName, authUserUserName, roomFound, inviteRoomName }) => {
+  lastCreatedRoomName, metteredDomain, authUserName, authUserUserName, roomFound, inviteRoomName, getUserInfoByUsername,
+  curentUserPhotoURL }) => {
+
+  const imaga = "https://cdn1.iconfinder.com/data/icons/avatars-55/100/avatar_profile_user_music_headphones_shirt_cool-512.png"
+
+  const { search } = useLocation()
+  const valuesFromParams = (Object.fromEntries(new URLSearchParams(search)))
+  const interlocutorPhoto = valuesFromParams['interlocutorPhotoURL']
+  const interlocutorName = valuesFromParams['interlocutorName']
+  const isCameraStartedByDefauld = valuesFromParams['camera']
+  const toUserName = valuesFromParams['toUserName']
+  const roomNameInvite = valuesFromParams['roomNameInvite']
+
+
+  getUserInfoByUsername(toUserName)
+
+  const navigate = useNavigate()
 
 
   // Will set it to true when the user joins the meeting
@@ -75,7 +96,6 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     meteredMeeting.on("participantLeft", (localTrackItem) => { });
 
     meteredMeeting.on("onlineParticipants", (onlineParticipants) => {
-      // console.log('online ', onlineParticipants)
       setOnlineUsers([...onlineParticipants]);
     });
 
@@ -137,31 +157,12 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
       roomURL: `${localMetteredDomainRef.current + "/" + localLastCreatedRoomNameRef.current}`
     });
 
-    console.log('primar joinResponse : ', joinResponse)
-    console.log("meteredMeeting : ", meteredMeeting)
-
-
-
     //рендер проблем
     setUsername(username)
     setRoomName(localLastCreatedRoomNameRef.current);
     setMeetingInfo(joinResponse)
     setMeetingJoined(true);
   }
-
-
-  const { search } = useLocation()
-  const valuesFromParams = (Object.fromEntries(new URLSearchParams(search)))
-
-  const roomNameInvite = valuesFromParams['roomNameInvite']
-
-  // console.log("search : ", search)
-  // console.log("roomNameInvite start : ", roomNameInvite)
-
-
-
-
-
 
   const handleJoinMeeting = async (roomName, username) => {
     await getMetteredDomain()
@@ -172,25 +173,12 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
       name: username,
       roomURL: `${localMetteredDomainRef.current + "/" + roomName}`
     });
-    console.log('second jooinResponse : ', joinResponse)
-    console.log('second meteredMeeting : ', meteredMeeting)
 
-    // setMeetingJoined(true)
-    // const joinResponse = await meteredMeeting.join({
-    //   name: username,
-    //   roomURL: METERED_DOMAIN + "/" + roomName,
-    // });
-    // setUsername(username);
-    // setRoomName(roomName);
-
-    // setMeetingInfo(joinResponse);
-    // setMeetingJoined(true);
   }
 
 
   const [isJoinedInvite, setIsJoinedInvite] = useState(false)
   if (roomNameInvite) {
-    // console.log('roomNi : ', roomNameInvite)
     if (!isJoinedInvite) {
       handleJoinMeeting(roomNameInvite, authUserUserName)
       setIsJoinedInvite(true)
@@ -270,38 +258,165 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
     setMeetingEnded(true);
   }
   const { participantInfo, _onlineParticipants } = meteredMeeting
-  // console.log("participantInfo name: ", participantInfo?.name)
-  // console.log("_onlineParticipants : ", _onlineParticipants[0]?.name)
-
   const isMeetAuthorName = (participantInfo?.name === _onlineParticipants[0]?.name && _onlineParticipants[0]?.name !== undefined)
-  // console.log("isMeetAuthorName : ", isMeetAuthorName)
+
+  //попытка перетащить куча коду
+  const socket = useContext(SocketContext)
+
+
+  const [isCamera, setIsCamera] = useState(false)
+
+  const handleIsCamera = () => {
+    setIsCamera(!isCamera)
+  }
+
+
+
+
+
+  //если пришло приглашени то идём сразу в комнату звонка
+  useEffect(() => {
+    if (roomNameInvite) {
+      setIsCall(true)
+    }
+  }, [])
+
+
+  //это обработка в зависимотси если выбрал звонок с камерой или без
+  useEffect(() => {
+    if (isCameraStartedByDefauld === "false") {
+      setIsCamera(false)
+    } else {
+      setIsCamera(true)
+    }
+  }, [])
+
+
+
+
+
+
+  let userStreamMap = {};
+  for (let trackItem of remoteTracks) {
+    if (!userStreamMap[trackItem.participantSessionId]) {
+      userStreamMap[trackItem.participantSessionId] = [];
+    }
+    userStreamMap[trackItem.participantSessionId].push(trackItem);
+  }
+
+  let remoteParticipantTags = [];
+  for (let user of onlineUsers) {
+    if (user._id === meetingInfo.participantSessionId) {
+      continue;
+    }
+    let videoTags = [];
+    if (userStreamMap[user._id] && userStreamMap[user._id].length > 0) {
+      for (let trackItem of userStreamMap[user._id]) {
+        let stream = new MediaStream();
+        stream.addTrack(trackItem.track);
+
+        if (trackItem.type === "video") {
+          videoTags.push(<VideoTag srcObject={stream}
+          />);
+        }
+
+        if (trackItem.type === "audio") {
+          videoTags.push(
+            <VideoTag
+              key={trackItem.streamId}
+              srcObject={stream}
+            />
+          );
+        }
+      }
+    }
+
+    remoteParticipantTags.push(
+      <div key={user._id}>
+        <div id="remoteVideos">{videoTags}</div>
+        {/* <div id="username">{user.name}</div> */}
+      </div>
+    );
+  }
+
+
+  //переключение режима с комнаты звонка на звонок
+  const [isCall, setIsCall] = useState(false)
+
+  //достаю данные о чуваке которому звоню что бы в комнате ожидания звонка заблюриить на бэкграунг его фотку на полную
+
+
+  //SOCKET ЗАПРОС ЧЕЛОВЕКУ С КОТОРОМУ ТЫ ЗВОНИШЬ
+  //ПЕРЕНАПРАВЛЕНИЕ НА СТРАНИЦУ ОЖИДАНИЯ ЗВОНКА
+  const handleOnClickSuna = () => {
+    roomName && socket.emit("callInviter", { data: { toUserName, roomName } })
+    setTimeout(() => {
+ 
+      socket.on("responseDeclinedCall", ({ isDeclined }) => {   
+        
+        isDeclined && navigate(`/messages/${toUserName}`)
+      })
+    }, 6000);
+    setIsCall(true)
+  }
   return (
     <div className="App">
-      {/* {meetingJoined ? (
+      <div>
+        {!isCall
+          ? (
+            <div>
+              <div style={{
+                // backgroundImage: `url(${imaga})`,
+                // height:"100vh",
+                // width:"100vw",
+                // filter: "blur(10px)",
+                // backgroundPosition: "center",
+                // backgroundRepeat: "no-repeat",
+                // backgroundSize: "cover"
+              }}></div>
+              <div id="meetingView" className="flex flex-col">
+                <div className={styles.wrapp}>
+                  <div className={styles.mainBlock}>
+                    <div className={styles.empty}>
+                      {isCamera ?
+                        (<VideoStream localVideoStream={localVideoStream} />)
+                        : (<div>
+                          <img src={cameraOffLine} alt="cameraOffLine" />
+                        </div>)
+                      }
+                    </div>
+                    <Buttons
+                      handleMicBtn={handleMicBtn}
+                      handleCameraBtn={handleCameraBtn}
+                      handelScreenBtn={handelScreenBtn}
+                      handleLeaveBtn={handleLeaveBtn}
+                      handleIsCamera={handleIsCamera} />
 
-        meetingEnded ? ( 
-          <MeetingEnded />
-        ) : ( */}
-        <Meeting
-          handleMicBtn={handleMicBtn}
-          handleCameraBtn={handleCameraBtn}
-          handelScreenBtn={handelScreenBtn}
-          handleLeaveBtn={handleLeaveBtn}
-          localVideoStream={localVideoStream}
-          onlineUsers={onlineUsers}
-          remoteTracks={remoteTracks}
-          username={username}
-          roomName={roomName}
-          meetingInfo={meetingInfo}
-          meteredMeeting={meteredMeeting}
-        />
-      {/* )
-      ) : (
-        <Join
-          handleCreateMeeting={handleCreateMeeting}
-          handleJoinMeeting={handleJoinMeeting}
-        />
-      )} */}
+                  </div>
+
+                  <div className={styles.secondBlock}>
+                    <img src={interlocutorPhoto} alt="userPhotoURL" />
+                    <span>{interlocutorName}</span>
+                    <span>SUNI ACUM ?</span>
+                    <span onClick={handleOnClickSuna} className={styles.callButton} >SUNA</span>
+                  </div>
+                </div>
+              </div>
+            </div>)
+          : (
+            <CallRoom
+              localVideoStream={localVideoStream}
+              interlocutorPhoto={interlocutorPhoto}
+              remoteParticipantTags={remoteParticipantTags}
+              childComponent={<Buttons
+                backgroundColor="inCallProcessScreen"
+                handleMicBtn={handleMicBtn}
+                handleCameraBtn={handleCameraBtn}
+                handelScreenBtn={handelScreenBtn}
+                handleLeaveBtn={handleLeaveBtn}
+                handleIsCamera={handleIsCamera} />} />
+          )}
+      </div>
     </div>
   );
 }
@@ -312,7 +427,8 @@ const mapStateToProps = (state) => ({
   roomFound: state.meet.roomFound,
   authUserName: state.auth.authName,
   inviteRoomName: state.meet.inviteRoomName,
-  authUserUserName: state.auth.authUsername
+  authUserUserName: state.auth.authUsername,
+  curentUserPhotoURL: state.auth.curentUserPhotoURL
 })
 
 export default connect(mapStateToProps, {
@@ -321,5 +437,6 @@ export default connect(mapStateToProps, {
   addConference,
   getConference,
   getMetteredDomain,
-  verifyMeeting
+  verifyMeeting,
+  getUserInfoByUsername
 })(Meet);

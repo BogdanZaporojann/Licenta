@@ -66,7 +66,6 @@ const CommentInstance = ({ idPost, timeAgo, answers, authorName, text, getUserIn
                     </div>
                     <div className={isVisibleAnswers ? style.none : ""}>
                         {answers.map(answer => {
-                            console.log('uaaai tudor : ', answer)
                             return <AnswerToCommentInstance answer={answer.answer} idComment={answer._id} authorName={answer.user} />
                         })}
                     </div>

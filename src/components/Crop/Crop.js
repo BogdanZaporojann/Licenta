@@ -31,7 +31,6 @@ const ImageUpload = ({ inputText, handleModalWidth, classes, addFunnyPost }) => 
             "description": ""
         },
         onSubmit: values => {
-            console.log('values : ', values)
             // addFunnyPost({
             //     postFile: values.postFile
             // })

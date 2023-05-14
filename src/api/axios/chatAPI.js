@@ -12,7 +12,6 @@ export const chatAPI = {
 
     async getChats() {
         return await instance.get(`chats`).then(result => {
-            console.log('chats items : ', result.data)
             return result.data
         })
     },

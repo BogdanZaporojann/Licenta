@@ -28,20 +28,23 @@ import InvitationCall from "./components/InvitationCall/InvitationCall";
 
 const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
 
-
+    //для передачи через пропс к InvitationCall для отклонения звонка
+    const [userCallTacker, setUserCallTacker] = useState("")
+    const [roomNameCallTacker, setRoomNameCallTacker] = useState("")
     //от isCalled зависит попап звонка
     const [isCalled, setIsCalled] = useState(false)
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
+    const [callWasAccept,setCallWasAccept] = useState(false)
 
     const socketRef = useRef()
     const [socket, setSocket] = useState()
-
+    const [toUser, setToUser] = useState("")
 
     const modalCallApeare = () => {
         setIsCalled(true)
         setTimeout(() => {
             setIsCalled(false)
-            socket.emit("declinedCall", () => { return true })
+            // socket.emit("declinedCall", { data: { toUserName: username } })
         }, 5000);
     }
 
@@ -49,6 +52,9 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
     useEffect(() => {
         initializeApp();
     }, [])
+
+
+
 
 
     useEffect(() => {
@@ -60,19 +66,43 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
                 }
             })
 
-            socketRef.current.on("callTacker", ({ roomName }) => {
-                //порешай это и раслабь булки
-                modalCallApeare()
+
+            socketRef.current.on("callTacker", ({ roomName, fromUserName }) => {
+                debugger
+                // modalCallApeare()
+                fromUserName && setUserCallTacker(fromUserName);
+
+                roomName && setRoomNameCallTacker(roomName);
+                //arara
+                
+                    (() => {
+                        setIsCalled(true)
+                        setTimeout(() => {
+                            setIsCalled(false)
+                            console.log('from root callWasAccept : ',callWasAccept)
+                            (!callWasAccept) && socketRef.current.emit("declinedCall", { data: { toUserName: fromUserName } })
+                        }, 5000);
+                    })()
                 //мы установили у чувака который получил приглашения на встречу roomName встречи в поле inviteRoomName
                 // navigate(`/meet?roomNameInvite=${roomName}`)
-
             })
 
-            
+            // socketRef.current.on("responseDeclinedCall", (result) => {
+            //     debugger
+            // })
+
+
+
+
+
+
 
             setSocket(socketRef.current)
+
         }
     }, [initialized])
+
+
 
 
 
@@ -90,6 +120,7 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
 
                 <Modal
                     isOpen={isCalled}
+                    // isOpen={true}
                     style={
                         {
                             content: {
@@ -108,7 +139,13 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
                             }
                         }
                     }>
-                    <InvitationCall photoURL={authPhotoURL} username={username} />
+                    <InvitationCall
+                        setIsCalled={setIsCalled}
+                        photoURL={authPhotoURL}
+                        toUserName={username}
+                        userCallTacker={userCallTacker}
+                        roomNameCallTacker={roomNameCallTacker}
+                        setCallWasAccept={setCallWasAccept} />
                 </Modal>
 
 

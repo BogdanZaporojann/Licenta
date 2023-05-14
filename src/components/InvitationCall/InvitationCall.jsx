@@ -1,9 +1,10 @@
-import React, { useContext, useNavigate } from "react"
+import React, { useContext } from "react"
+import { useNavigate } from "react-router-dom";
 import { SocketContext } from "../Socket/createSocketContext";
 import style from "./InvitationCall.module.scss"
 import call from "../../assets/svg/phoneCall.svg"
 import x from "../../assets/svg/x.svg"
-const InvitationCall = ({ photoURL, username }) => {
+const InvitationCall = ({ photoURL, username, userCallTacker, roomNameCallTacker, setIsCalled, setCallWasAccept }) => {
 
     const navigate = useNavigate()
 
@@ -12,11 +13,14 @@ const InvitationCall = ({ photoURL, username }) => {
 
 
     const handleAccepteCall = () => {
-        // navigate(`/meet?roomNameInvite=${roomName}`)
+        setCallWasAccept(true)
+        navigate(`/meet?roomNameInvite=${roomNameCallTacker}`)
     }
 
     const handleDeclineCall = () => {
-        socket.emit("declinedCall")
+        setIsCalled(false)
+        socket.emit("declinedCall", { data: { toUserName: userCallTacker } })
+
     }
 
     return (

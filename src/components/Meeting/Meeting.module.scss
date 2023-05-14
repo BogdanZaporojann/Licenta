@@ -20,11 +20,14 @@
 }
 
 .wrapp {
-    background-color: black;
+    // background-color: black;
+
+  
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    
     > div{
         margin-right: 10px;
         border: none;

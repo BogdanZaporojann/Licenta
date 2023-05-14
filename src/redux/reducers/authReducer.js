@@ -45,6 +45,7 @@ export const authReducer = (state = initialState, action) => {
 
 
 export const login = (userData) => {
+    
     return async (dispatch) => {
         const user = await authAPI.login(userData)
         localStorage.setItem('accessToken', user.accessToken)
@@ -70,7 +71,7 @@ export const setAuthUserData = (authName, authPhotoURL, authEmail, authUsername,
 
 export const getAuthUserData = () => {
     return async (dispatch) => {
-
+        
         if (!localStorage.getItem("accessToken")) {
             dispatch(setAuthUserData("", "", "", "", ""));
         } else {

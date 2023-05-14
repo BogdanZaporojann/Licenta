@@ -78,7 +78,6 @@ const PersonalPage = (props) => {
             //     postFile: values.postFile,
             //     post: { name: values.name, description: values.description }
             // })
-            console.log('values : ', values)
         }
     })
 
