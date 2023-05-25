@@ -29,7 +29,7 @@ function VideoTag(props) {
         playsInline
         autoPlay={true}
         src={src}
-        className={isLocalVideoStream && styles.myVideo}
+        className={isLocalVideoStream ? styles.myVideo : styles.guestVideo}
       />
     </>
   );

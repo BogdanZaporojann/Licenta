@@ -10,14 +10,13 @@ import { LeftSidebarShortcuts } from "./LeftSidebarShortcuts/LeftSidebarShortcut
 import { useEffect, useRef, useState } from "react"
 import { connect } from "react-redux"
 import { getFollowersPosts } from "../../redux/reducers/postsReducer"
-import FollowersPost from "./FollowersPost/FollowersPost"
+import FollowersPost from "./FollowersPost/FollowersPost";
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from "formik"
 import { addFunnyPost } from "../../redux/reducers/postsReducer";
 import WithAuthRedirect from "../../HOF/withAuthRedirect";
 import { compose } from "redux"
 import camera from "../../assets/svg/camera.svg"
-import { getUsersByRegex } from "../../redux/reducers/usersReducer"
 
 import MakePost from "./MakePost/MakePost"
 
@@ -26,6 +25,10 @@ const PersonalPage = (props) => {
 
     const inputRef = useRef(null)
     const navigate = useNavigate();
+
+
+
+
 
 
     const handleClickPostByUsername = (event) => {
@@ -47,7 +50,7 @@ const PersonalPage = (props) => {
     useEffect(() => {
         if (fetching) {
             setPage(prevState => prevState + 1)
-            props.getFollowersPosts(15, page)
+            props.getFollowersPosts(1, page)
             setFetching(false)
         }
     }, [fetching])
@@ -82,14 +85,21 @@ const PersonalPage = (props) => {
         }
     })
 
+    const [regEx, setRegEx] = useState("")
 
-    const onChangeSearchInputValue = () => {
-        props.getUsersByRegex(inputRef.current.value)
+
+    
+
+    useEffect(()=>{
+        console.log(inputRef)
+    },[inputRef])
+
+
+
+    const onChangeRegEx = () => {
+        console.log(inputRef?.current?.value)
+        setRegEx(inputRef?.current?.value)
     }
-
-
-
-
 
 
     const [photo, setPhoto] = useState("")
@@ -110,13 +120,13 @@ const PersonalPage = (props) => {
                         </div>
                     </div>
                     <div className={style.a}>
-                        aaaaaaaa
+                        Brain Wave
                     </div>
                     <div className={style.header_right}>
                         <div>
                             <img onClick={handlePopupClick} className={style.header_right_icon} src={notificationSVG} alt="notification" />
                         </div>
-                        <div id={props.username} onClick={handleClickPostByUsername}>
+                        <div className={style.nameAndImage} id={props.username} onClick={handleClickPostByUsername}>
                             <span>{props.name}</span>
                             <img className={style.header_right_icon} src={props.photoURL} alt="my_photo" />
                         </div>
@@ -124,7 +134,7 @@ const PersonalPage = (props) => {
                 </div>
 
                 <div className={style.content}>
-                    <div className={style.activity_feed}>Activity feed</div>
+                    {/* <div className={style.activity_feed}>Activity feed</div>
                     <div className={style.input_post}>
                         <div className={style.input_post_photo_section}>
                             <img className={style.photo} src={indus} alt="photo" />
@@ -143,7 +153,7 @@ const PersonalPage = (props) => {
                         <div className={style.input_post_icons_section}>
 
                         </div>
-                    </div>
+                    </div> */}
                     <div className={style.posts_area}>
                         <div className={style.post_header}>
                             {props.followersPosts.map((item) => {
@@ -169,8 +179,7 @@ const PersonalPage = (props) => {
                 <div className={style.left}>
 
                     <div className={style.followers_block}>
-                        <span>I am following 99</span>
-                        <Followers />
+                        <LeftSidebarShortcuts authPhotoUrl={props.photoURL} withoutBrand={true} />
                     </div>
                 </div>
 
@@ -179,9 +188,9 @@ const PersonalPage = (props) => {
                         <span className={style.lattest_update_section_text_margin_bottom}>
                             FRIENDS
                         </span>
-                        <input ref={inputRef} onChange={onChangeSearchInputValue} type="text" placeholder="Search Contacts..." />
+                        <input onChange={onChangeRegEx} ref={inputRef} type="text" placeholder="Search Contacts..." />
 
-                        <FriendsLatestUpdate users={props.foundUsersByRegExp} />
+                        <FriendsLatestUpdate regEx={regEx} />
                     </div>
                 </div>
             </div>
@@ -196,10 +205,11 @@ const mapStateToProps = (state) => ({
     username: state.auth.authUsername,
     followersPosts: state.posts.followersPosts,
     authUserId: state.auth.authUserId,
-    foundUsersByRegExp: state.users.users.users
+    foundUsersByRegExp: state.users.users.users,
+    foundUsersByRegExpItemsCount: state.users.users.itemsCount
 })
 
 export default compose(
-    connect(mapStateToProps, { getFollowersPosts, addFunnyPost, getUsersByRegex }),
+    connect(mapStateToProps, { getFollowersPosts, addFunnyPost }),
     WithAuthRedirect
 )(PersonalPage);

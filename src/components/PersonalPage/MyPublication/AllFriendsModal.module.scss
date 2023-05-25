@@ -1,0 +1,19 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    span{
+        font-size: 20px;
+    }
+}
+
+.scroll{
+    overflow-y: auto;
+    max-height: 2650px; /* или любая другая фиксированная высота */
+
+}
+
+.a{
+    overflow: hidden;
+}

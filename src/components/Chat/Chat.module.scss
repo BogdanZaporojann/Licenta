@@ -123,6 +123,7 @@ input:focus {
 
 .chat_first_section {
     padding: 13px;
+    height: 32.5px;
     border-bottom: 1px solid black;
 }
 
@@ -275,4 +276,14 @@ input:focus {
     padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.chooseChat {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.none {
+    display: none
 }

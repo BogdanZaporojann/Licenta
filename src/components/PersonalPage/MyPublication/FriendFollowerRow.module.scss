@@ -1,0 +1,40 @@
+.textInfo {
+    font-size: 12
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+
+img {
+    width: 40px;
+    height: 40px;
+}
+
+.wrapp {
+    display: flex;
+    padding: 5;
+    justify-content: space-between;
+    align-items: center
+}
+
+.textAndPhotoContainer {
+    display: flex;
+    align-items: center
+}
+
+.redButton{
+    width: 60px;
+    height:20px;
+    border-radius: 10%;
+    background-color: red;
+}
+
+.greenButton{
+    width: 60px;
+    height:20px;
+    border-radius: 10%;
+    background-color: green($color: #000000);
+}

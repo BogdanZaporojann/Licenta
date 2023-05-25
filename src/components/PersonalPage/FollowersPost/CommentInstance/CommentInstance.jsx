@@ -6,7 +6,7 @@ import { useEffect } from "react"
 import heart from "../../../../assets/svg/heart.svg"
 import AnswerToCommentInstance from "./AnswerToCommentInstance/AnswerToCommentInstance"
 
-const CommentInstance = ({ idPost, timeAgo, answers, authorName, text, getUserInfoByUsername, photoUrl, formik }) => {
+const CommentInstance = ({ idComment, timeAgo, answers, authorName, text, getUserInfoByUsername, photoUrl, formik }) => {
 
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const CommentInstance = ({ idPost, timeAgo, answers, authorName, text, getUserIn
 
     const handleAnswer = () => {
         formik.setFieldValue('text', `@${authorName} `)
-        formik.setFieldValue('idAnsweredPost', idPost)
+        formik.setFieldValue('idAnsweredComment', idComment)
     }
 
     const [isVisibleAnswers, setIsVisibleAnswers] = useState(false)
@@ -35,8 +35,7 @@ const CommentInstance = ({ idPost, timeAgo, answers, authorName, text, getUserIn
                             {authorName}
                         </span>
                         <span className={style.commentText}>
-                            {/* {text} */}
-                            loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremv
+                            {text}
                         </span>
                     </div>
                     <div className={style.timeLikeAnswerBlock}>
@@ -53,21 +52,30 @@ const CommentInstance = ({ idPost, timeAgo, answers, authorName, text, getUserIn
                     <div className={style.timeLikeAnswerBlock}>
                         <div className={style.lineBlock}>
 
-                            <hr className={style.line} />
 
-                            {isVisibleAnswers
-                                ? <span onClick={handleSome}>
-                                    look answers ({answers.length})
-                                </span>
-                                : <span onClick={handleSome}>
-                                    Hide the answers
-                                </span>}
+
+                            {
+                                answers.length !== 0 ?
+                                    isVisibleAnswers
+                                        ? <div>
+                                            <hr className={style.line} />
+                                            <span onClick={handleSome}>
+                                                look answers ({answers.length})
+                                            </span>
+                                        </div>
+                                        : <div>
+                                            <hr className={style.line} />
+                                            <span onClick={handleSome}>
+                                                Hide the answers
+                                            </span>
+                                        </div>
+                                    : null
+                            }
                         </div>
                     </div>
                     <div className={isVisibleAnswers ? style.none : ""}>
                         {answers.map(answer => {
-                            console.log('uaaai tudor : ', answer)
-                            return <AnswerToCommentInstance answer={answer.answer} idComment={answer._id} authorName={answer.user} />
+                            return <AnswerToCommentInstance formik={formik} answer={answer.answer} idComment={answer._id} authorName={answer.user} />
                         })}
                     </div>
                 </div>

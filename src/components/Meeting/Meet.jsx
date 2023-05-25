@@ -190,7 +190,6 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
   const [isJoinedInvite, setIsJoinedInvite] = useState(false)
   if (roomNameInvite) {
-    // console.log('roomNi : ', roomNameInvite)
     if (!isJoinedInvite) {
       handleJoinMeeting(roomNameInvite, authUserUserName)
       setIsJoinedInvite(true)
@@ -201,11 +200,11 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
 
 
 
+
   const [createMeet, setCreateMeet] = useState(false)
 
   //мы создаём конференцию если в URL нету roomNameInvite так как в другом случае мы приглашены в конференцию 
   if (createMeet === false && !roomNameInvite) {
-
     handleCreateMeeting(authUserUserName)
     setCreateMeet(true)
   }
@@ -277,31 +276,19 @@ const Meet = ({ deleteConference, createConference, addConference, getConference
   // console.log("isMeetAuthorName : ", isMeetAuthorName)
   return (
     <div className="App">
-      {/* {meetingJoined ? (
-
-        meetingEnded ? ( 
-          <MeetingEnded />
-        ) : ( */}
-        <Meeting
-          handleMicBtn={handleMicBtn}
-          handleCameraBtn={handleCameraBtn}
-          handelScreenBtn={handelScreenBtn}
-          handleLeaveBtn={handleLeaveBtn}
-          localVideoStream={localVideoStream}
-          onlineUsers={onlineUsers}
-          remoteTracks={remoteTracks}
-          username={username}
-          roomName={roomName}
-          meetingInfo={meetingInfo}
-          meteredMeeting={meteredMeeting}
-        />
-      {/* )
-      ) : (
-        <Join
-          handleCreateMeeting={handleCreateMeeting}
-          handleJoinMeeting={handleJoinMeeting}
-        />
-      )} */}
+      <Meeting
+        handleMicBtn={handleMicBtn}
+        handleCameraBtn={handleCameraBtn}
+        handelScreenBtn={handelScreenBtn}
+        handleLeaveBtn={handleLeaveBtn}
+        localVideoStream={localVideoStream}
+        onlineUsers={onlineUsers}
+        remoteTracks={remoteTracks}
+        username={username}
+        roomName={roomName}
+        meetingInfo={meetingInfo}
+        meteredMeeting={meteredMeeting}
+      />
     </div>
   );
 }

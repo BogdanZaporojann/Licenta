@@ -5,7 +5,7 @@ import { useContext } from "react";
 import styles from "./Meeting.module.scss"
 
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import VideoStream from "./VideoStream";
 import CallRoom from "./CallRoom/CallRoom";
@@ -30,7 +30,8 @@ function Meeting({
 
   const socket = useContext(SocketContext)
 
-  console.log('video socket : ',socket)
+  const navigate = useNavigate()
+  console.log('video socket : ', socket)
 
   const [isCamera, setIsCamera] = useState(false)
 
@@ -101,7 +102,7 @@ function Meeting({
         stream.addTrack(trackItem.track);
 
         if (trackItem.type === "video") {
-          videoTags.push(<VideoTag srcObject={stream} 
+          videoTags.push(<VideoTag srcObject={stream}
           />);
         }
 
@@ -132,9 +133,20 @@ function Meeting({
 
   //SOCKET ЗАПРОС ЧЕЛОВЕКУ С КОТОРОМУ ТЫ ЗВОНИШЬ
   //ПЕРЕНАПРАВЛЕНИЕ НА СТРАНИЦУ ОЖИДАНИЯ ЗВОНКА
-  const handleOnClickSuna = () => {
+  const handleOnClickSuna = async () => {
+    while (roomName === null) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    
     socket.emit("callInviter", { data: { toUserName, roomName } })
-    console.log("socekt 2 : ",socket)
+
+    setTimeout(() => {
+
+      socket.on("responseDeclinedCall", ({ isDeclined }) => {   
+        
+        isDeclined && navigate(`/messages/${toUserName}`)
+      })
+    }, 6000);
     setIsCall(true)
   }
 

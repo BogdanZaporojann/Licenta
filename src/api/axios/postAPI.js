@@ -22,8 +22,9 @@ const instance = axios.create({
 
 export const postsAPI = {
     async getFollowersPosts(itemsCount,page) {
-        const data = await instance.get(`followersPosts?itemsCount=${itemsCount}&page=${page}`).then(data=> data.data)
-        console.log('followers posts from axios : ',data)
+        const data = await instance.get(`followersPosts?itemsCount=${itemsCount}&page=${page}`).then(data=> {
+            return data.data
+        })
         return data
     },
     async getUserPosts(username){

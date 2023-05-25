@@ -4,13 +4,13 @@ import home from "../../../assets/svg/home.svg"
 import addSquare from "../../../assets/svg/addSquare.svg"
 import menu from "../../../assets/svg/menu.svg"
 import message from "../../../assets/svg/message.svg"
+import classNames from "classnames"
 
 
-
-export const LeftSidebarShortcuts = ({authPhotoUrl}) => {
+export const LeftSidebarShortcuts = ({ authPhotoUrl, withoutBrand }) => {
    return (
-      <div className={style.container}>
-         <div className={style.logo}>
+      <div className={withoutBrand ? style.containerWithoutLogo : style.container}>
+         <div className={classNames(style.logo, withoutBrand && style.none)}>
             BrainWave
          </div>
          <div className={style.shortCuteContainer}>
@@ -33,7 +33,7 @@ export const LeftSidebarShortcuts = ({authPhotoUrl}) => {
          </div>
          <div className={style.setting}>
             <img src={menu} alt="Ещё" />
-            <span>Ещё</span>
+            <span >Ещё</span>
          </div>
       </div>
    )

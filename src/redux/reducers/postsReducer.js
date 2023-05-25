@@ -33,7 +33,7 @@ const setFollowersPosts = (followersPosts) =>({
     followersPosts
 })
 
-export const getFollowersPosts = (itemsCount=4,page=3) => {
+export const getFollowersPosts = (itemsCount=1,page=3) => {
     return async (dispatch) => {
         const followerPosts = await postsAPI.getFollowersPosts(itemsCount,page)
         dispatch(setFollowersPosts(followerPosts))
@@ -55,6 +55,8 @@ export const getUserPosts = (username) => {
 }
 
 
-export const addFunnyPost =async (values) => {
+export const addFunnyPost = (values) => {
+    return async (dispatch) => {
         await postsAPI.addFunnyPost(values)
+    }
 }

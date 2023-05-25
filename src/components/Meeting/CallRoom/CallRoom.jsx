@@ -12,8 +12,9 @@ const CallRoom = ({ authUsername, childComponent, remoteParticipantTags, localVi
 
     return (
         <div className={styles.wrapp}>
-            <div>auth name : {authUsername}</div>
-            <div className={styles.remoteParticipantVideo}>
+            <div
+             className={styles.remoteParticipantVideo}
+             >
                 {remoteParticipantTags}
             </div>
 

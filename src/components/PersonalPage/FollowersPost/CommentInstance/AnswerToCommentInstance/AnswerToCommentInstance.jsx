@@ -4,12 +4,17 @@ import { useEffect } from "react"
 import { getUserInfoByUsername } from "../../../../../redux/reducers/authReducer"
 import { connect } from "react-redux"
 
-const AnswerToCommentInstance = ({ getUserInfoByUsername,answer, idComment, authorName, photoUrl }) => {
+const AnswerToCommentInstance = ({ formik, getUserInfoByUsername,answer, idComment, authorName, photoUrl }) => {
 
 
     useEffect(() => {
         getUserInfoByUsername(authorName)
     }, [])
+
+    const handleAnswer = () => {
+        formik.setFieldValue('text', `@${authorName} `)
+        formik.setFieldValue('idAnsweredComment',idComment)
+    }
 
 
     return (
@@ -23,8 +28,7 @@ const AnswerToCommentInstance = ({ getUserInfoByUsername,answer, idComment, auth
                         {authorName}
                     </span>
                     <span className={style.commentText}>
-                        {/* {text} */}
-                        loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremv
+                        {answer}
                     </span>
                 </div>
                 <div className={style.timeLikeAnswerBlock}>
@@ -35,7 +39,7 @@ const AnswerToCommentInstance = ({ getUserInfoByUsername,answer, idComment, auth
                     <span>
                         "Likes" : (11)
                     </span>
-                    <span>
+                    <span onClick={handleAnswer}>
                         answer
                     </span>
                 </div>

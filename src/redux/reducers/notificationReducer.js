@@ -52,6 +52,7 @@ const getNotificationSimple = (state, action) => {
 export const getNotification = (itemsCount, page, type) => {
     return async (dispatch) => {
         const notifications = await notificationAPI.getNotification(itemsCount, page)
+        
         switch(type){
             case "additional":
                 dispatch(setNotificationsAdditional(notifications))

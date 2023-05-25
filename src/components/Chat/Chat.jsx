@@ -17,6 +17,7 @@ import info from "../../assets/svg/info.svg"
 import cameraVideo from "../../assets/svg/cameraVideo.svg"
 import phoneCall from "../../assets/svg/phoneCall.svg"
 import { useInView } from 'react-intersection-observer';
+import classNames from "classnames";
 
 const Chat = ({
     getUserInfoByUsername,
@@ -47,9 +48,12 @@ const Chat = ({
     }, [socket])
 
     useEffect(() => {
-        getUserInfoByUsername(username)
-        setUserName(username)
+        if (username) {
+            getUserInfoByUsername(username);
+            setUserName(username);
+        }
         socket?.on("private message", (data) => {
+            debugger
             getRealtimeSocketMessage(data)
         })
     }, [username, socketMemo])
@@ -59,19 +63,24 @@ const Chat = ({
     });
 
     useEffect(() => {
-        if (inView) {
-            setPageNumberMessages(pageNumberMessages + 1)
-
+        if (userName) {
+            if (inView) {
+                setPageNumberMessages(pageNumberMessages + 1)
+            }
         }
     }, [inView])
 
     useEffect(() => {
-        getConversation(userName, pageNumberMessages)
+        if (userName) {
+            getConversation(userName, pageNumberMessages)
+        }
     }, [pageNumberMessages])
 
 
     useEffect(() => {
-        getConversation(userName, pageNumberMessages, true)
+        if (userName) {
+            getConversation(userName, pageNumberMessages, true)
+        }
         getChats()
     }, [userName])
 
@@ -158,7 +167,9 @@ const Chat = ({
                                 <DialogInstance username={username} name={name} photoURL={photoURL} id={id} />
                             </div>
                         })}
+
                         <div ref={dialogInstanceButton} style={{ backgroundColor: "black", width: "100%", height: "40px" }}></div>
+
                     </div>
 
                 </div>
@@ -169,7 +180,7 @@ const Chat = ({
                 </div>
                 <div className={style.chat}>
                     <div className={style.chat_first_section}>
-                        <div className={style.chat_header}>
+                        <div className={classNames(style.chat_header, !username && style.none)}>
                             <div>
                                 <div className={style.chat_header_main_text}>{chatUserName}</div>
                             </div>
@@ -182,7 +193,8 @@ const Chat = ({
 
                     </div>
                     <div ref={scrollContainerRef} className={style.chat_input}>
-                        <div ref={ref} style={{ backgroundColor: "black", width: "100%", height: "40px" }}></div>
+                        <div ref={ref} style={{ width: "100%", height: "40px" }}></div>
+                        <div className={classNames(style.chooseChat, username && style.none)}>Выберите чат</div>
                         <div >
                             {messagesArray.map(item => {
                                 return (
@@ -193,7 +205,7 @@ const Chat = ({
                         <div ref={buttomRef}></div>
                     </div>
 
-                    <div className={style.chat_footer}>
+                    <div className={classNames(style.chat_footer, !username && style.none)}>
                         <AddChatMessage getConversation={getConversation} userName={userName} sendMessage={sendMessage} />
                     </div>
                 </div>

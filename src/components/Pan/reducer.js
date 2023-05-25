@@ -6,7 +6,6 @@ const initialState = {
     prevMouseX: 0,
     prevMouseY: 0,
     scale: 0
-
 }
 
 const reducer = (state = initialState, action) => {

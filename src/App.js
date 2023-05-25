@@ -41,6 +41,23 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
     }, [])
 
 
+    const [roomNameState, setRoomNameState] = useState("")
+    const [declinedUserName, setDeclinedUserName] = useState("")
+
+    const popupInteract = useRef(false)
+
+
+
+    const modalDefaultBehavior = (fromUserName) => {
+        setTimeout(() => {
+            debugger
+            if (!popupInteract.current) {
+                debugger
+                setIsCalled(false)
+                socketRef.current.emit("declinedCall", { data: { toUserName: fromUserName } })
+            }
+        }, 5000);
+    }
     useEffect(() => {
         if (initialized) {
             socketRef.current = io("https://brainwaveapi.onrender.com", {
@@ -50,10 +67,18 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
                 }
             })
 
-            console.log('skron : ', socketRef.current)
-            socketRef.current.on("callTacker", ({ roomName }) => {
+            socketRef.current.on("callTacker", ({ fromUserName, roomName }) => {
+                debugger
                 //мы установили у чувака который получил приглашения на встречу roomName встречи в поле inviteRoomName
-                navigate(`/meet?roomNameInvite=${roomName}`)
+                setIsCalled(true)
+                setRoomNameState(roomName)
+                setDeclinedUserName(fromUserName)
+                debugger
+                modalDefaultBehavior(fromUserName)
+
+
+
+                // navigate(`/meet?roomNameInvite=${roomName}`)
 
             })
 
@@ -72,35 +97,37 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
     console.log('initialized : ', initialized)
     return (
         <div>
-            <Modal
-                isOpen={isCalled}
-                style={
-                    {
-                        content: {
-                            padding: '0',
-                            top: '50%',
-                            left: '50%',
-                            right: 'auto',
-                            bottom: 'auto',
-                            transform: 'translate(-50%, -50%)',
-                            border: 'none',
-                            borderRadius: '0  ',
-                            width: `500px`,
-                            height: "400px",
-                            border: "1px solid black",
-                            borderRadius: "20px"
-                        }
-                    }
-                }>
-                <InvitationCall photoURL={authPhotoURL} username={username} />
-            </Modal>
-
             <SocketContext.Provider value={socket}>
+                <Modal
+                    isOpen={isCalled}
+                    style={
+                        {
+                            content: {
+                                padding: '0',
+                                top: '50%',
+                                left: '50%',
+                                right: 'auto',
+                                bottom: 'auto',
+                                transform: 'translate(-50%, -50%)',
+                                border: 'none',
+                                borderRadius: '0  ',
+                                width: `500px`,
+                                height: "400px",
+                                border: "1px solid black",
+                                borderRadius: "20px"
+                            }
+                        }
+                    }>
+                    <InvitationCall setIsCalled={setIsCalled} declinedUserName={declinedUserName} roomNameState={roomNameState} popupInteract={popupInteract} photoURL={authPhotoURL} username={username} />
+                </Modal>
+
+
                 <Routes>
                     <Route path="/posts/:username" element={<MyPublication />} />
                     <Route path="/mypost" element={<MyPublication />} />
                     <Route path="/friends" element={<Friends />} />
                     <Route path="/messages/:username" element={<Chat />} />
+                    <Route path="/messages" element={<Chat />} />
                     <Route path='/post/Engineer/getQuestionByTitle' element={<QuestionsAndAnswers />} />
                     <Route path='/' element={<QuestionPageContainer />} />
                     <Route path='main' element={<MainPage />} />

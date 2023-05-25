@@ -15,6 +15,7 @@ export const friendAPI = {
         })
     },
     async requestFriend(requestedFriend) {
+        debugger
         instance.post("/request", { requestedFriend }).then(result => {
             console.log('axios request friend result : ', result.data)
             return result.data
@@ -23,13 +24,20 @@ export const friendAPI = {
         })
     },
     async addFriend(newFriend) {
-        instance.post("/add", { newFriend }).then(result =>result.data).catch(err => {
+        instance.post("/add", { newFriend }).then(result => result.data).catch(err => {
             console.log('axios add friend err : ', err)
         })
     },
     async removeFriend(oldFriend) {
-        instance.post("/remove", { oldFriend }).then(result =>result.data).catch(err => {
+        instance.delete("/remove", {
+            data: {
+                oldFriend
+            }
+        }).then(result => result.data).catch(err => {
             console.log('axios remove friend err : ', err)
         })
     },
+    async checkFriend(friendUserName) {
+        return instance.get(`/checkFriend?friendUserName=${friendUserName}`).then(result => result.data.isFriend)
+    }
 }

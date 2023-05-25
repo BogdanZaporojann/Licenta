@@ -11,7 +11,7 @@ const instance = axios.create({
 export const CommentAPI = {
 
     async addCommentToPost(commentInfo) {
-        await instance.post("addComment", { commentInfo }).then(data => console.log("data status comment post : ", data))
+        await instance.post("addComment", { commentInfo }).then(result => result.data.message)
     },
     async addAnswerToComment(answerInfo) {
         await instance.post("addAnswer", { answerInfo }).then(data => console.log("data status answer to comment post : ", data))

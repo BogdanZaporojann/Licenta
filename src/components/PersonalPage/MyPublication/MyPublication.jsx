@@ -1,7 +1,7 @@
 import indus from "../../../assets/img/indus/indian_picture.jpg"
 import setting from "../../../assets/svg/setting.svg"
 import style from "./MyPublication.module.scss"
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux"
 import { getUserPosts } from "../../../redux/reducers/postsReducer";
 import { useFormik } from "formik";
@@ -10,9 +10,8 @@ import { useParams } from 'react-router-dom';
 import UserPost from "../UserPost/UserPost";
 import { useNavigate } from 'react-router-dom';
 import { getUserInfoByUsername } from "../../../redux/reducers/authReducer";
-import { addFriend, getFriend } from "../../../redux/reducers/friendReducer";
-
-
+import { addFriend, getFriend, requestedFriend } from "../../../redux/reducers/friendReducer";
+import AllFriendsModal from "./AllFriendsModal";
 
 const MyPublicationPage = (props) => {
 
@@ -20,12 +19,14 @@ const MyPublicationPage = (props) => {
 
 
 
-    useEffect(()=>{
+    useEffect(() => {
         props.getFriend()
-        if(username !== props.authUsername){
+        if (username !== props.authUsername) {
             props.getUserInfoByUsername(username)
         }
-    },[])
+    }, [])
+
+
 
 
     const navigate = useNavigate()
@@ -34,8 +35,6 @@ const MyPublicationPage = (props) => {
     useEffect(() => {
         props.getUserPosts(username)
     }, [])
-
-
 
     const formik = useFormik({
         initialValues: {
@@ -60,10 +59,18 @@ const MyPublicationPage = (props) => {
     }
 
 
+
+
     const handlerFriendRequestClick = () => {
-        props.addFriend(props.currentUserName)
+        console.log('cal imbalat : ',username)
+        props.requestedFriend(username)
     }
 
+    const [isShowModal, setIsShowModal] = useState(false)
+
+    const handleGetAllFriends = () => {
+        setIsShowModal(true)
+    }
 
     let differentBlockHeader;
 
@@ -80,7 +87,7 @@ const MyPublicationPage = (props) => {
             <>
                 <span className={style.edit}>Subscribers</span>
                 <span className={style.edit} onClick={handlerSendMessageClick}>Send Message</span>
-                <span className={style.edit} onClick={handlerFriendRequestClick}>Friend</span>
+                <span className={style.edit} onClick={handlerFriendRequestClick}>Friend Request</span>
 
             </>
     }
@@ -88,6 +95,7 @@ const MyPublicationPage = (props) => {
 
     return (
         <div className={style.container}>
+
             <div>
 
 
@@ -105,7 +113,8 @@ const MyPublicationPage = (props) => {
                             <div className={style.profileInfoMiddle}>
                                 <span>10 Publication</span>
                                 <span>60 Followers</span>
-                                <span>80 subscriptions</span>
+                                <span>80 Subscriptions</span>
+                                <span onClick={handleGetAllFriends}>10friend</span>
                             </div>
                             <div>
                                 <span>
@@ -137,15 +146,20 @@ const MyPublicationPage = (props) => {
                         }
                     })}
                 </div>
+                <div style={{ display: isShowModal ? 'flex' : 'none' }}>
+                    {(props.friends.length > 0) && <AllFriendsModal setIsShowModal={setIsShowModal} friends={props.friends} isShowModal={isShowModal} />}
+                </div>
             </div>
+
         </div>
     )
 }
 
 const mapStateToProps = (state) => ({
+    friends: state.friends.friends,
     userPosts: state.posts.userPosts,
     authUsername: state.auth.authUsername,
-    currentUserName: state.auth.currentUserUserName
+    // currentUserName: state.auth.currentUserUserName
 })
 
-export default connect(mapStateToProps, { getUserPosts, addFunnyPost, getUserInfoByUsername, addFriend, getFriend })(MyPublicationPage)
+export default connect(mapStateToProps, { getUserPosts, addFunnyPost, getUserInfoByUsername, addFriend, getFriend, requestedFriend })(MyPublicationPage)

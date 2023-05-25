@@ -44,9 +44,13 @@ const NotificationPopupContainer = props => {
 
     useEffect(() => {
         if (fetching) {
-            setPage(prevState => prevState + 1)
-            props.getNotification(10, page, "additional")
-            setFetching(false)
+            if (page === 1) {
+                setPage(prevState => prevState + 1)
+                props.getNotification(10, page, "simple")
+            } else {
+                props.getNotification(10, page, "additional")
+                setFetching(false)
+            }
         }
     }, [fetching])
 

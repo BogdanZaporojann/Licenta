@@ -28,10 +28,16 @@
 
 .allInfoContailer {
     flex-grow: 1;
-    background-color: gold;
+    background-color: white;
     display: flex;
     flex-direction: column;
-    width: 600px;
+    width: 580px;
+    div{
+        span{
+            font-size: 16px;
+            font-weight:600;
+        }
+    }
 }
 
 .allInfoContailerForAnswer{

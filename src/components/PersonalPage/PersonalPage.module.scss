@@ -4,7 +4,7 @@ $wrapperGap: 20px;
 .header {
     width: 100vw;
     grid-area: header;
-    background-color: orange;
+    background-color: rgb(235,235,235);
     display: grid;
     grid-template-columns: calc(10% + $wrapperGap ) calc(17% + $wrapperGap) calc(40% + $wrapperGap) calc(18% + $wrapperGap);
     grid-template-areas:
@@ -22,18 +22,22 @@ $wrapperGap: 20px;
 
 .a {
     grid-area: a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
 }
 
 .left {
     position: sticky;
     top: 0;
     grid-area: left;
-    background-color: violet;
+    background-color: rgb(235,235,235);
 }
 
 .right {
     grid-area: right;
-    background-color: aqua;
+    background-color: rgb(235,235,235);
 }
 
 .wrapper {
@@ -48,6 +52,11 @@ $wrapperGap: 20px;
 
 }
 
+.nameAndImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .icon {
     width: 20px;
@@ -56,7 +65,8 @@ $wrapperGap: 20px;
 }
 
 .header_right_icon {
-    width: 25px;
+    width: 35px;
+    height: 35px;
 }
 
 .logo {
@@ -139,12 +149,12 @@ $wrapperGap: 20px;
 
 .content {
     grid-area: content;
-    background-color: orangered;
+    background-color: rgb(235,235,235);;
     display: grid;
     grid-template-rows: 30px 150px ;
     grid-template-areas:
-        "text"
-        "input"
+        "posts"
+        "posts"
         "posts";
 }
 
@@ -206,7 +216,6 @@ $wrapperGap: 20px;
 
 
 .posts_area {
-    background-color: rgba(0, 250, 10, 1);
     grid-area: posts;
     padding: 15px;
 }

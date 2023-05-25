@@ -1,6 +1,7 @@
 import style from "./FollowersPost.module.scss"
 import { calcHours } from "../utils"
 import heart from "../../../assets/svg/heart.svg"
+import redHeart from "../../../assets/svg/redLike.svg"
 import comment from "../../../assets/svg/comments.svg"
 import smile from "../../../assets/svg/smile.svg"
 import Modal from "react-modal"
@@ -11,7 +12,7 @@ import { useEffect } from "react"
 import { useFormik } from "formik"
 import { addCommentToPost, addAnswerToComment, getCommentsByPostID } from "../../../redux/reducers/commentReducer"
 import CommentInstance from "./CommentInstance/CommentInstance"
-
+import { addLike, removeLike, checkIsLikedPost } from "../../../redux/utils/like"
 const FollowersPost = ({
   getCommentsByPostID,
   addCommentToPost,
@@ -24,39 +25,59 @@ const FollowersPost = ({
   time,
   authorPhotoURL,
   comments,
-  getUserInfoByUsername }) => {
+  getUserInfoByUsername,
+  checkIsLikedPost }) => {
 
+
+    const [isLikedPost, setLikedPost] = useState(false)
+    checkIsLikedPost(postId).then(result=>setLikedPost(result))
+    useEffect(()=>{
+      console.log('isLikedPost : ',isLikedPost)
+    },[isLikedPost])
+
+
+  const [isSendMessage, setIsSendMessage] = useState(false)
+  useEffect(() => {
+    isSendMessage && setIsSendMessage(false)
+    getCommentsByPostID(postId)
+  }, [isSendMessage])
 
   const handleClickOnCommentIcon = () => {
     setModalIsOpen(true)
     getCommentsByPostID(postId)
   }
 
+  const handleClickOnLikeIcon = () => {
+    debugger
+    addLike(postId)
+  }
+
+
   const formik = useFormik({
     initialValues: {
       text: "",
-      idAnsweredPost: ""
+      idAnsweredComment: "",
     },
     onSubmit: (values, { resetForm }) => {
 
       if (values.text[0] === '@') {
-        const textSpaceSplit = values.text.split(" ")
-        const toUser = textSpaceSplit[0].slice(1)
-        const indexStart = textSpaceSplit[0].length + 1
-        const message = values.text.slice(indexStart)
-
+        debugger
+        setIsSendMessage(true)
         addAnswerToComment({
-          answer: message,
-          answeredTo: values.idAnsweredPost
+          answer: values.text,
+          answeredTo: values.idAnsweredComment
         })
         resetForm()
       }
       else {
+        debugger
+        setIsSendMessage(true)
+
         addCommentToPost({
           text: values.text,
           commentedTo: postId
-
         })
+        resetForm()
       }
     }
   })
@@ -65,7 +86,6 @@ const FollowersPost = ({
   if (files[0]?.type === 'image') {
 
     infoContent = <img className={style.contentWidth} src={files[0].fileURL} alt="ImageContentFromFollowers" />
-
   }
   if (files[0]?.type === 'video') {
     infoContent = <video className={style.contentWidth} src={files[0].fileURL} controls />
@@ -93,22 +113,26 @@ const FollowersPost = ({
 
 
 
-
   return (
     <div>
-      <div>
-        <span >{authorUserName}</span>
+      <div style={{ display: 'flex', marginLeft: 35 }}>
+        <img src="https://cdn1.iconfinder.com/data/icons/avatars-55/100/avatar_profile_user_music_headphones_shirt_cool-512.png" alt="alt" />
+        <div className={style.nameAndTime}>
+          <span>{authorUserName}</span>
+          <span>{`${calcHours(time)} hours ago`}</span>
+        </div>
       </div>
-      <div>{`${calcHours(time)} hours ago`}</div>
-      <div className={style.contentWidthContainer}>
+      {/* <div className={style.contentWidthContainer}>
         {infoContent}
-      </div>
-      <div>
-        <img className={style.svg_icon} src={heart} alt="like_heart" />
-        <img onClick={handleClickOnCommentIcon} className={style.svg_icon} src={comment} alt="like_heart" />
-      </div>
-      <div>
-        <span>`Нравиться {likes} людям`</span>
+      </div> */}
+      <div style={{ marginLeft: 35 }}>
+        <div>
+          <img onClick={handleClickOnLikeIcon} className={style.svg_icon} src={ isLikedPost ? redHeart : heart} alt="like_heart" />
+          <img onClick={handleClickOnCommentIcon} className={style.svg_icon} src={comment} alt="like_heart" />
+        </div>
+        <div>
+          <span>`Нравиться {likes.length} людям`</span>
+        </div>
       </div>
       <Modal
         isOpen={modalIsOpen}
@@ -138,17 +162,18 @@ const FollowersPost = ({
             {infoContent}
           </div>
           <div className={style.contentTextPopup}>
-            <div className={style.a}>
+            <div className={style.header}>
               <div>
-                <span>{authorUserName}</span>
                 <span>
-                  <img className={style.avaWidth} src={authorPhotoURL} alt="currentUserPhotoURL" />
+                  <img style={{ heigth: "32px", width: "32px", marginRight: "13px" }} className={style.avaWidth} src={authorPhotoURL} alt="currentUserPhotoURL" />
                 </span>
               </div>
+              <span className={style.mainName}>{authorUserName}</span>
+
             </div>
             <div className={style.b}>
               {comments.map(({ comment }) => {
-                return <CommentInstance idPost={comment._id} formik={formik} authorName={comment.author} text={comment.text} answers={comment.answers} timeAgo={calcHours(comment.time)} />
+                return <CommentInstance idComment={comment._id} formik={formik} authorName={comment.author} text={comment.text} answers={comment.answers} timeAgo={calcHours(comment.time)} />
               })}
             </div>
             <div className={style.c}>
@@ -187,4 +212,12 @@ const mapStateToProps = (state) => ({
   comments: state.comments.comments
 })
 
-export default connect(mapStateToProps, { getUserInfoByUsername, addCommentToPost, addAnswerToComment, getCommentsByPostID })(FollowersPost)
+export default connect(mapStateToProps, {
+  getUserInfoByUsername,
+  addCommentToPost,
+  addAnswerToComment,
+  getCommentsByPostID,
+  addLike,
+  removeLike,
+  checkIsLikedPost
+})(FollowersPost)

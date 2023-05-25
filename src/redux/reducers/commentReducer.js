@@ -23,6 +23,14 @@ const setComments = (comments) => ({
     comments
 })
 
+export const getCommentsByPostID = (postId) => {
+    return async (dispatch) => {
+        const comments = await CommentAPI.getCommentsByPostID(postId)
+        dispatch(setComments(comments))
+    }
+
+}
+
 export const addCommentToPost = (commentInfo) => {
     CommentAPI.addCommentToPost(commentInfo)
 }
@@ -31,11 +39,5 @@ export const addAnswerToComment = (answerInfo) => {
     CommentAPI.addAnswerToComment(answerInfo)
 }
 
-export const getCommentsByPostID = (postId) => {
-    return async (dispatch) => {
-        const comments = await CommentAPI.getCommentsByPostID(postId)
-        dispatch(setComments(comments))
-    }
 
-}
 
