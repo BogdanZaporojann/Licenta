@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUserInfoByUsername } from "../../../redux/reducers/authReducer";
 import { addFriend, getFriend, requestedFriend } from "../../../redux/reducers/friendReducer";
 import AllFriendsModal from "./AllFriendsModal";
-import { LeftSidebarShortcuts } from "../LeftSidebarShortcuts/LeftSidebarShortcuts";
+import  LeftSidebarShortcuts  from "../LeftSidebarShortcuts/LeftSidebarShortcuts";
 import { addFollower, removeFollower, checkFollower, getMyFollowers, getUsersFollowedByMe } from "../../../redux/reducers/followerReducer";
 const MyPublicationPage = (props) => {
 
@@ -109,9 +109,8 @@ const MyPublicationPage = (props) => {
 
     if (username === props.authUsername) {
         differentBlockHeader =
-            <div className={style.specific}>
-                <span className={style.edit}>Edit Profile</span>
-                <img className={style.settingIcon} src={setting} alt="setting" />
+            <div >
+
             </div>
 
     } else {

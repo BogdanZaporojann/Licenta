@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react"
 import { getUserInfoByUsername } from "../../redux/reducers/authReducer"
 import DialogInstance from "../DialogInstance/DialogInstance"
-import { LeftSidebarShortcuts } from "../PersonalPage/LeftSidebarShortcuts/LeftSidebarShortcuts";
+import  LeftSidebarShortcuts  from "../PersonalPage/LeftSidebarShortcuts/LeftSidebarShortcuts";
 import { SocketContext } from "../Socket/createSocketContext";
 import { useNavigate } from "react-router-dom";
 import info from "../../assets/svg/info.svg"
