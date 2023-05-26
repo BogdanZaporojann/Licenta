@@ -50,9 +50,9 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
 
     const modalDefaultBehavior = (fromUserName) => {
         setTimeout(() => {
-            debugger
+            
             if (!popupInteract.current) {
-                debugger
+                
                 setIsCalled(false)
                 socketRef.current.emit("declinedCall", { data: { toUserName: fromUserName } })
             }
@@ -68,12 +68,12 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
             })
 
             socketRef.current.on("callTacker", ({ fromUserName, roomName }) => {
-                debugger
+                
                 //мы установили у чувака который получил приглашения на встречу roomName встречи в поле inviteRoomName
                 setIsCalled(true)
                 setRoomNameState(roomName)
                 setDeclinedUserName(fromUserName)
-                debugger
+                
                 modalDefaultBehavior(fromUserName)
 
 

@@ -1,12 +1,47 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import style from "./CommentInstance.module.scss"
 import { getUserInfoByUsername } from "../../../../redux/reducers/authReducer"
 import { connect } from "react-redux"
-import { useEffect } from "react"
+import blackLike from "../../../../assets/svg/blackLike.svg"
+import redHeart from "../../../../assets/svg/redLike.svg"
+
 import heart from "../../../../assets/svg/heart.svg"
 import AnswerToCommentInstance from "./AnswerToCommentInstance/AnswerToCommentInstance"
+import { addLike, removeLike, checkIsLikedPost } from "../../../../redux/utils/like"
 
-const CommentInstance = ({ idComment, timeAgo, answers, authorName, text, getUserInfoByUsername, photoUrl, formik }) => {
+const CommentInstance = ({ likes, idComment, timeAgo, answers, authorName, text, getUserInfoByUsername, photoUrl, formik, checkIsLikedPost }) => {
+
+    const [isLikedPost, setLikedPost] = useState(false)
+    useEffect(() => {
+      checkIsLikedPost(idComment).then(result => {
+        setLikedPost(result)
+      })
+    }, [])
+  
+    const handleRemove = (idComment) => {
+        removeLike(idComment)
+        setLikedPost(prev => !prev)
+      }
+    
+      const handleAdd = (idComment) => {
+        addLike(idComment)
+        setLikedPost(prev => !prev)
+      }
+    
+    
+      const handleClickOnLikeIcon = () => {
+        isLikedPost
+          ? handleRemove(idComment)
+          : handleAdd(idComment)
+      }
+
+
+
+
+
+
+
+
 
 
     useEffect(() => {
@@ -43,7 +78,7 @@ const CommentInstance = ({ idComment, timeAgo, answers, authorName, text, getUse
                             {timeAgo} h.
                         </span>
                         <span>
-                            "Likes" : (11)
+                            Likes : {likes.length}
                         </span>
                         <span onClick={handleAnswer}>
                             answer
@@ -80,7 +115,7 @@ const CommentInstance = ({ idComment, timeAgo, answers, authorName, text, getUse
                     </div>
                 </div>
                 <div>
-                    <img className={style.likeIcon} src={heart} alt="heart" />
+                    <img onClick={handleClickOnLikeIcon} className={style.likeIcon} src={isLikedPost ? redHeart : blackLike} alt="heart" />
                 </div>
             </div>
 
@@ -91,4 +126,4 @@ const mapStateToProps = (state) => ({
     photoUrl: state.auth.curentUserPhotoURL
 })
 
-export default connect(mapStateToProps, { getUserInfoByUsername })(CommentInstance)
+export default connect(mapStateToProps, { getUserInfoByUsername, checkIsLikedPost })(CommentInstance)

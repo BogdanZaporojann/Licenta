@@ -1,9 +1,6 @@
 import style from "./PersonalPage.module.scss"
 import svg from "../../assets/svg/search.svg"
-import classNames from "classnames"
-import Followers from "./FollowersContainer/FollowersContainer"
 import FriendsLatestUpdate from "./FriendsLatestUpdateContainer/FriendsLatestUpdateContainer"
-import indus from "../../assets/img/indus/indian_picture.jpg"
 import NotificationPopup from "./NotificationPopup/NotificationPopupContainer"
 import notificationSVG from "../../assets/svg/notification.svg"
 import { LeftSidebarShortcuts } from "./LeftSidebarShortcuts/LeftSidebarShortcuts"
@@ -12,11 +9,9 @@ import { connect } from "react-redux"
 import { getFollowersPosts } from "../../redux/reducers/postsReducer"
 import FollowersPost from "./FollowersPost/FollowersPost";
 import { useNavigate } from 'react-router-dom';
-import { useFormik } from "formik"
 import { addFunnyPost } from "../../redux/reducers/postsReducer";
 import WithAuthRedirect from "../../HOF/withAuthRedirect";
 import { compose } from "redux"
-import camera from "../../assets/svg/camera.svg"
 
 import MakePost from "./MakePost/MakePost"
 
@@ -66,33 +61,28 @@ const PersonalPage = (props) => {
 
     const handlePopupClick = () => {
         setIsPopup(!isPopup)
+
+    }
+
+    const handlePopupClickOut = () => {
+        isPopup && setIsPopup(false)
+    }
+
+    const handleStop = (e) => {
+        e.stopPropagation()
     }
 
 
 
-    const formik = useFormik({
-        initialValues: {
-            "postFile": "",
-            "name": "",
-            "description": ""
-        },
-        onSubmit: values => {
-            // props.addFunnyPost({
-            //     postFile: values.postFile,
-            //     post: { name: values.name, description: values.description }
-            // })
-            console.log('values : ', values)
-        }
-    })
 
     const [regEx, setRegEx] = useState("")
 
 
-    
 
-    useEffect(()=>{
+
+    useEffect(() => {
         console.log(inputRef)
-    },[inputRef])
+    }, [inputRef])
 
 
 
@@ -105,9 +95,11 @@ const PersonalPage = (props) => {
     const [photo, setPhoto] = useState("")
 
     return (
-        <div>
+        <div onClick={handlePopupClickOut}>
 
-            <NotificationPopup isPopup={isPopup} />
+            <div onClick={handleStop}>
+                <NotificationPopup isPopup={isPopup} />
+            </div>
             <div className={style.wrapper}>
 
 
@@ -134,26 +126,6 @@ const PersonalPage = (props) => {
                 </div>
 
                 <div className={style.content}>
-                    {/* <div className={style.activity_feed}>Activity feed</div>
-                    <div className={style.input_post}>
-                        <div className={style.input_post_photo_section}>
-                            <img className={style.photo} src={indus} alt="photo" />
-                            <form onSubmit={formik.handleSubmit}>
-                                <label className={style.sigmaCameraPost} htmlFor="postFile" >
-                                    <img src={camera} alt="cameraIcon" />
-                                </label>
-                                <input className={style.none} id="postFile" name="postFile" type="file" onChange={(event) => {
-                                    console.log('frf : ', setPhoto(URL.createObjectURL(event.currentTarget.files[0]).split("").slice(5).join("")))
-                                    formik.setFieldValue("postFile", event.currentTarget.files[0])
-                                }} />
-                                <input className={style.textPost} type="text" id="name" name="name" value={formik.values.name} onChange={formik.handleChange} />
-                                <button className={style.none} type="submit">SEND</button>
-                            </form>
-                        </div>
-                        <div className={style.input_post_icons_section}>
-
-                        </div>
-                    </div> */}
                     <div className={style.posts_area}>
                         <div className={style.post_header}>
                             {props.followersPosts.map((item) => {
@@ -194,7 +166,6 @@ const PersonalPage = (props) => {
                     </div>
                 </div>
             </div>
-            <MakePost />
         </div>
     )
 }

@@ -15,7 +15,6 @@ export const friendAPI = {
         })
     },
     async requestFriend(requestedFriend) {
-        debugger
         instance.post("/request", { requestedFriend }).then(result => {
             console.log('axios request friend result : ', result.data)
             return result.data

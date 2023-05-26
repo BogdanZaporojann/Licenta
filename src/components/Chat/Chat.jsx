@@ -53,7 +53,6 @@ const Chat = ({
             setUserName(username);
         }
         socket?.on("private message", (data) => {
-            debugger
             getRealtimeSocketMessage(data)
         })
     }, [username, socketMemo])

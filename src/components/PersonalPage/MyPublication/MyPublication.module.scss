@@ -1,14 +1,10 @@
 .vlack {
   padding-top: 30px;
   padding-bottom: 80px;
-  // width: 100%;
   display: flex;
   justify-content: center;
-  // background-color: black;
 
-  div {
-    width: 80%;
-  }
+  
 }
 
 .none {
@@ -16,6 +12,7 @@
 }
 
 .container {
+  grid-area: "right";
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,13 +47,38 @@
 }
 
 
+.left {
+  grid-area: "left";
+  border-right: 1px solid black;
+  position: sticky;
+  top: 0;
+}
+
+.wrap {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-areas: "left rigth";
+}
+
+.mainFlex{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FEF4F9;
+}
 
 
+.specific{
+  width: 800px;
+}
 
 .menu {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
-
+  
   span {
     margin-left: 10px;
     margin-right: 10px;
@@ -71,10 +93,12 @@
 }
 
 .mePhoto {
-  width: 100px;
+  width: 0px;
   margin-right: 50px;
 }
 
 .header {
   display: flex;
 }
+
+

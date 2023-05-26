@@ -1,6 +1,6 @@
 import style from "./FollowersPost.module.scss"
 import { calcHours } from "../utils"
-import heart from "../../../assets/svg/heart.svg"
+import blackLike from "../../../assets/svg/blackLike.svg"
 import redHeart from "../../../assets/svg/redLike.svg"
 import comment from "../../../assets/svg/comments.svg"
 import smile from "../../../assets/svg/smile.svg"
@@ -13,6 +13,7 @@ import { useFormik } from "formik"
 import { addCommentToPost, addAnswerToComment, getCommentsByPostID } from "../../../redux/reducers/commentReducer"
 import CommentInstance from "./CommentInstance/CommentInstance"
 import { addLike, removeLike, checkIsLikedPost } from "../../../redux/utils/like"
+
 const FollowersPost = ({
   getCommentsByPostID,
   addCommentToPost,
@@ -29,11 +30,13 @@ const FollowersPost = ({
   checkIsLikedPost }) => {
 
 
-    const [isLikedPost, setLikedPost] = useState(false)
-    checkIsLikedPost(postId).then(result=>setLikedPost(result))
-    useEffect(()=>{
-      console.log('isLikedPost : ',isLikedPost)
-    },[isLikedPost])
+  const [isLikedPost, setLikedPost] = useState(false)
+  useEffect(() => {
+    checkIsLikedPost(postId).then(result => {
+      setLikedPost(result)
+    })
+  }, [])
+
 
 
   const [isSendMessage, setIsSendMessage] = useState(false)
@@ -47,9 +50,21 @@ const FollowersPost = ({
     getCommentsByPostID(postId)
   }
 
-  const handleClickOnLikeIcon = () => {
-    debugger
+  const handleRemove = (postId) => {
+    removeLike(postId)
+    setLikedPost(prev => !prev)
+  }
+
+  const handleAdd = (postId) => {
     addLike(postId)
+    setLikedPost(prev => !prev)
+  }
+
+
+  const handleClickOnLikeIcon = () => {
+    isLikedPost
+      ? handleRemove(postId)
+      : handleAdd(postId)
   }
 
 
@@ -61,7 +76,7 @@ const FollowersPost = ({
     onSubmit: (values, { resetForm }) => {
 
       if (values.text[0] === '@') {
-        debugger
+
         setIsSendMessage(true)
         addAnswerToComment({
           answer: values.text,
@@ -70,7 +85,6 @@ const FollowersPost = ({
         resetForm()
       }
       else {
-        debugger
         setIsSendMessage(true)
 
         addCommentToPost({
@@ -119,19 +133,19 @@ const FollowersPost = ({
         <img src="https://cdn1.iconfinder.com/data/icons/avatars-55/100/avatar_profile_user_music_headphones_shirt_cool-512.png" alt="alt" />
         <div className={style.nameAndTime}>
           <span>{authorUserName}</span>
-          <span>{`${calcHours(time)} hours ago`}</span>
+          <span style={{fontSize:12, fontWeight:400}}>{`${calcHours(time)} h`}</span>
         </div>
       </div>
-      {/* <div className={style.contentWidthContainer}>
+      <div className={style.contentWidthContainer}>
         {infoContent}
-      </div> */}
+      </div>
       <div style={{ marginLeft: 35 }}>
-        <div>
-          <img onClick={handleClickOnLikeIcon} className={style.svg_icon} src={ isLikedPost ? redHeart : heart} alt="like_heart" />
+        <div className={style.likeAndComment}>
+          <img onClick={handleClickOnLikeIcon} className={style.svg_icon_red} src={isLikedPost ? redHeart : blackLike} alt="like_heart" />
           <img onClick={handleClickOnCommentIcon} className={style.svg_icon} src={comment} alt="like_heart" />
         </div>
         <div>
-          <span>`Нравиться {likes.length} людям`</span>
+          <span>Нравиться {likes.length} людям</span>
         </div>
       </div>
       <Modal
@@ -173,20 +187,29 @@ const FollowersPost = ({
             </div>
             <div className={style.b}>
               {comments.map(({ comment }) => {
-                return <CommentInstance idComment={comment._id} formik={formik} authorName={comment.author} text={comment.text} answers={comment.answers} timeAgo={calcHours(comment.time)} />
+                debugger
+                return <CommentInstance
+                  likes={likes}
+                  idComment={comment._id}
+                  formik={formik}
+                  authorName={comment.author}
+                  text={comment.text}
+                  answers={comment.answers}
+                  timeAgo={calcHours(comment.time)}
+                />
               })}
             </div>
             <div className={style.c}>
               <div className={style.ca}>
-                <span><img className={style.avaWidth} src={heart} alt="like_image" /></span>
-                <span><img className={style.avaWidth} src={comment} alt="comment_image" /></span>
+                <span onClick={handleClickOnLikeIcon}><img className={style.avaWidth} src={isLikedPost ? redHeart : blackLike} alt="like_image" /></span>
+                <span><img className={style.commentAva} src={comment} alt="comment_image" /></span>
               </div>
               <div className={style.cb}>
                 <div>
-                  отметок "нравиться"
+                  {likes.length} отметок нравиться
                 </div>
-                <div>
-                  {`${calcHours(time)} hours ago`}
+                <div style={{ fontSize: 13, fontWeight: 10 }}>
+                  {`${calcHours(time)} h`}
                 </div>
               </div>
 

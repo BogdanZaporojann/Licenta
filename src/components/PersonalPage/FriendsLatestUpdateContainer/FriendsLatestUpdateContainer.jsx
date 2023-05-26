@@ -17,25 +17,28 @@ export const FriendsLatestUpdateContainer = ({
     //А ЕСЛИ ПЕРВЫШАЕТ СОЗДАЙ АКТИОН КОТОРЫЙ УДАЛЯЕТ ПОСЛЕДНИЕ K ЭЛМЕМЕНТОВ В СЛУЧАЕ ЧТОПРЕВЫШЕНИЕ НА К С ПОМОЩЬЮ splice(-k)
 
     useEffect(() => {
-        console.log('regex : ',regEx)
+        console.log('regex : ', regEx)
         setPage(1);
-        (regEx !== "") && getUsersByRegexInitial(regEx, page);
-        
+        getUsersByRegexInitial(regEx, page);
+
     }, [regEx])
 
 
     const handleClickShowMore = () => {
         setPage(prev => prev + 1);
-        
+
         (users?.users?.length < itemsCount) && getUsersByRegexAdditional(regEx, page);
     }
 
     return (
-        <div className={styles.container}>
+        <div className={users?.users && styles.container}>
             {users?.users?.map(user => {
                 return <FriendsLatestUpdate name={user?.name} username={user?.username} id={user?.id} />
             })}
-            <span className={styles.showMoreBtn} onClick={handleClickShowMore}>Show more</span>
+
+            {users?.users &&
+                <span className={styles.showMoreBtn} onClick={handleClickShowMore}>Show more</span>
+            }
         </div>
 
     )

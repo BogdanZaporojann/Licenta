@@ -11,15 +11,19 @@ const instance = axios.create({
 
 export const likeAPI ={
     async addLike(postID){
-        debugger
+        
         instance.post('addLike',{postID}).then(result=>{
-            console.log(result)
-            debugger
+            
             return result
         })
     },
     async removeLike(postID){
-        instance.post('removeLike',{postID}).then(result=>result)
+        debugger
+        instance.delete('removeLike',{
+            data:{
+                postID
+            }
+        }).then(result=>result)
     },
     async checkIsLikedPost(postID){
         return instance.get(`checkIsLiked?postID=${postID}`).then(result=>result.data.isLiked)

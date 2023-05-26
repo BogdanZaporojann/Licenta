@@ -10,6 +10,10 @@ const instance = axios.create({
 
 export const UserAPI = {
     async getUsersByRegex(name, page) {
-        return instance.get(`getUsers?name=${name}&itemsCount=5&page=${page}`).then(data => data.data)
+        return instance.get(`getUsers?name=${name}&itemsCount=5&page=${page}`)
+        .then(data => data.data)
+        .catch(err=>{
+            return err.name
+        })
     }
 }

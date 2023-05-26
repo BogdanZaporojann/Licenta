@@ -97,31 +97,33 @@ const NotificationPopupContainer = props => {
 
 
     return (
-        <div className={props.isPopup ? style.notification_popup : style.none}>
-            <div className={style.notification_header}>
-                <div className={style.a}>
-                    <span>Notification</span>
-                    <span className={style.text_underline}>Mark all as read</span>
-                </div>
-                <div>
-                    <div className={style.notification_header_categories}>
-                        <div>
-                            <span>All</span>
-                            <span className={classNames(style.number_container, style.number_container_selected)}>8</span>
-                        </div>
-                        <div>
-                            <span >Following</span>
-                            <span className={classNames(style.number_container, style.number_container_selected)}>6</span>
-                        </div>
-
+        <div onClick={()=>{}}>
+            <div className={props.isPopup ? style.notification_popup : style.none}>
+                <div className={style.notification_header}>
+                    <div className={style.a}>
+                        <span>Notification</span>
+                        <span className={style.text_underline}>Mark all as read</span>
                     </div>
-                    <span onClick={handleNotificationRemove} className={isAllUnchecked() ? style.none : style.deleteNotificationButton}>DELETE NOTIFICATION</span>
+                    <div>
+                        <div className={style.notification_header_categories}>
+                            <div>
+                                <span>All</span>
+                                <span className={classNames(style.number_container, style.number_container_selected)}>8</span>
+                            </div>
+                            <div>
+                                <span >Following</span>
+                                <span className={classNames(style.number_container, style.number_container_selected)}>6</span>
+                            </div>
+
+                        </div>
+                        <span onClick={handleNotificationRemove} className={isAllUnchecked() ? style.none : style.deleteNotificationButton}>DELETE NOTIFICATION</span>
+                    </div>
                 </div>
-            </div>
-            <div id="notification_popup_content" className={style.notification_content}>
-                {notificationArray.map(item => {
-                    return <Notification setArr={setArr} handlerClickNotification={handlerClickNotification} friends={props.friends} type={item.type} notificationId={item._id} notificationDate={item.date} message={item.message} user={item.user} />
-                })}
+                <div id="notification_popup_content" className={style.notification_content}>
+                    {notificationArray.map(item => {
+                        return <Notification setArr={setArr} handlerClickNotification={handlerClickNotification} friends={props.friends} type={item.type} notificationId={item._id} notificationDate={item.date} message={item.message} user={item.user} />
+                    })}
+                </div>
             </div>
         </div>
     )

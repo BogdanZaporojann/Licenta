@@ -11,7 +11,6 @@ export const removeLike = (postID) => {
 export const checkIsLikedPost = (postID) => {
     return async (dispatch) => {
         const isLikedPost = await likeAPI.checkIsLikedPost(postID)
-        debugger
         return isLikedPost
     }
 }

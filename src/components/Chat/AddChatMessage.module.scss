@@ -1,3 +1,21 @@
+.emoji {
+    width: 40px;
+    cursor: pointer;
+    position: relative;
+}
+
+.emoji img {
+    vertical-align: middle;
+}
+
+.emojies {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 100%;
+}
+
+
 .input_chat {
     height: 40px;
     border-radius: 100px;

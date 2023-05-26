@@ -14,6 +14,7 @@ export const CommentAPI = {
         await instance.post("addComment", { commentInfo }).then(result => result.data.message)
     },
     async addAnswerToComment(answerInfo) {
+        debugger
         await instance.post("addAnswer", { answerInfo }).then(data => console.log("data status answer to comment post : ", data))
     },
     async getCommentsByPostID(postId) {

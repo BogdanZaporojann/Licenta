@@ -12,7 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import { getUserInfoByUsername } from "../../../redux/reducers/authReducer";
 import { addFriend, getFriend, requestedFriend } from "../../../redux/reducers/friendReducer";
 import AllFriendsModal from "./AllFriendsModal";
-
+import { LeftSidebarShortcuts } from "../LeftSidebarShortcuts/LeftSidebarShortcuts";
+import { addFollower, removeFollower, checkFollower, getMyFollowers, getUsersFollowedByMe } from "../../../redux/reducers/followerReducer";
 const MyPublicationPage = (props) => {
 
 
@@ -29,12 +30,44 @@ const MyPublicationPage = (props) => {
 
 
 
+
+
     const navigate = useNavigate()
     const { username } = useParams()
+
+
+    const [isFollower, setIsFollower] = useState(false);
+    useEffect(() => {
+        props?.checkFollower(username).then(result => {
+            setIsFollower(result)
+        })
+    }, [])
+
+
+    const unfollow = (username) => {
+        removeFollower(username)
+        setIsFollower(prev => !prev)
+    }
+
+    const follow = (username) => {
+        addFollower(username)
+        setIsFollower(prev => !prev)
+    }
+
+
+    const handleFollowing = () => {
+        isFollower
+            ? unfollow(username)
+            : follow(username)
+    }
+
+
 
     useEffect(() => {
         props.getUserPosts(username)
     }, [])
+
+
 
     const formik = useFormik({
         initialValues: {
@@ -62,7 +95,6 @@ const MyPublicationPage = (props) => {
 
 
     const handlerFriendRequestClick = () => {
-        console.log('cal imbalat : ',username)
         props.requestedFriend(username)
     }
 
@@ -77,10 +109,10 @@ const MyPublicationPage = (props) => {
 
     if (username === props.authUsername) {
         differentBlockHeader =
-            <>
+            <div className={style.specific}>
                 <span className={style.edit}>Edit Profile</span>
                 <img className={style.settingIcon} src={setting} alt="setting" />
-            </>
+            </div>
 
     } else {
         differentBlockHeader =
@@ -88,69 +120,75 @@ const MyPublicationPage = (props) => {
                 <span className={style.edit}>Subscribers</span>
                 <span className={style.edit} onClick={handlerSendMessageClick}>Send Message</span>
                 <span className={style.edit} onClick={handlerFriendRequestClick}>Friend Request</span>
+                {
+                    isFollower
+                        ? <span className={style.edit} onClick={handleFollowing}>Отписаться</span>
+                        : <span className={style.edit} onClick={handleFollowing}>Подписаться</span>
+                }
+
 
             </>
     }
 
 
     return (
-        <div className={style.container}>
+        <div className={style.wrap}>
 
-            <div>
-
-
-                <div className={style.vlack}>
-                    <div className={style.header}>
-                        <img className={style.mePhoto} src={setting} alt="me" />
-                        <div className={style.menu}>
-                            <div className={style.profileInfoHeader}>
-                                {/* <span>bogdanstrase</span> */}
-                                {/* <span className={style.edit}>Edit Profile</span>
-                                <img className={style.settingIcon} src={setting} alt="setting" /> */}
-
-                                {differentBlockHeader}
+            <div className={style.left}>
+                <LeftSidebarShortcuts authPhotoUrl={props.authPhotoUrl} />
+            </div>
+            <div className={style.mainFlex}>
+                <div className={style.container}>
+                    <div>
+                        <div className={style.vlack}>
+                            <div className={style.header}>
+                                <img className={style.mePhoto} src={setting} alt="me" />
+                                <div className={style.menu}>
+                                    <div className={style.profileInfoHeader}>
+                                        {differentBlockHeader}
+                                    </div>
+                                    <div className={style.profileInfoMiddle}>
+                                        <span>10 Publication</span>
+                                        <span>60 Followers</span>
+                                        <span>80 Subscriptions</span>
+                                        <span onClick={handleGetAllFriends}>10friend</span>
+                                    </div>
+                                    <div>
+                                        <span>
+                                            Bogdan Strase
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className={style.profileInfoMiddle}>
-                                <span>10 Publication</span>
-                                <span>60 Followers</span>
-                                <span>80 Subscriptions</span>
-                                <span onClick={handleGetAllFriends}>10friend</span>
-                            </div>
-                            <div>
-                                <span>
-                                    Bogdan Strase
-                                </span>
-                            </div>
+                        </div>
+
+                        <div className={style.gallery}>
+                            {props.userPosts.map(item => {
+                                if (item?.files[0]?.type === 'image') {
+
+                                    return <img src={item.files[0].fileURL} alt="indus" />
+                                }
+                            })}
+                            {props.userPosts.map((item) => {
+                                if (item?.files[0]?.type === 'image') {
+
+                                    return <UserPost
+                                        description={item.description}
+                                        postId={item._id}
+                                        authorUserName={item.author}
+                                        comments={item.comments}
+                                        files={item?.files}
+                                        likes={item.likes}
+                                        time={item.time} />
+                                }
+                            })}
+                        </div>
+                        <div style={{ display: isShowModal ? 'flex' : 'none' }}>
+                            {(props.friends.length > 0) && <AllFriendsModal setIsShowModal={setIsShowModal} friends={props.friends} isShowModal={isShowModal} />}
                         </div>
                     </div>
                 </div>
-
-                <div className={style.gallery}>
-                    {props.userPosts.map(item => {
-                        if (item?.files[0]?.type === 'image') {
-
-                            return <img src={item.files[0].fileURL} alt="indus" />
-                        }
-                    })}
-                    {props.userPosts.map((item) => {
-                        if (item?.files[0]?.type === 'image') {
-
-                            return <UserPost
-                                description={item.description}
-                                postId={item._id}
-                                authorUserName={item.author}
-                                comments={item.comments}
-                                files={item?.files}
-                                likes={item.likes}
-                                time={item.time} />
-                        }
-                    })}
-                </div>
-                <div style={{ display: isShowModal ? 'flex' : 'none' }}>
-                    {(props.friends.length > 0) && <AllFriendsModal setIsShowModal={setIsShowModal} friends={props.friends} isShowModal={isShowModal} />}
-                </div>
             </div>
-
         </div>
     )
 }
@@ -159,7 +197,19 @@ const mapStateToProps = (state) => ({
     friends: state.friends.friends,
     userPosts: state.posts.userPosts,
     authUsername: state.auth.authUsername,
-    // currentUserName: state.auth.currentUserUserName
+    authPhotoUrl: state.auth.authPhotoURL
 })
 
-export default connect(mapStateToProps, { getUserPosts, addFunnyPost, getUserInfoByUsername, addFriend, getFriend, requestedFriend })(MyPublicationPage)
+export default connect(mapStateToProps, {
+    getUserPosts,
+    addFunnyPost,
+    getUserInfoByUsername,
+    addFriend, getFriend,
+    requestedFriend,
+
+    addFollower,
+    removeFollower,
+    getMyFollowers,
+    getUsersFollowedByMe,
+    checkFollower
+})(MyPublicationPage)

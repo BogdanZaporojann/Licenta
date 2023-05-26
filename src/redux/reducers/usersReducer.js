@@ -39,8 +39,16 @@ const setUsersAdditional = (users) => ({
 
 export const getUsersByRegexInitial = (name, page) => {
     return async (dispatch) => {
-        const users = await UserAPI.getUsersByRegex(name, page)
-        dispatch(setUsersInitial(users))
+        if (name !== "") {
+            const users = await UserAPI.getUsersByRegex(name, page)
+            if (typeof users === 'string') {
+            } else {
+                dispatch(setUsersInitial({}))
+            }
+            dispatch(setUsersInitial(users))
+        } else {
+            dispatch(setUsersInitial({}))
+        }
     }
 }
 
