@@ -21,10 +21,12 @@ import { useEffect } from "react"
 import { SocketContext } from "./components/Socket/createSocketContext";
 import Meet from "./components/Meeting/Meet";
 import Modal from "react-modal"
+import CheckedCategory from "./components/Category/CheckedCategory/CheckedCategory";
+import PostByTile from "./components/Category/PostByTitle/PostByTitle";
 
 import InvitationCall from "./components/InvitationCall/InvitationCall";
 
-
+import CategoryList from "./components/Category/CategoryList";
 
 const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
 
@@ -137,6 +139,11 @@ const App = ({ initialized, username, authPhotoURL, initializeApp }) => {
                     <Route path="crop" element={<Crop />} />
                     <Route path="modal" element={<ModalEx />} />
                     <Route path="meet" element={<Meet />} />
+                    <Route path="scients" element={<CategoryList />} />
+                    <Route path="scients/:category" element={<CheckedCategory />} />
+                    <Route path="postByTitle/:category/:title" element={<PostByTile />} />
+
+                    
                 </Routes>
             </SocketContext.Provider>
 

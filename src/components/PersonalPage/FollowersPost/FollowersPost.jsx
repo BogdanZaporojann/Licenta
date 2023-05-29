@@ -130,7 +130,7 @@ const FollowersPost = ({
   return (
     <div>
       <div style={{ display: 'flex', marginLeft: 35 }}>
-        <img src="https://cdn1.iconfinder.com/data/icons/avatars-55/100/avatar_profile_user_music_headphones_shirt_cool-512.png" alt="alt" />
+        <img className={style.commentAva} src="https://cdn1.iconfinder.com/data/icons/avatars-55/100/avatar_profile_user_music_headphones_shirt_cool-512.png" alt="alt" />
         <div className={style.nameAndTime}>
           <span>{authorUserName}</span>
           <span style={{fontSize:12, fontWeight:400}}>{`${calcHours(time)} h`}</span>
